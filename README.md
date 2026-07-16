@@ -45,6 +45,19 @@ Run database migrations:
 uv run alembic upgrade head
 ```
 
+Import regions from a UTF-8 CSV file:
+
+```bash
+uv run electoral-import-regions data/raw/regions.csv
+```
+
+Expected CSV columns:
+
+```csv
+teryt_code,name,region_type,voivodeship,valid_from,valid_to
+0264011,Wroclaw,city_county,dolnoslaskie,1999-01-01,
+```
+
 Start the API locally:
 
 ```bash
@@ -84,6 +97,7 @@ uv run ruff format .
 ```text
 apps/api/      FastAPI application
 packages/db/   SQLAlchemy models, DB settings, Alembic migrations
+packages/ingestion/ CSV import utilities for source data
 data/          raw, interim, and processed reproducible datasets
 docs/          API and database notes
 ```

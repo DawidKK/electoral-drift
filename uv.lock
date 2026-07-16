@@ -7,6 +7,7 @@ members = [
     "electoral-api",
     "electoral-db",
     "electoral-drift",
+    "electoral-ingestion",
 ]
 
 [[package]]
@@ -127,6 +128,7 @@ dependencies = [
     { name = "alembic" },
     { name = "electoral-api" },
     { name = "electoral-db" },
+    { name = "electoral-ingestion" },
 ]
 
 [package.dev-dependencies]
@@ -141,6 +143,7 @@ requires-dist = [
     { name = "alembic", specifier = ">=1.14.0" },
     { name = "electoral-api", editable = "apps/api" },
     { name = "electoral-db", editable = "packages/db" },
+    { name = "electoral-ingestion", editable = "packages/ingestion" },
 ]
 
 [package.metadata.requires-dev]
@@ -148,6 +151,21 @@ dev = [
     { name = "httpx", specifier = ">=0.28.0" },
     { name = "pytest", specifier = ">=8.3.0" },
     { name = "ruff", specifier = ">=0.8.0" },
+]
+
+[[package]]
+name = "electoral-ingestion"
+version = "0.1.0"
+source = { editable = "packages/ingestion" }
+dependencies = [
+    { name = "electoral-db" },
+    { name = "sqlalchemy" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "electoral-db", editable = "packages/db" },
+    { name = "sqlalchemy", specifier = ">=2.0.36" },
 ]
 
 [[package]]

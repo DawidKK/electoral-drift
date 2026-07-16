@@ -8,6 +8,7 @@ from electoral_db.config import get_database_settings
 
 
 def get_engine(database_url: str | None = None) -> Engine:
+    # The engine owns the connection pool and knows how to talk to PostgreSQL.
     url = database_url or get_database_settings().database_url
     return create_engine(url, pool_pre_ping=True)
 
@@ -17,5 +18,6 @@ SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False, expi
 
 
 def get_session() -> Generator[Session]:
+    # One Session represents one short unit of database work, usually one API request.
     with SessionLocal() as session:
         yield session
