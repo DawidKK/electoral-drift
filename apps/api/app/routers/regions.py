@@ -4,7 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.dependencies import get_db_session
+from app.schemas.elections import ElectionRead
 from app.schemas.regions import RegionRead
+from app.services.elections import list_region_elections
 from app.services.regions import get_region_by_teryt_code, list_regions
 
 # This router translates HTTP requests about regions into service-layer calls.
@@ -14,6 +16,13 @@ router = APIRouter(prefix="/regions", tags=["regions"])
 @router.get("", response_model=list[RegionRead])
 def get_regions(session: Annotated[Session, Depends(get_db_session)]) -> list[RegionRead]:
     return list_regions(session)
+
+
+@router.get("/{teryt_code}/elections", response_model=list[ElectionRead])
+def get_region_elections(
+    teryt_code: str, session: Annotated[Session, Depends(get_db_session)]
+) -> list[ElectionRead]:
+    return list_region_elections(session, teryt_code)
 
 
 @router.get("/{teryt_code}", response_model=RegionRead)

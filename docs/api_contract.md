@@ -58,3 +58,48 @@ Missing region response:
   "detail": "Region not found."
 }
 ```
+
+`GET /regions/{teryt_code}/elections`
+
+Returns elections that have imported result rows for a region.
+
+## Elections
+
+`GET /elections`
+
+Returns known elections.
+
+Response item:
+
+```json
+{
+  "id": 1,
+  "election_date": "2023-10-15",
+  "election_year": 2023,
+  "election_type": "parliamentary",
+  "round": 1,
+  "description": "Sejm 2023"
+}
+```
+
+`GET /elections/{election_id}/results`
+
+Returns committee-level result facts for one election.
+
+Response item:
+
+```json
+{
+  "region_id": 1,
+  "teryt_code": "0264011",
+  "region_name": "Wroclaw",
+  "committee_id": 10,
+  "committee_name": "Koalicja Obywatelska",
+  "bloc_name": "ko_bloc",
+  "votes": 120000,
+  "vote_share": "42.1000",
+  "turnout": "74.5000",
+  "eligible_voters": 300000,
+  "valid_votes": 285000
+}
+```

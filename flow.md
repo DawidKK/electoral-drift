@@ -67,6 +67,57 @@ Opis diagramu:
 - Endpoint `GET /regions` czyta dane już zapisane w `core.regions`.
 - `RegionRead` określa publiczny kształt odpowiedzi JSON.
 
+### 2026-07-16 - Wybory: Import Wyników I Odczyt Przez API
+
+Dodano przepływ dla podstawowych danych wyborczych. Jeden plik CSV może utworzyć wybory,
+komitety oraz wyniki komitetów w regionach.
+
+```mermaid
+flowchart LR
+    csv["CSV<br/>data/raw/election_results.csv"]
+    cli["CLI<br/>electoral-import-elections"]
+    loader["Ingestion<br/>load_election_results_csv()"]
+    normalizer["Ingestion<br/>normalize_election_result_row()"]
+    importer["Ingestion<br/>import_election_results()"]
+    regions["PostgreSQL<br/>core.regions"]
+    blocs["PostgreSQL<br/>core.political_blocs"]
+    elections["PostgreSQL<br/>core.elections"]
+    committees["PostgreSQL<br/>core.committees"]
+    results["PostgreSQL<br/>core.election_results"]
+    request["HTTP<br/>GET /elections/{id}/results"]
+    router["API Router<br/>apps/api/app/routers/elections.py"]
+    service["API Service<br/>list_election_results()"]
+    schema["API Schema<br/>ElectionResultRead"]
+    response["JSON<br/>wyniki wyborów"]
+
+    csv --> cli
+    cli --> loader
+    loader --> normalizer
+    normalizer --> importer
+    importer --> regions
+    importer --> blocs
+    importer --> elections
+    importer --> committees
+    importer --> results
+
+    request --> router
+    router --> service
+    service --> results
+    results --> service
+    service --> schema
+    schema --> response
+```
+
+Opis diagramu:
+
+- Plik CSV jest wejściem dla importu wyników wyborczych.
+- Importer wymaga, aby regiony i bloki polityczne istniały wcześniej w bazie.
+- `import_election_results()` tworzy brakujące wybory i komitety.
+- Wyniki są zapisywane do `core.election_results`.
+- Import jest idempotentny: istniejący wynik jest aktualizowany albo oznaczany jako bez zmian.
+- API czyta wyniki z bazy przez `GET /elections/{election_id}/results`.
+- `ElectionResultRead` określa publiczny kształt odpowiedzi JSON.
+
 ## Aktualny Flow Całej Aplikacji
 
 Ten diagram pokazuje aktualny przepływ całej aplikacji na wysokim poziomie. Powinien być
@@ -76,10 +127,12 @@ aktualizowany po każdym dodanym feature.
 flowchart TD
     subgraph sources["Źródła danych"]
         raw_regions["CSV regionów<br/>data/raw/regions.csv"]
+        raw_elections["CSV wyników wyborów<br/>data/raw/election_results.csv"]
     end
 
     subgraph ingestion["packages/ingestion"]
         regions_import["Import regionów<br/>electoral_ingestion/regions.py"]
+        elections_import["Import wyborów<br/>electoral_ingestion/elections.py"]
     end
 
     subgraph db_pkg["packages/db"]
@@ -90,6 +143,10 @@ flowchart TD
 
     subgraph postgres["PostgreSQL"]
         core_regions["core.regions"]
+        core_blocs["core.political_blocs"]
+        core_elections["core.elections"]
+        core_committees["core.committees"]
+        core_results["core.election_results"]
     end
 
     subgraph api["apps/api"]
@@ -102,16 +159,26 @@ flowchart TD
     json["Odpowiedź JSON"]
 
     raw_regions --> regions_import
+    raw_elections --> elections_import
     regions_import --> db_session
+    elections_import --> db_session
     db_models --> db_session
     alembic --> postgres
     db_session --> core_regions
+    db_session --> core_blocs
+    db_session --> core_elections
+    db_session --> core_committees
+    db_session --> core_results
 
     client --> api_router
     api_router --> api_service
     api_service --> db_session
     db_session --> core_regions
+    db_session --> core_elections
+    db_session --> core_results
     core_regions --> api_service
+    core_elections --> api_service
+    core_results --> api_service
     api_service --> api_schema
     api_schema --> json
 ```
@@ -122,4 +189,5 @@ Najważniejsze zasady aktualnego flow:
 - API czyta dane z bazy i zwraca JSON.
 - `packages/db` jest wspólną warstwą dla ingestion i API.
 - Migracje Alembic definiują strukturę PostgreSQL.
+- Wyniki wyborów zależą od wcześniej zaimportowanych regionów i seedowanych bloków politycznych.
 - Frontend/dashboard nie jest jeszcze zaimplementowany.

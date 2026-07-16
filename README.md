@@ -58,6 +58,19 @@ teryt_code,name,region_type,voivodeship,valid_from,valid_to
 0264011,Wroclaw,city_county,dolnoslaskie,1999-01-01,
 ```
 
+Import election results from a UTF-8 CSV file:
+
+```bash
+uv run electoral-import-elections data/raw/election_results.csv
+```
+
+Expected CSV columns:
+
+```csv
+election_date,election_type,round,description,teryt_code,committee_name,bloc_name,votes,vote_share,turnout,eligible_voters,valid_votes
+2023-10-15,parliamentary,1,Sejm 2023,0264011,Koalicja Obywatelska,ko_bloc,120000,42.1000,74.5000,300000,285000
+```
+
 Start the API locally:
 
 ```bash

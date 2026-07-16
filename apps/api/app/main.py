@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.routers import health, regions
+from app.routers import elections, health, regions
 
 
 def create_app() -> FastAPI:
@@ -11,6 +11,7 @@ def create_app() -> FastAPI:
     )
     app.include_router(health.router)
     app.include_router(regions.router)
+    app.include_router(elections.router)
     return app
 
 
