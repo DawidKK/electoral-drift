@@ -1,0 +1,47 @@
+[project]
+name = "electoral-drift"
+version = "0.1.0"
+description = "Monorepo for analyzing electoral drift across Polish counties."
+requires-python = ">=3.14"
+dependencies = [
+    "alembic>=1.14.0",
+    "electoral-api",
+    "electoral-db",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+electoral-api = { workspace = true }
+electoral-db = { workspace = true }
+
+[tool.uv.workspace]
+members = [
+    "apps/api",
+    "packages/db",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.0",
+    "pytest>=8.3.0",
+    "ruff>=0.8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "apps/api/tests",
+    "packages/db/tests",
+]
+pythonpath = [
+    "apps/api",
+    "packages/db",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
