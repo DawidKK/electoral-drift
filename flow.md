@@ -118,6 +118,41 @@ Opis diagramu:
 - API czyta wyniki z bazy przez `GET /elections/{election_id}/results`.
 - `ElectionResultRead` określa publiczny kształt odpowiedzi JSON.
 
+### 2026-07-17 - Timeline Regionu: Gotowy Widok Pod Frontend
+
+Dodano endpoint `GET /regions/{teryt_code}/timeline`. Backend czyta zagregowane dane z
+widoku `analytics.region_election_summary` i układa je w małą strukturę gotową pod wykres
+historii politycznej jednego regionu.
+
+```mermaid
+flowchart LR
+    request["HTTP<br/>GET /regions/{teryt_code}/timeline"]
+    router["API Router<br/>apps/api/app/routers/regions.py"]
+    service["API Service<br/>get_region_timeline()"]
+    region_lookup["core.regions<br/>sprawdzenie regionu po TERYT"]
+    summary_view["analytics.region_election_summary<br/>wyniki po blokach"]
+    grouping["Backend grouping<br/>election -> blocs"]
+    schema["API Schema<br/>RegionTimelineRead"]
+    response["JSON<br/>timeline regionu"]
+
+    request --> router
+    router --> service
+    service --> region_lookup
+    service --> summary_view
+    summary_view --> grouping
+    grouping --> schema
+    schema --> response
+```
+
+Opis diagramu:
+
+- Frontend pyta o historię jednego regionu, a nie o całą bazę wyników.
+- Service najpierw sprawdza, czy `teryt_code` istnieje w `core.regions`.
+- Dane liczbowe są czytane z `analytics.region_election_summary`, czyli z widoku po blokach.
+- Backend układa płaskie rekordy w strukturę `election -> blocs`.
+- Odpowiedź jest gotowa do wyświetlenia na wykresie lub w tabeli.
+- API zwraca `404`, jeśli region o podanym `teryt_code` nie istnieje.
+
 ## Aktualny Flow Całej Aplikacji
 
 Ten diagram pokazuje aktualny przepływ całej aplikacji na wysokim poziomie. Powinien być
@@ -155,6 +190,10 @@ flowchart TD
         api_schema["Schematy Pydantic"]
     end
 
+    subgraph analytics["analytics"]
+        region_summary["region_election_summary"]
+    end
+
     client["Klient HTTP<br/>przeglądarka / curl / dashboard"]
     json["Odpowiedź JSON"]
 
@@ -176,9 +215,11 @@ flowchart TD
     db_session --> core_regions
     db_session --> core_elections
     db_session --> core_results
+    core_results --> region_summary
     core_regions --> api_service
     core_elections --> api_service
     core_results --> api_service
+    region_summary --> api_service
     api_service --> api_schema
     api_schema --> json
 ```
@@ -190,4 +231,5 @@ Najważniejsze zasady aktualnego flow:
 - `packages/db` jest wspólną warstwą dla ingestion i API.
 - Migracje Alembic definiują strukturę PostgreSQL.
 - Wyniki wyborów zależą od wcześniej zaimportowanych regionów i seedowanych bloków politycznych.
+- Endpoint timeline czyta zagregowane wyniki po blokach, zamiast wysyłać cały zbiór danych.
 - Frontend/dashboard nie jest jeszcze zaimplementowany.

@@ -63,6 +63,44 @@ Missing region response:
 
 Returns elections that have imported result rows for a region.
 
+`GET /regions/{teryt_code}/timeline`
+
+Returns a product-ready political timeline for one region, grouped by election and
+political bloc.
+
+Response:
+
+```json
+{
+  "region": {
+    "id": 1,
+    "teryt_code": "0264011",
+    "name": "Wroclaw",
+    "region_type": "city_county",
+    "voivodeship": "dolnoslaskie"
+  },
+  "timeline": [
+    {
+      "election_id": 5,
+      "election_year": 2023,
+      "election_type": "parliamentary",
+      "blocs": [
+        {
+          "bloc_name": "ko_bloc",
+          "votes": 120000,
+          "vote_share": "42.1000"
+        },
+        {
+          "bloc_name": "pis_bloc",
+          "votes": 100000,
+          "vote_share": "35.1200"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## Elections
 
 `GET /elections`
