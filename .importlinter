@@ -1,0 +1,22 @@
+[importlinter]
+root_packages =
+    app
+    electoral_db
+
+[importlinter:contract:db-does-not-depend-on-api]
+name = Database package does not depend on API
+type = forbidden
+source_modules =
+    electoral_db
+forbidden_modules =
+    app
+
+[importlinter:contract:api-layers]
+name = API dependencies point from routers toward lower layers
+type = layers
+containers =
+    app
+layers =
+    routers
+    services | schemas
+    core

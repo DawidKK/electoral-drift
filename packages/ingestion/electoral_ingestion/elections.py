@@ -163,9 +163,7 @@ def _get_required_bloc(session: Session, bloc_name: str) -> PoliticalBloc:
     return bloc
 
 
-def _get_or_create_election(
-    session: Session, row: ElectionResultInput
-) -> tuple[Election, bool]:
+def _get_or_create_election(session: Session, row: ElectionResultInput) -> tuple[Election, bool]:
     election = session.scalar(
         select(Election).where(
             Election.election_date == row.election_date,

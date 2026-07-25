@@ -144,9 +144,7 @@ class SocioeconomicVariable(Base):
     unit: Mapped[str | None] = mapped_column(Text)
     description: Mapped[str | None] = mapped_column(Text)
 
-    observations: Mapped[list[SocioeconomicObservation]] = relationship(
-        back_populates="variable"
-    )
+    observations: Mapped[list[SocioeconomicObservation]] = relationship(back_populates="variable")
 
 
 class SocioeconomicObservation(Base):

@@ -375,6 +375,51 @@ Follow these rules:
 - add tests for data transformations, migrations, and key endpoints,
 - update documentation when changing repo structure or database design.
 
+### Python API, database, and ML quality
+
+These rules apply to `apps/api`, `packages/db`, and `packages/ml` when it exists. They do not
+apply to `packages/ingestion`. Use the repository skill `$python-api-tdd` for implementation,
+fix, and refactoring work in this scope.
+
+Make design decisions in this order: correctness, explicit behaviour and invariants, simplicity,
+testability, maintainability, workload-appropriate performance, and finally extensibility backed
+by a concrete requirement.
+
+- Apply KISS and YAGNI. Apply SOLID pragmatically without manufacturing interfaces, factories,
+  or layers that have no current boundary or testing need.
+- Keep control flow shallow, use precise domain names, keep one abstraction level within a
+  function, and make side effects and transaction boundaries visible.
+- Separate business decisions from HTTP, SQLAlchemy, files, environment access, and other I/O.
+- Add an abstraction only for a real architecture boundary, a concrete testing need, or stable
+  and semantically identical reuse.
+- Test observable behaviour, edge cases, and regressions. Avoid excessive mocking and tests of
+  private implementation details.
+- Do not perform unrelated refactors.
+
+Apply the component cohesion principles:
+
+- **REP:** the unit of reuse is the unit of release. Keep each package's public surface cohesive
+  and declare dependencies in the `pyproject.toml` of the package that uses them.
+- **CCP:** keep code that changes for the same business reason together. Keep HTTP, application
+  rules, persistence, and ML responsibilities separate because they change for different reasons.
+- **CRP:** do not force consumers to depend on capabilities they do not use. Keep public package
+  APIs small and cohesive; avoid unrelated barrel exports and speculative dependencies.
+
+Do not use REP, CCP, or CRP as a reason to split cohesive code into many small packages.
+Import Linter checks dependency direction, while semantic compliance with these principles must
+also be reviewed in the plan and final self-review.
+
+Write comments so a developer can scan a file and quickly recognize the stages of a non-trivial
+flow:
+
+- Place short section comments before logical stages such as validation, data retrieval, domain
+  decisions, persistence, and response construction.
+- Explain sequence, intent, invariants, and why a step exists; do not merely translate each line
+  into prose.
+- Do not comment every statement or use comments instead of precise names and simple functions.
+- Update comments with the implementation. A stale or contradictory comment is a quality defect.
+- Give public APIs and non-obvious domain behaviour concise docstrings.
+
 ## Tests and quality
 
 Eventually support:

@@ -15,14 +15,16 @@ router = APIRouter(prefix="/regions", tags=["regions"])
 
 @router.get("", response_model=list[RegionRead])
 def get_regions(session: Annotated[Session, Depends(get_db_session)]) -> list[RegionRead]:
-    return list_regions(session)
+    regions = list_regions(session)
+    return [RegionRead.model_validate(region) for region in regions]
 
 
 @router.get("/{teryt_code}/elections", response_model=list[ElectionRead])
 def get_region_elections(
     teryt_code: str, session: Annotated[Session, Depends(get_db_session)]
 ) -> list[ElectionRead]:
-    return list_region_elections(session, teryt_code)
+    elections = list_region_elections(session, teryt_code)
+    return [ElectionRead.model_validate(election) for election in elections]
 
 
 @router.get("/{teryt_code}/timeline", response_model=RegionTimelineRead)
@@ -40,4 +42,4 @@ def get_region(teryt_code: str, session: Annotated[Session, Depends(get_db_sessi
     region = get_region_by_teryt_code(session, teryt_code)
     if region is None:
         raise HTTPException(status_code=404, detail="Region not found.")
-    return region
+    return RegionRead.model_validate(region)

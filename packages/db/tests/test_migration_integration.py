@@ -7,11 +7,12 @@ from sqlalchemy.exc import SQLAlchemyError
 TEST_DATABASE_URL = os.getenv("ELECTORAL_TEST_DATABASE_URL")
 
 
-@pytest.mark.skipif(
-    not TEST_DATABASE_URL,
-    reason="Set ELECTORAL_TEST_DATABASE_URL to run PostgreSQL migration integration tests.",
-)
 def test_required_schemas_exist_when_migrated() -> None:
+    if TEST_DATABASE_URL is None:
+        pytest.skip(
+            "Set ELECTORAL_TEST_DATABASE_URL to run PostgreSQL migration integration tests."
+        )
+
     engine = create_engine(TEST_DATABASE_URL)
     try:
         with engine.connect() as connection:

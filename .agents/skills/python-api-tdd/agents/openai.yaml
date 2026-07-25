@@ -1,0 +1,4 @@
+interface:
+  display_name: "Python API TDD"
+  short_description: "TDD and architecture gates for Python"
+  default_prompt: "Use $python-api-tdd to implement this Python API or model change with an approved plan, TDD, and architecture checks."

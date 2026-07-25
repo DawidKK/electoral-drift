@@ -13,7 +13,8 @@ router = APIRouter(prefix="/elections", tags=["elections"])
 
 @router.get("", response_model=list[ElectionRead])
 def get_elections(session: Annotated[Session, Depends(get_db_session)]) -> list[ElectionRead]:
-    return list_elections(session)
+    elections = list_elections(session)
+    return [ElectionRead.model_validate(election) for election in elections]
 
 
 @router.get("/{election_id}/results", response_model=list[ElectionResultRead])

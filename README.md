@@ -87,6 +87,16 @@ pgAdmin is available at `http://localhost:5050` by default.
 
 ## Development
 
+For implementation, fixes, and refactoring in `apps/api`, `packages/db`, or the future
+`packages/ml`, invoke the repository skill:
+
+```text
+$python-api-tdd
+```
+
+The skill requires an approved plan, a confirmed failing test, the smallest passing
+implementation, refactoring, self-review, and all quality gates.
+
 Run tests:
 
 ```bash
@@ -99,10 +109,17 @@ Run lint checks:
 uv run ruff check .
 ```
 
-Format code:
+Check formatting:
 
 ```bash
-uv run ruff format .
+uv run ruff format --check .
+```
+
+Run type and architecture checks:
+
+```bash
+uv run mypy apps/api packages/db
+uv run lint-imports
 ```
 
 ## Repository Layout

@@ -153,6 +153,51 @@ Opis diagramu:
 - Odpowiedź jest gotowa do wyświetlenia na wykresie lub w tabeli.
 - API zwraca `404`, jeśli region o podanym `teryt_code` nie istnieje.
 
+### 2026-07-25 - Python: TDD I Bramka Jakości Architektury
+
+Dodano repozytoryjny skill `$python-api-tdd` dla API, warstwy DB i przyszłego pakietu ML.
+Skill wymaga zaakceptowanego planu, potwierdzonego testu RED, minimalnej implementacji GREEN,
+refaktoryzacji, przeglądu REP/CCP/CRP oraz kompletnej bramki jakości.
+
+```mermaid
+flowchart LR
+    task["Zmiana Python<br/>API / DB / ML"]
+    plan["Plan<br/>zależności i testy"]
+    approval["Akceptacja<br/>użytkownika"]
+    red["RED<br/>oczekiwany błąd testu"]
+    green["GREEN<br/>minimalna implementacja"]
+    review["Refactor i self-review<br/>REP / CCP / CRP / komentarze"]
+    tests["pytest"]
+    ruff["Ruff<br/>lint i format-check"]
+    types["mypy"]
+    imports["Import Linter"]
+    done["Gotowa zmiana<br/>raport wyników"]
+
+    task --> plan
+    plan --> approval
+    approval --> red
+    red --> green
+    green --> review
+    review --> tests
+    tests --> ruff
+    ruff --> types
+    types --> imports
+    imports --> done
+```
+
+Opis diagramu:
+
+- Implementacja nie rozpoczyna się przed jawną akceptacją planu.
+- RED musi potwierdzić brak oczekiwanego zachowania, a nie błąd konfiguracji testu.
+- GREEN zawiera najmniejszą poprawną implementację, po której następuje refaktoryzacja.
+- Self-review sprawdza prostotę, komentarze oraz semantyczną zgodność z REP, CCP i CRP.
+- `pytest`, Ruff, mypy i Import Linter są obowiązkowymi bramkami końcowymi.
+- Import Linter pilnuje kierunku zależności między API i DB; REP, CCP i CRP wymagają także
+  przeglądu semantycznego.
+- Po wdrożeniu skilla 19 testów przeszło, 1 test integracyjny został pominięty, a linting,
+  formatowanie, typowanie i oba kontrakty importów zakończyły się sukcesem.
+- Kontrola negatywna potwierdziła, że Import Linter wykrywa zabronioną zależność.
+
 ## Aktualny Flow Całej Aplikacji
 
 Ten diagram pokazuje aktualny przepływ całej aplikacji na wysokim poziomie. Powinien być
@@ -194,8 +239,19 @@ flowchart TD
         region_summary["region_election_summary"]
     end
 
+    subgraph quality["Python development quality"]
+        developer["Zmiana API / DB / ML"]
+        tdd_skill["$python-api-tdd<br/>Plan -> RED -> GREEN -> review"]
+        quality_gates["pytest + Ruff + mypy<br/>Import Linter"]
+    end
+
     client["Klient HTTP<br/>przeglądarka / curl / dashboard"]
     json["Odpowiedź JSON"]
+
+    developer --> tdd_skill
+    tdd_skill --> quality_gates
+    quality_gates -. "weryfikuje" .-> api
+    quality_gates -. "weryfikuje" .-> db_pkg
 
     raw_regions --> regions_import
     raw_elections --> elections_import
@@ -232,4 +288,8 @@ Najważniejsze zasady aktualnego flow:
 - Migracje Alembic definiują strukturę PostgreSQL.
 - Wyniki wyborów zależą od wcześniej zaimportowanych regionów i seedowanych bloków politycznych.
 - Endpoint timeline czyta zagregowane wyniki po blokach, zamiast wysyłać cały zbiór danych.
+- Zmiany Python w API i DB przechodzą przez zaakceptowany plan, TDD, self-review oraz
+  automatyczne bramki jakości i architektury.
+- Import Linter wymusza kierunek zależności, a REP, CCP i CRP są sprawdzane semantycznie
+  podczas planowania i self-review.
 - Frontend/dashboard nie jest jeszcze zaimplementowany.
