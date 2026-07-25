@@ -9,6 +9,9 @@ dependencies = [
     "sqlalchemy>=2.0.36",
 ]
 
+[project.scripts]
+electoral-rebuild-stability = "electoral_db.cli:rebuild_stability_command"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

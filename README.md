@@ -103,6 +103,16 @@ Run tests:
 uv run pytest
 ```
 
+Rebuild political-stability analytics after importing election results:
+
+```bash
+uv run electoral-rebuild-stability
+```
+
+The batch command replaces `analytics.region_political_stability` atomically. Read the resulting
+ranking through `GET /analytics/stability-ranking` or the changing counties through
+`GET /analytics/swing-counties`. Both endpoints accept `limit` from 1 to 1000.
+
 Run lint checks:
 
 ```bash

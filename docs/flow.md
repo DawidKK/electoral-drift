@@ -198,6 +198,42 @@ Opis diagramu:
   formatowanie, typowanie i oba kontrakty importów zakończyły się sukcesem.
 - Kontrola negatywna potwierdziła, że Import Linter wykrywa zabronioną zależność.
 
+### 2026-07-25 - Stabilność Polityczna Regionów
+
+Dodano powtarzalny proces batch, który przelicza zwycięstwa znormalizowanych bloków
+politycznych na podstawie danych PKW. API odczytuje gotowy snapshot stabilności i nie wykonuje
+obliczeń analitycznych podczas requestu.
+
+```mermaid
+flowchart LR
+    results["Wyniki PKW<br/>core.election_results"]
+    summary["Widok bloków<br/>analytics.region_election_summary"]
+    command["CLI batch<br/>electoral-rebuild-stability"]
+    calculator["Reguły domenowe<br/>calculate_region_stability()"]
+    stability["Snapshot<br/>analytics.region_political_stability"]
+    ranking["GET<br/>/analytics/stability-ranking"]
+    swing["GET<br/>/analytics/swing-counties"]
+    response["JSON<br/>metryki regionów"]
+
+    results --> summary
+    summary --> command
+    command --> calculator
+    calculator --> stability
+    stability --> ranking
+    stability --> swing
+    ranking --> response
+    swing --> response
+```
+
+Opis diagramu:
+
+- Wyniki komitetów są najpierw agregowane do stabilnych bloków politycznych.
+- Komenda batch porządkuje wybory chronologicznie i rozstrzyga zwycięzcę w każdym regionie.
+- Remis nie jest liczony jako zwycięstwo żadnego bloku.
+- Snapshot zawiera liczby zwycięstw, zmiany zwycięzcy, marginesy, trend, zmienność i etykietę.
+- Jedna zmiana zwycięzcy oznacza `emerging_shift`, a co najmniej dwie oznaczają `swing`.
+- Endpoint swing counties zwraca regiony oznaczone jako `swing` lub `emerging_shift`.
+
 ## Aktualny Flow Całej Aplikacji
 
 Ten diagram pokazuje aktualny przepływ całej aplikacji na wysokim poziomie. Powinien być
@@ -237,6 +273,8 @@ flowchart TD
 
     subgraph analytics["analytics"]
         region_summary["region_election_summary"]
+        stability_batch["Batch<br/>calculate_region_stability()"]
+        region_stability["region_political_stability"]
     end
 
     subgraph quality["Python development quality"]
@@ -272,10 +310,13 @@ flowchart TD
     db_session --> core_elections
     db_session --> core_results
     core_results --> region_summary
+    region_summary --> stability_batch
+    stability_batch --> region_stability
     core_regions --> api_service
     core_elections --> api_service
     core_results --> api_service
     region_summary --> api_service
+    region_stability --> api_service
     api_service --> api_schema
     api_schema --> json
 ```
@@ -288,6 +329,8 @@ Najważniejsze zasady aktualnego flow:
 - Migracje Alembic definiują strukturę PostgreSQL.
 - Wyniki wyborów zależą od wcześniej zaimportowanych regionów i seedowanych bloków politycznych.
 - Endpoint timeline czyta zagregowane wyniki po blokach, zamiast wysyłać cały zbiór danych.
+- Komenda `electoral-rebuild-stability` atomowo zastępuje snapshot analityczny.
+- Endpointy stabilności czytają gotowy snapshot i nie uruchamiają obliczeń w requestach HTTP.
 - Zmiany Python w API i DB przechodzą przez zaakceptowany plan, TDD, self-review oraz
   automatyczne bramki jakości i architektury.
 - Import Linter wymusza kierunek zależności, a REP, CCP i CRP są sprawdzane semantycznie

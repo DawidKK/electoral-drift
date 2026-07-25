@@ -260,6 +260,19 @@ Accepted initial `stability_label` values:
 - `emerging_shift`
 - `fragmented_or_local`
 
+Initial calculation rules:
+
+- Determine winners from bloc-level `vote_share`, ordered by `election_date`, `round`, and
+  `election_id`.
+- A tie for the highest vote share has no winner and does not increment any win counter.
+- `switch_count` compares consecutive elections with a unique winner.
+- One winner change is `emerging_shift`; two or more changes are `swing`.
+- At least two uniquely decided elections with no change are `safe_pis` or `safe_ko` when that
+  bloc won throughout; other or insufficient histories are `fragmented_or_local`.
+- `volatility_score` is the mean absolute change in the PiS–KO margin between consecutive
+  elections where both blocs are present.
+- Rebuild this table as a batch snapshot. HTTP requests must only read the stored metrics.
+
 ## Required ML objects
 
 Implement these objects in the `ml` schema.
