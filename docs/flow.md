@@ -35,8 +35,8 @@ flowchart LR
     session["DB Session<br/>packages/db"]
     table["PostgreSQL<br/>core.regions"]
     request["HTTP<br/>GET /regions"]
-    router["API Router<br/>apps/api/app/routers/regions.py"]
-    service["API Service<br/>list_regions()"]
+    router["Region Feature Router<br/>features/regions/router.py"]
+    service["RegionQueries<br/>list_regions()"]
     schema["API Schema<br/>RegionRead"]
     response["JSON<br/>lista regionów"]
 
@@ -85,8 +85,8 @@ flowchart LR
     committees["PostgreSQL<br/>core.committees"]
     results["PostgreSQL<br/>core.election_results"]
     request["HTTP<br/>GET /elections/{id}/results"]
-    router["API Router<br/>apps/api/app/routers/elections.py"]
-    service["API Service<br/>list_election_results()"]
+    router["Election Feature Router<br/>features/elections/router.py"]
+    service["ElectionQueries<br/>list_results()"]
     schema["API Schema<br/>ElectionResultRead"]
     response["JSON<br/>wyniki wyborów"]
 
@@ -127,8 +127,8 @@ historii politycznej jednego regionu.
 ```mermaid
 flowchart LR
     request["HTTP<br/>GET /regions/{teryt_code}/timeline"]
-    router["API Router<br/>apps/api/app/routers/regions.py"]
-    service["API Service<br/>get_region_timeline()"]
+    router["Region Feature Router<br/>features/regions/router.py"]
+    service["RegionQueries<br/>get_timeline()"]
     region_lookup["core.regions<br/>sprawdzenie regionu po TERYT"]
     summary_view["analytics.region_election_summary<br/>wyniki po blokach"]
     grouping["Backend grouping<br/>election -> blocs"]
@@ -234,6 +234,45 @@ Opis diagramu:
 - Jedna zmiana zwycięzcy oznacza `emerging_shift`, a co najmniej dwie oznaczają `swing`.
 - Endpoint swing counties zwraca regiony oznaczone jako `swing` lub `emerging_shift`.
 
+### 2026-07-27 - API: Lekkie Moduły Feature’owe
+
+API przeorganizowano z przekrojowych katalogów technicznych na niezależne moduły `health`,
+`regions`, `elections` i `analytics`. Każdy feature posiada własny router, kontrakty odpowiedzi,
+zapytania oraz składanie zależności.
+
+```mermaid
+flowchart LR
+    main["Composition root<br/>app/main.py"]
+    router["Feature router<br/>HTTP"]
+    dependency["Feature dependency<br/>składanie query"]
+    query["Feature queries<br/>SQLAlchemy i mapowanie DTO"]
+    infrastructure["Infrastructure<br/>request-scoped Session"]
+    database["electoral_db<br/>modele i sesja"]
+    response["Feature schema<br/>JSON"]
+    contracts["Import Linter<br/>granice modułów"]
+
+    main --> router
+    router --> dependency
+    dependency --> query
+    dependency --> infrastructure
+    infrastructure --> database
+    query --> database
+    query --> response
+    response --> router
+    contracts -. "weryfikuje" .-> router
+    contracts -. "weryfikuje" .-> infrastructure
+```
+
+Opis diagramu:
+
+- `main.py` rejestruje routery, ale nie zawiera logiki feature’ów ani zapytań.
+- Router zna lokalny query service i schematy, lecz nie importuje SQLAlchemy ani `electoral_db`.
+- `queries.py` jest granicą persystencji: wykonuje zapytania i zwraca feature’owe DTO.
+- `dependencies.py` łączy query service z sesją tworzoną w `infrastructure/database.py`.
+- Feature’y nie importują się wzajemnie; regionowe wybory są projekcją należącą do `regions`.
+- Testy endpointów podmieniają query service zamiast imitować wewnętrzne API SQLAlchemy.
+- Import Linter pilnuje niezależności feature’ów i kierunku zależności infrastruktury.
+
 ## Aktualny Flow Całej Aplikacji
 
 Ten diagram pokazuje aktualny przepływ całej aplikacji na wysokim poziomie. Powinien być
@@ -266,9 +305,34 @@ flowchart TD
     end
 
     subgraph api["apps/api"]
-        api_router["Routery FastAPI"]
-        api_service["Serwisy API"]
-        api_schema["Schematy Pydantic"]
+        api_main["Composition root<br/>app/main.py"]
+
+        subgraph health_feature["features/health"]
+            health_router["router.py<br/>GET /health"]
+        end
+
+        subgraph regions_feature["features/regions"]
+            regions_router["router.py<br/>endpointy /regions"]
+            regions_dependencies["dependencies.py<br/>RegionQueries + Session"]
+            regions_queries["queries.py<br/>zapytania regionów i timeline"]
+            regions_schemas["schemas.py<br/>RegionRead / Timeline DTO"]
+        end
+
+        subgraph elections_feature["features/elections"]
+            elections_router["router.py<br/>endpointy /elections"]
+            elections_dependencies["dependencies.py<br/>ElectionQueries + Session"]
+            elections_queries["queries.py<br/>katalog i wyniki wyborów"]
+            elections_schemas["schemas.py<br/>ElectionRead / Result DTO"]
+        end
+
+        subgraph analytics_feature["features/analytics"]
+            analytics_router["router.py<br/>endpointy /analytics"]
+            analytics_dependencies["dependencies.py<br/>AnalyticsQueries + Session"]
+            analytics_queries["queries.py<br/>ranking i swing counties"]
+            analytics_schemas["schemas.py<br/>RegionStabilityRead DTO"]
+        end
+
+        api_infrastructure["infrastructure/database.py<br/>request-scoped DB Session"]
     end
 
     subgraph analytics["analytics"]
@@ -303,28 +367,64 @@ flowchart TD
     db_session --> core_committees
     db_session --> core_results
 
-    client --> api_router
-    api_router --> api_service
-    api_service --> db_session
+    client --> api_main
+    api_main --> health_router
+    api_main --> regions_router
+    api_main --> elections_router
+    api_main --> analytics_router
+
+    health_router --> json
+
+    regions_router --> regions_dependencies
+    regions_dependencies --> regions_queries
+    regions_dependencies --> api_infrastructure
+    regions_queries --> regions_schemas
+    regions_schemas --> regions_router
+    regions_router --> json
+
+    elections_router --> elections_dependencies
+    elections_dependencies --> elections_queries
+    elections_dependencies --> api_infrastructure
+    elections_queries --> elections_schemas
+    elections_schemas --> elections_router
+    elections_router --> json
+
+    analytics_router --> analytics_dependencies
+    analytics_dependencies --> analytics_queries
+    analytics_dependencies --> api_infrastructure
+    analytics_queries --> analytics_schemas
+    analytics_schemas --> analytics_router
+    analytics_router --> json
+
+    api_infrastructure --> db_session
     db_session --> core_regions
     db_session --> core_elections
     db_session --> core_results
     core_results --> region_summary
     region_summary --> stability_batch
     stability_batch --> region_stability
-    core_regions --> api_service
-    core_elections --> api_service
-    core_results --> api_service
-    region_summary --> api_service
-    region_stability --> api_service
-    api_service --> api_schema
-    api_schema --> json
+    core_regions --> regions_queries
+    core_elections --> regions_queries
+    core_results --> regions_queries
+    region_summary --> regions_queries
+
+    core_regions --> elections_queries
+    core_elections --> elections_queries
+    core_committees --> elections_queries
+    core_results --> elections_queries
+
+    core_regions --> analytics_queries
+    region_stability --> analytics_queries
 ```
 
 Najważniejsze zasady aktualnego flow:
 
 - Ingestion zapisuje dane do bazy.
 - API czyta dane z bazy i zwraca JSON.
+- API jest podzielone na niezależne feature’y, które posiadają własne routery, schematy i zapytania.
+- Diagram pokazuje osobno przepływ `health`, `regions`, `elections` i `analytics`; tylko trzy ostatnie
+  korzystają z sesji bazodanowej.
+- Modele SQLAlchemy nie opuszczają `queries.py`, a routery nie zależą od implementacji persystencji.
 - `packages/db` jest wspólną warstwą dla ingestion i API.
 - Migracje Alembic definiują strukturę PostgreSQL.
 - Wyniki wyborów zależą od wcześniej zaimportowanych regionów i seedowanych bloków politycznych.

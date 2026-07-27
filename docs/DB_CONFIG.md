@@ -412,22 +412,21 @@ Prefer this repository structure unless existing files already establish another
 ├── docker-compose.yml
 ├── pyproject.toml
 ├── alembic.ini
-├── app/
-│   ├── main.py
-│   ├── api/
+├── apps/
+│   └── api/
+│       ├── app/
+│       │   ├── main.py
+│       │   ├── infrastructure/
+│       │   └── features/
+│       │       ├── regions/
+│       │       ├── elections/
+│       │       └── analytics/
+│       └── tests/
+├── packages/
 │   ├── db/
-│   ├── models/
-│   ├── schemas/
-│   └── services/
-├── alembic/
-│   ├── env.py
-│   └── versions/
-├── scripts/
-│   ├── import_regions.py
-│   ├── import_elections.py
-│   ├── import_socioeconomic.py
-│   └── build_modeling_dataset.py
-├── tests/
+│   │   ├── electoral_db/
+│   │   └── alembic/
+│   └── ingestion/
 └── docs/
 ```
 

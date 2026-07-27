@@ -1,26 +1,16 @@
-from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
 
-from app.core.dependencies import get_db_session
+from app.features.elections.dependencies import get_election_queries
+from app.features.elections.schemas import ElectionRead, ElectionResultRead
 from app.main import create_app
 from fastapi.testclient import TestClient
 
 
-@dataclass
-class FakeElection:
-    id: int
-    election_date: date
-    election_year: int
-    election_type: str
-    round: int
-    description: str | None = None
-
-
-class FakeScalarResult:
-    def all(self) -> list[FakeElection]:
+class FakeElectionQueries:
+    def list_elections(self) -> list[ElectionRead]:
         return [
-            FakeElection(
+            ElectionRead(
                 id=1,
                 election_date=date(2023, 10, 15),
                 election_year=2023,
@@ -30,42 +20,31 @@ class FakeScalarResult:
             )
         ]
 
-
-class FakeResultRows:
-    def all(self) -> list[object]:
-        class FakeRow:
-            _mapping = {
-                "region_id": 1,
-                "teryt_code": "0264011",
-                "region_name": "Wroclaw",
-                "committee_id": 10,
-                "committee_name": "Koalicja Obywatelska",
-                "bloc_name": "ko_bloc",
-                "votes": 120000,
-                "vote_share": Decimal("42.1000"),
-                "turnout": Decimal("74.5000"),
-                "eligible_voters": 300000,
-                "valid_votes": 285000,
-            }
-
-        return [FakeRow()]
+    def list_results(self, election_id: int) -> list[ElectionResultRead]:
+        return [
+            ElectionResultRead(
+                region_id=1,
+                teryt_code="0264011",
+                region_name="Wroclaw",
+                committee_id=10,
+                committee_name="Koalicja Obywatelska",
+                bloc_name="ko_bloc",
+                votes=120000,
+                vote_share=Decimal("42.1000"),
+                turnout=Decimal("74.5000"),
+                eligible_voters=300000,
+                valid_votes=285000,
+            )
+        ]
 
 
-class FakeSession:
-    def scalars(self, statement: object) -> FakeScalarResult:
-        return FakeScalarResult()
-
-    def execute(self, statement: object) -> FakeResultRows:
-        return FakeResultRows()
-
-
-def override_session() -> FakeSession:
-    return FakeSession()
+def override_queries() -> FakeElectionQueries:
+    return FakeElectionQueries()
 
 
 def test_elections_returns_public_shape() -> None:
     app = create_app()
-    app.dependency_overrides[get_db_session] = override_session
+    app.dependency_overrides[get_election_queries] = override_queries
     client = TestClient(app)
 
     response = client.get("/elections")
@@ -85,7 +64,7 @@ def test_elections_returns_public_shape() -> None:
 
 def test_election_results_returns_public_shape() -> None:
     app = create_app()
-    app.dependency_overrides[get_db_session] = override_session
+    app.dependency_overrides[get_election_queries] = override_queries
     client = TestClient(app)
 
     response = client.get("/elections/1/results")

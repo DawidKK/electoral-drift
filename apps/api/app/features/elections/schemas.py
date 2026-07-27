@@ -1,13 +1,11 @@
 from datetime import date
 from decimal import Decimal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
 class ElectionRead(BaseModel):
-    """Public JSON shape for one election event."""
-
-    model_config = ConfigDict(from_attributes=True)
+    """Public representation of one election event."""
 
     id: int
     election_date: date
@@ -18,7 +16,7 @@ class ElectionRead(BaseModel):
 
 
 class ElectionResultRead(BaseModel):
-    """Public JSON shape for one committee result in one region."""
+    """Public representation of one committee result in one region."""
 
     region_id: int
     teryt_code: str

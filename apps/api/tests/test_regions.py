@@ -1,24 +1,22 @@
-from dataclasses import dataclass
+from datetime import date
 from decimal import Decimal
 
-from app.core.dependencies import get_db_session
+from app.features.regions.dependencies import get_region_queries
+from app.features.regions.schemas import (
+    RegionElectionRead,
+    RegionRead,
+    RegionTimelineBlocRead,
+    RegionTimelineElectionRead,
+    RegionTimelineRead,
+)
 from app.main import create_app
 from fastapi.testclient import TestClient
 
 
-@dataclass
-class FakeRegion:
-    id: int
-    teryt_code: str
-    name: str
-    region_type: str
-    voivodeship: str | None = None
-
-
-class FakeScalarResult:
-    def all(self) -> list[FakeRegion]:
+class FakeRegionQueries:
+    def list_regions(self) -> list[RegionRead]:
         return [
-            FakeRegion(
+            RegionRead(
                 id=1,
                 teryt_code="0264011",
                 name="Wroclaw",
@@ -27,46 +25,10 @@ class FakeScalarResult:
             )
         ]
 
-
-class FakeMappingResult:
-    def mappings(self) -> FakeMappingResult:
-        return self
-
-    def all(self) -> list[dict[str, object]]:
-        return [
-            {
-                "election_id": 3,
-                "election_year": 2019,
-                "election_type": "parliamentary",
-                "bloc_name": "ko_bloc",
-                "votes": 110000,
-                "vote_share": Decimal("39.2000"),
-            },
-            {
-                "election_id": 3,
-                "election_year": 2019,
-                "election_type": "parliamentary",
-                "bloc_name": "pis_bloc",
-                "votes": 90000,
-                "vote_share": Decimal("32.5000"),
-            },
-            {
-                "election_id": 5,
-                "election_year": 2023,
-                "election_type": "parliamentary",
-                "bloc_name": "ko_bloc",
-                "votes": 120000,
-                "vote_share": Decimal("42.1000"),
-            },
-        ]
-
-
-class FakeSession:
-    def scalars(self, statement: object) -> FakeScalarResult:
-        return FakeScalarResult()
-
-    def scalar(self, statement: object) -> FakeRegion:
-        return FakeRegion(
+    def get_region(self, teryt_code: str) -> RegionRead | None:
+        if teryt_code == "missing":
+            return None
+        return RegionRead(
             id=1,
             teryt_code="0264011",
             name="Wroclaw",
@@ -74,17 +36,65 @@ class FakeSession:
             voivodeship="dolnoslaskie",
         )
 
-    def execute(self, statement: object, params: object | None = None) -> FakeMappingResult:
-        return FakeMappingResult()
+    def list_elections(self, teryt_code: str) -> list[RegionElectionRead]:
+        return [
+            RegionElectionRead(
+                id=3,
+                election_date=date(2019, 10, 13),
+                election_year=2019,
+                election_type="parliamentary",
+                round=1,
+            )
+        ]
+
+    def get_timeline(self, teryt_code: str) -> RegionTimelineRead | None:
+        if teryt_code == "missing":
+            return None
+        region = self.get_region(teryt_code)
+        assert region is not None
+        return RegionTimelineRead(
+            region=region,
+            timeline=[
+                RegionTimelineElectionRead(
+                    election_id=3,
+                    election_year=2019,
+                    election_type="parliamentary",
+                    blocs=[
+                        RegionTimelineBlocRead(
+                            bloc_name="ko_bloc",
+                            votes=110000,
+                            vote_share=f"{Decimal('39.2000'):.4f}",
+                        ),
+                        RegionTimelineBlocRead(
+                            bloc_name="pis_bloc",
+                            votes=90000,
+                            vote_share=f"{Decimal('32.5000'):.4f}",
+                        ),
+                    ],
+                ),
+                RegionTimelineElectionRead(
+                    election_id=5,
+                    election_year=2023,
+                    election_type="parliamentary",
+                    blocs=[
+                        RegionTimelineBlocRead(
+                            bloc_name="ko_bloc",
+                            votes=120000,
+                            vote_share=f"{Decimal('42.1000'):.4f}",
+                        )
+                    ],
+                ),
+            ],
+        )
 
 
-def override_session() -> FakeSession:
-    return FakeSession()
+def override_queries() -> FakeRegionQueries:
+    return FakeRegionQueries()
 
 
 def test_regions_returns_public_shape() -> None:
     app = create_app()
-    app.dependency_overrides[get_db_session] = override_session
+    app.dependency_overrides[get_region_queries] = override_queries
     client = TestClient(app)
 
     response = client.get("/regions")
@@ -103,7 +113,7 @@ def test_regions_returns_public_shape() -> None:
 
 def test_region_detail_returns_public_shape() -> None:
     app = create_app()
-    app.dependency_overrides[get_db_session] = override_session
+    app.dependency_overrides[get_region_queries] = override_queries
     client = TestClient(app)
 
     response = client.get("/regions/0264011")
@@ -120,7 +130,7 @@ def test_region_detail_returns_public_shape() -> None:
 
 def test_region_timeline_returns_grouped_bloc_history() -> None:
     app = create_app()
-    app.dependency_overrides[get_db_session] = override_session
+    app.dependency_overrides[get_region_queries] = override_queries
     client = TestClient(app)
 
     response = client.get("/regions/0264011/timeline")
@@ -166,3 +176,25 @@ def test_region_timeline_returns_grouped_bloc_history() -> None:
             },
         ],
     }
+
+
+def test_region_detail_returns_not_found_for_unknown_teryt() -> None:
+    app = create_app()
+    app.dependency_overrides[get_region_queries] = override_queries
+    client = TestClient(app)
+
+    response = client.get("/regions/missing")
+
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Region not found."}
+
+
+def test_region_timeline_returns_not_found_for_unknown_teryt() -> None:
+    app = create_app()
+    app.dependency_overrides[get_region_queries] = override_queries
+    client = TestClient(app)
+
+    response = client.get("/regions/missing/timeline")
+
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Region not found."}

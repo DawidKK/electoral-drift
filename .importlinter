@@ -2,6 +2,7 @@
 root_packages =
     app
     electoral_db
+include_external_packages = True
 
 [importlinter:contract:db-does-not-depend-on-api]
 name = Database package does not depend on API
@@ -11,12 +12,33 @@ source_modules =
 forbidden_modules =
     app
 
-[importlinter:contract:api-layers]
-name = API dependencies point from routers toward lower layers
-type = layers
-containers =
-    app
-layers =
-    routers
-    services | schemas
-    core
+[importlinter:contract:http-does-not-access-persistence]
+name = HTTP routers do not access persistence implementations
+type = forbidden
+source_modules =
+    app.features.health.router
+    app.features.regions.router
+    app.features.elections.router
+    app.features.analytics.router
+forbidden_modules =
+    sqlalchemy
+    electoral_db
+allow_indirect_imports = True
+
+[importlinter:contract:feature-independence]
+name = API features are mutually independent
+type = independence
+modules =
+    app.features.health
+    app.features.regions
+    app.features.elections
+    app.features.analytics
+
+[importlinter:contract:infrastructure-does-not-depend-on-features]
+name = Infrastructure does not depend on API features
+type = forbidden
+source_modules =
+    app.infrastructure
+forbidden_modules =
+    app.features
+    app.main
