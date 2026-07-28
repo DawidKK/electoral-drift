@@ -26,6 +26,10 @@ Optional columns:
 `valid_from` and `valid_to` use `YYYY-MM-DD` format. `teryt_code` is always read as text
 so leading zeroes are preserved.
 
+For the MVP, imported regions are municipalities (`gminy`). Election-source identifiers must be
+normalized to the chosen municipality TERYT representation before loading results. County-level
+rows are not the source observation unit and may be produced later as derived aggregates.
+
 ## Election Results CSV Import
 
 Command:

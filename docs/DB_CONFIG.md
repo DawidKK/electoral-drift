@@ -18,11 +18,13 @@ The primary goal is to design and implement a PostgreSQL-backed data model that 
 
 ## Project goal
 
-Build a database and backend foundation for analyzing regional electoral shifts in Polish counties (`powiaty`). The system should support these questions:
+Build a database and backend foundation for analyzing regional electoral shifts in Polish
+municipalities (`gminy`). Cities with county rights are included at municipality level. The
+system should support these questions:
 
-1. Which counties have most often changed the winning political bloc since 2010?
-2. Which counties are politically stable, swing, or emerging-shift regions?
-3. How do socioeconomic and demographic trends differ between stable and unstable counties?
+1. Which municipalities have most often changed the winning political bloc since 2010?
+2. Which municipalities are politically stable, swing, or emerging-shift regions?
+3. How do socioeconomic and demographic trends differ between stable and unstable municipalities?
 4. Can the data be transformed into a leakage-safe ML dataset for predicting regional political drift?
 
 ## Core design principles
@@ -57,7 +59,9 @@ Implement the following normalized tables in the `core` schema.
 
 ### `core.regions`
 
-Stores territorial units, initially counties.
+Stores territorial units, initially municipalities (`gminy`). A county may be introduced later
+as a separate region type or used as a derived aggregation, but it is not the MVP observation
+unit.
 
 Required columns:
 
@@ -493,7 +497,8 @@ Prefer integration tests against a disposable PostgreSQL database when possible.
 - Do not manually edit derived ML tables.
 - Do not compute ML features from data after the election year.
 - Do not silently change the percentage convention from percentage points to fractions.
-- Do not remove stable counties from source data; they are needed as a contrast class for modeling.
+- Do not remove stable municipalities from source data; they are needed as a contrast class for
+  modeling.
 
 ## Acceptance criteria for the first database implementation
 

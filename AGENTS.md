@@ -4,11 +4,11 @@
 
 These instructions apply to the entire repository unless a more specific `AGENTS.md` file exists in a subdirectory.
 
-This repository is intended to be a monorepo for an analytical and machine learning project focused on regional electoral shifts in Poland. The project combines a backend API, PostgreSQL database, data ingestion pipelines, classical machine learning workflows, and a frontend/dashboard.
+This repository is intended to be a monorepo for an analytical and machine learning project focused on electoral shifts across Polish municipalities (`gminy`). The project combines a backend API, PostgreSQL database, data ingestion pipelines, classical machine learning workflows, and a frontend/dashboard.
 
 ## Project goal
 
-The goal is to build an application and data pipeline for analyzing political drift across Polish counties (`powiaty`).
+The goal is to build an application and data pipeline for analyzing political drift across Polish municipalities (`gminy`).
 
 The project should support:
 
@@ -28,11 +28,14 @@ Main analytical question:
 
 ## Domain assumptions
 
-The MVP should analyze data at the county level (`powiat`). Municipalities (`gminy`) may be added later.
+The MVP should analyze data at the municipality level (`gmina`). This includes urban,
+rural, and urban-rural municipalities; cities with county rights are analyzed at their
+municipality level. Counties (`powiaty`) may be added later as a derived aggregation.
 
 Core concepts:
 
-- `region` — a territorial unit, initially a county or city with county rights,
+- `region` — a territorial unit, initially a municipality (`gmina`), including a city with
+  county rights represented at municipality level,
 - `election` — a specific election, for example the 2023 parliamentary election or the second round of the 2020 presidential election,
 - `committee` — a specific committee, party list, party, or candidate in a given election,
 - `political_bloc` — a normalized analytical bloc, for example `pis_bloc`, `ko_bloc`, `left_bloc`, `other`,
@@ -147,7 +150,7 @@ Responsibilities:
 - dashboard UI,
 - maps,
 - ranking tables,
-- region/county detail views,
+- region/municipality detail views,
 - trend charts,
 - prediction result presentation.
 
@@ -214,9 +217,9 @@ Do not mix source, analytical, and model data in a single table.
 
 Facts and interpretations must be separated. Example:
 
-- fact: a committee received 42.3% in county X,
+- fact: a committee received 42.3% in municipality X,
 - interpretation: the committee belongs to `pis_bloc`,
-- derived interpretation: county X is `safe_pis` or `swing`.
+- derived interpretation: municipality X is `safe_pis` or `swing`.
 
 ## Database design rules
 
@@ -331,7 +334,7 @@ Do not implement everything at once if the user asks only for setup. Preserve a 
 In the ML package:
 
 - compare models against a historical baseline first,
-- do not use random county-level splits as the main validation strategy,
+- do not use random municipality-level splits as the main validation strategy,
 - prefer time-aware validation, for example training on earlier elections and testing on later elections,
 - explicitly prevent time leakage,
 - store metrics, parameters, and predictions,

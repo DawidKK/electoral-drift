@@ -12,6 +12,8 @@ The first implementation creates four PostgreSQL schemas:
 Important conventions:
 
 - TERYT codes are stored as text.
+- The MVP observation unit is a municipality (`gmina`), including cities with county rights at
+  municipality level. County summaries may be derived later.
 - Election facts and political interpretations are separate.
 - Socioeconomic observations use long format: one row per region, variable, and year.
 - ML features for an election in year `Y` may only use data known no later than `Y - 1`.

@@ -1,7 +1,7 @@
 [project]
 name = "electoral-drift"
 version = "0.1.0"
-description = "Monorepo for analyzing electoral drift across Polish counties."
+description = "Monorepo for analyzing electoral drift across Polish municipalities."
 requires-python = ">=3.14"
 dependencies = [
     "alembic>=1.14.0",

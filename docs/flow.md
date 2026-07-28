@@ -232,7 +232,8 @@ Opis diagramu:
 - Remis nie jest liczony jako zwycięstwo żadnego bloku.
 - Snapshot zawiera liczby zwycięstw, zmiany zwycięzcy, marginesy, trend, zmienność i etykietę.
 - Jedna zmiana zwycięzcy oznacza `emerging_shift`, a co najmniej dwie oznaczają `swing`.
-- Endpoint swing counties zwraca regiony oznaczone jako `swing` lub `emerging_shift`.
+- Endpoint `swing-counties` zachowuje dotychczasową nazwę kontraktu, ale zwraca gminy oznaczone
+  jako `swing` lub `emerging_shift`.
 
 ### 2026-07-27 - API: Lekkie Moduły Feature’owe
 
@@ -328,7 +329,7 @@ flowchart TD
         subgraph analytics_feature["features/analytics"]
             analytics_router["router.py<br/>endpointy /analytics"]
             analytics_dependencies["dependencies.py<br/>AnalyticsQueries + Session"]
-            analytics_queries["queries.py<br/>ranking i swing counties"]
+            analytics_queries["queries.py<br/>ranking i zmienne politycznie gminy"]
             analytics_schemas["schemas.py<br/>RegionStabilityRead DTO"]
         end
 

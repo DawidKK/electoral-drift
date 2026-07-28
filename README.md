@@ -1,6 +1,6 @@
 # electoral-drift
 
-Monorepo foundation for analyzing electoral drift across Polish counties.
+Monorepo foundation for analyzing electoral drift across Polish municipalities (`gminy`).
 
 The project starts with a PostgreSQL-backed database layer, Alembic migrations, and a
 minimal FastAPI service. `DB_CONFIG.md` is the source of truth for database schema
@@ -55,7 +55,7 @@ Expected CSV columns:
 
 ```csv
 teryt_code,name,region_type,voivodeship,valid_from,valid_to
-0264011,Wroclaw,city_county,dolnoslaskie,1999-01-01,
+0201011,Bolesławiec,urban_municipality,dolnoslaskie,1999-01-01,
 ```
 
 Import election results from a UTF-8 CSV file:
@@ -68,7 +68,7 @@ Expected CSV columns:
 
 ```csv
 election_date,election_type,round,description,teryt_code,committee_name,bloc_name,votes,vote_share,turnout,eligible_voters,valid_votes
-2023-10-15,parliamentary,1,Sejm 2023,0264011,Koalicja Obywatelska,ko_bloc,120000,42.1000,74.5000,300000,285000
+2019-10-13,parliamentary,1,Sejm 2019,0201011,Koalicja Obywatelska,ko_bloc,4308,23.9480,60.8770,29895,17989
 ```
 
 Start the API locally:
@@ -110,8 +110,9 @@ uv run electoral-rebuild-stability
 ```
 
 The batch command replaces `analytics.region_political_stability` atomically. Read the resulting
-ranking through `GET /analytics/stability-ranking` or the changing counties through
-`GET /analytics/swing-counties`. Both endpoints accept `limit` from 1 to 1000.
+ranking through `GET /analytics/stability-ranking` or the changing municipalities through
+`GET /analytics/swing-counties`. The latter route retains its current name for API compatibility.
+Both endpoints accept `limit` from 1 to 1000.
 
 Run lint checks:
 
