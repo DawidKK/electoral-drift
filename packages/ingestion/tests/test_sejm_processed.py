@@ -5,10 +5,16 @@ import electoral_ingestion
 import pytest
 
 
-def write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, str]]) -> None:
+def write_csv(
+    path: Path,
+    fieldnames: list[str],
+    rows: list[dict[str, str]],
+    *,
+    delimiter: str = ",",
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as csv_file:
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter=delimiter)
         writer.writeheader()
         writer.writerows(rows)
 
@@ -78,13 +84,52 @@ def write_interim_year(
     )
 
 
-def transform(interim_dir: Path, processed_dir: Path) -> object:
-    return electoral_ingestion.transform_sejm_interim_to_processed(interim_dir, processed_dir)
+def write_terc(
+    terc_dir: Path,
+    year: int,
+    *,
+    source_teryt: str = "020101",
+    kind: str = "1",
+    name: str = "Bolesławiec",
+    additional_name: str = "gmina miejska",
+) -> None:
+    write_csv(
+        terc_dir / f"{year}-01-01.csv",
+        ["WOJ", "POW", "GMI", "RODZ", "NAZWA", "NAZWA_DOD", "STAN_NA"],
+        [
+            {
+                "WOJ": source_teryt[:2],
+                "POW": "",
+                "GMI": "",
+                "RODZ": "",
+                "NAZWA": "DOLNOŚLĄSKIE",
+                "NAZWA_DOD": "województwo",
+                "STAN_NA": f"{year}-01-01",
+            },
+            {
+                "WOJ": source_teryt[:2],
+                "POW": source_teryt[2:4],
+                "GMI": source_teryt[4:],
+                "RODZ": kind,
+                "NAZWA": name,
+                "NAZWA_DOD": additional_name,
+                "STAN_NA": f"{year}-01-01",
+            },
+        ],
+        delimiter=";",
+    )
+
+
+def transform(interim_dir: Path, processed_dir: Path, terc_dir: Path) -> object:
+    return electoral_ingestion.transform_sejm_interim_to_processed(
+        interim_dir, processed_dir, terc_dir
+    )
 
 
 def test_transform_creates_import_ready_results_and_latest_regions(tmp_path: Path) -> None:
     interim_dir = tmp_path / "interim"
     processed_dir = tmp_path / "processed"
+    terc_dir = tmp_path / "terc"
     ko_2019 = "KOALICYJNY KOMITET WYBORCZY KOALICJA OBYWATELSKA PO .N IPL ZIELONI - ZPOW-601-6/19"
     pis_2019 = "KOMITET WYBORCZY PRAWO I SPRAWIEDLIWOŚĆ - ZPOW-601-9/19"
     write_interim_year(
@@ -118,8 +163,10 @@ def test_transform_creates_import_ready_results_and_latest_regions(tmp_path: Pat
             ),
         ],
     )
+    write_terc(terc_dir, 2019)
+    write_terc(terc_dir, 2023)
 
-    summary = transform(interim_dir, processed_dir)
+    summary = transform(interim_dir, processed_dir, terc_dir)
 
     assert summary.elections_processed == 2
     results = read_csv(processed_dir / "2019-sejm-gminy.csv")
@@ -128,7 +175,7 @@ def test_transform_creates_import_ready_results_and_latest_regions(tmp_path: Pat
         "election_type": "parliamentary",
         "round": "1",
         "description": "Sejm 2019",
-        "teryt_code": "020101",
+        "teryt_code": "0201011",
         "committee_name": "Koalicja Obywatelska",
         "bloc_name": "ko_bloc",
         "votes": "30",
@@ -139,9 +186,9 @@ def test_transform_creates_import_ready_results_and_latest_regions(tmp_path: Pat
     }
     assert read_csv(processed_dir / "regions.csv") == [
         {
-            "teryt_code": "020101",
+            "teryt_code": "0201011",
             "name": "Bolesławiec",
-            "region_type": "municipality",
+            "region_type": "urban_municipality",
             "voivodeship": "dolnośląskie",
             "valid_from": "",
             "valid_to": "",
@@ -151,19 +198,22 @@ def test_transform_creates_import_ready_results_and_latest_regions(tmp_path: Pat
 
 def test_transform_rejects_unknown_committee(tmp_path: Path) -> None:
     interim_dir = tmp_path / "interim"
+    terc_dir = tmp_path / "terc"
     write_interim_year(
         interim_dir,
         2019,
         [totals_row(valid_votes="10")],
         [committee_row("NIEZNANY KOMITET", "10")],
     )
+    write_terc(terc_dir, 2019)
 
     with pytest.raises(ValueError, match="Unknown committee"):
-        transform(interim_dir, tmp_path / "processed")
+        transform(interim_dir, tmp_path / "processed", terc_dir)
 
 
 def test_transform_rejects_committee_sum_different_from_valid_votes(tmp_path: Path) -> None:
     interim_dir = tmp_path / "interim"
+    terc_dir = tmp_path / "terc"
     write_interim_year(
         interim_dir,
         2019,
@@ -175,15 +225,17 @@ def test_transform_rejects_committee_sum_different_from_valid_votes(tmp_path: Pa
             )
         ],
     )
+    write_terc(terc_dir, 2019)
 
     with pytest.raises(ValueError, match="sum to 10, expected 11"):
-        transform(interim_dir, tmp_path / "processed")
+        transform(interim_dir, tmp_path / "processed", terc_dir)
 
 
 def test_transform_normalizes_municipality_prefix_and_handles_zero_totals(
     tmp_path: Path,
 ) -> None:
     interim_dir = tmp_path / "interim"
+    terc_dir = tmp_path / "terc"
     write_interim_year(
         interim_dir,
         2015,
@@ -204,10 +256,33 @@ def test_transform_normalizes_municipality_prefix_and_handles_zero_totals(
             )
         ],
     )
+    write_terc(terc_dir, 2015)
 
-    transform(interim_dir, tmp_path / "processed")
+    transform(interim_dir, tmp_path / "processed", terc_dir)
 
     assert read_csv(tmp_path / "processed" / "regions.csv")[0]["name"] == "Bolesławiec"
     result = read_csv(tmp_path / "processed" / "2015-sejm-gminy.csv")[0]
     assert result["vote_share"] == ""
     assert result["turnout"] == ""
+
+
+def test_transform_rejects_municipality_missing_from_historical_terc(
+    tmp_path: Path,
+) -> None:
+    interim_dir = tmp_path / "interim"
+    terc_dir = tmp_path / "terc"
+    write_interim_year(
+        interim_dir,
+        2019,
+        [totals_row(valid_votes="10")],
+        [
+            committee_row(
+                "KOMITET WYBORCZY PRAWO I SPRAWIEDLIWOŚĆ - ZPOW-601-9/19",
+                "10",
+            )
+        ],
+    )
+    write_terc(terc_dir, 2019, source_teryt="020102")
+
+    with pytest.raises(ValueError, match="020101.*TERC 2019"):
+        transform(interim_dir, tmp_path / "processed", terc_dir)

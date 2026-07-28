@@ -65,7 +65,8 @@ def transform_sejm_interim_command() -> None:
         f"Transformed Sejm {summary.year}: "
         f"{summary.municipalities_written} municipalities, "
         f"{summary.committee_results_written} committee results, "
-        f"{summary.rows_without_teryt_skipped} rows without TERYT skipped. "
+        f"{summary.rows_without_teryt_skipped} rows without TERYT skipped, "
+        f"{summary.special_rows_skipped} foreign or ship rows skipped. "
         f"Files: {summary.totals_path}, {summary.committee_results_path}."
     )
 
@@ -78,9 +79,10 @@ def transform_sejm_processed_command() -> None:
     )
     parser.add_argument("interim_dir", type=Path, help="Directory with paired interim CSV files.")
     parser.add_argument("output_dir", type=Path, help="Directory for processed election results.")
+    parser.add_argument("terc_dir", type=Path, help="Directory with historical TERC CSV files.")
     args = parser.parse_args()
 
-    summary = transform_sejm_interim_to_processed(args.interim_dir, args.output_dir)
+    summary = transform_sejm_interim_to_processed(args.interim_dir, args.output_dir, args.terc_dir)
     print(
         f"Processed {summary.elections_processed} Sejm elections: "
         f"{summary.results_written} results and {summary.regions_written} regions. "

@@ -103,3 +103,25 @@ def test_transform_2015_normalizes_dash_as_missing_value(tmp_path: Path) -> None
     assert summary.municipalities_written == 1
     assert summary.committee_results_written == 1
     assert read_csv_rows(summary.committee_results_path)[0]["votes"] == "4579"
+
+
+def test_transform_skips_special_pkw_regions_with_synthetic_teryt(tmp_path: Path) -> None:
+    raw_path = tmp_path / "2019-sejm.csv"
+    raw_path.write_text(
+        '"Kod TERYT";"Gmina";"Powiat";"Województwo";'
+        '"Liczba wyborców uprawnionych do głosowania";'
+        '"Liczba wyborców, którym wydano karty do głosowania";'
+        '"Liczba głosów ważnych oddanych łącznie na wszystkie listy kandydatów";'
+        '"KOMITET A"\n'
+        '"149801";"statki";"statki";"mazowieckie";"10";"10";"10";"10"\n'
+        '"149901";"zagranica";"zagranica";"mazowieckie";"20";"20";"20";"20"\n'
+        '"020101";"m. Bolesławiec";"bolesławiecki";"dolnośląskie";'
+        '"100";"80";"75";"75"\n',
+        encoding="utf-8",
+    )
+
+    summary = transform_sejm_raw_to_interim(raw_path, tmp_path / "interim")
+
+    assert summary.municipalities_written == 1
+    assert summary.special_rows_skipped == 2
+    assert read_csv_rows(summary.totals_path)[0]["source_teryt"] == "020101"

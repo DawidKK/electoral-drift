@@ -30,6 +30,7 @@ aktualizowany po każdym dodanym feature.
 flowchart TD
     subgraph sources["Źródła danych"]
         raw_elections["PKW Sejm CSV<br/>data/raw/elections/sejm"]
+        raw_terc["Historyczne TERC<br/>data/raw/teryt/terc"]
         interim_totals["Interim<br/>gmina-totals"]
         interim_results["Interim<br/>committee-results"]
         processed_regions["Processed<br/>regions.csv"]
@@ -113,6 +114,7 @@ flowchart TD
     sejm_transform --> interim_results
     interim_totals --> processed_transform
     interim_results --> processed_transform
+    raw_terc --> processed_transform
     processed_transform --> processed_regions
     processed_transform --> processed_results
     processed_regions --> regions_import
@@ -199,6 +201,36 @@ Najważniejsze zasady aktualnego flow:
 
 ## Logi Flow
 
+### 2026-07-28 - TERC: Historyczna Tożsamość Gmin I Filtr Regionów Specjalnych
+
+Pipeline wykorzystuje teraz snapshot TERC właściwy dla roku wyborów. Rekordy zagraniczne i statki
+są usuwane przed interim, a każda prawdziwa gmina musi otrzymać pełny siedmiocyfrowy identyfikator
+TERC przed zapisaniem processed.
+
+```mermaid
+flowchart LR
+    pkw["Raw PKW<br/>kod 6-cyfrowy"]
+    filter["Filtr<br/>zagranica i statki"]
+    interim["Interim<br/>prawdziwe jednostki"]
+    terc["TERC dla roku<br/>WOJ + POW + GMI + RODZ"]
+    match["Ścisłe dopasowanie<br/>kod PKW -> TERC"]
+    processed["Processed<br/>pełny kod 7-cyfrowy"]
+
+    pkw --> filter
+    filter --> interim
+    interim --> match
+    terc --> match
+    match --> processed
+```
+
+Opis diagramu:
+
+- Sztuczne kody PKW dla zagranicy i statków nie są traktowane jako gminy.
+- Każdy rok wyborczy korzysta z odpowiadającego mu snapshotu TERC.
+- Do mapowania dopuszczane są całe gminy, dzielnice Warszawy i historyczne delegatury.
+- Brak lub wieloznaczne dopasowanie zatrzymuje batch.
+- Nazwa, typ jednostki i województwo pochodzą z oficjalnego słownika.
+
 ### 2026-07-28 - Sejm: Transformacja Interim Do Processed
 
 Dodano batch budujący z plików interim wyniki gotowe dla importera bazy oraz wspólny słownik
@@ -209,6 +241,7 @@ oblicza udziały głosów i frekwencję oraz sprawdza sumy kontrolne.
 flowchart LR
     totals["Interim<br/>gmina-totals"]
     committees["Interim<br/>committee-results"]
+    terc["Historyczny TERC<br/>dla roku wyborów"]
     transform["CLI<br/>electoral-transform-sejm-processed"]
     mapping["Jawne mapowanie<br/>committee -> bloc"]
     validation["Walidacja<br/>sumy, klucze, procenty"]
@@ -219,6 +252,7 @@ flowchart LR
 
     totals --> transform
     committees --> transform
+    terc --> transform
     transform --> mapping
     mapping --> validation
     validation --> regions
@@ -232,8 +266,7 @@ Opis diagramu:
 - Batch przetwarza wszystkie pary plików interim dostępne w katalogu.
 - Nieznana nazwa komitetu zatrzymuje proces zamiast trafiać automatycznie do `other`.
 - Głosy komitetów muszą sumować się do liczby ważnych głosów w każdej gminie.
-- Processed używa sześciocyfrowego kodu PKW, ponieważ brak jeszcze wersjonowanego słownika TERYT
-  z rodzajem gminy.
+- Processed używa pełnego siedmiocyfrowego kodu ze snapshotu TERC właściwego dla wyborów.
 - `regions.csv` należy zaimportować przed wynikami poszczególnych wyborów.
 
 ### 2026-07-28 - Sejm: Transformacja Raw Do Interim

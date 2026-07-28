@@ -61,11 +61,15 @@ Build importer-ready election results and a municipality dictionary:
 ```bash
 uv run electoral-transform-sejm-processed \
   data/interim/elections/sejm \
-  data/processed/elections/sejm
+  data/processed/elections/sejm \
+  data/raw/teryt/terc
 ```
 
 Processed election files can then be loaded with `electoral-import-elections`; import the
 generated `regions.csv` first.
+
+See [`docs/teryt_mapping.md`](docs/teryt_mapping.md) for a beginner-friendly explanation of PKW
+codes, historical TERC mapping, and excluded non-municipality records.
 
 Import regions from a UTF-8 CSV file:
 

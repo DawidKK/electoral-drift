@@ -26,7 +26,8 @@ The transformation:
 - preserves explicit zero-vote results;
 - normalizes source municipality codes to six characters with leading zeroes;
 - retains source committee names without assigning analytical political blocs;
-- skips foreign rows without a municipality TERYT code and reports their count.
+- skips foreign rows without a municipality TERYT code and reports their count;
+- skips PKW's synthetic `zagranica` and `statki` regions even when they have a six-digit code.
 
 Interim output remains source-oriented. Committee normalization and political-bloc assignment
 belong to the interim-to-processed transformation. Enrichment with the full TERYT representation
@@ -40,7 +41,8 @@ Build importer-ready CSVs for every interim election pair:
 ```bash
 uv run electoral-transform-sejm-processed \
   data/interim/elections/sejm \
-  data/processed/elections/sejm
+  data/processed/elections/sejm \
+  data/raw/teryt/terc
 ```
 
 The command creates one `<year>-sejm-gminy.csv` per election and one shared `regions.csv`.
@@ -56,12 +58,16 @@ The processed transformation:
 - calculates `vote_share` and `turnout` as percentage points rounded to four decimal places;
 - verifies that committee votes equal valid votes for every municipality;
 - rejects missing totals and duplicate processed facts;
-- creates the region dictionary from the newest available metadata for each code.
+- requires a historical `<year>-01-01.csv` TERC snapshot for every election;
+- resolves the six-character PKW code to a seven-character historical TERC identifier;
+- takes the municipality name, type, and voivodeship from the matching TERC snapshot;
+- creates the region dictionary from the newest available metadata for each full code.
 
-The current processed identifier is PKW's six-character municipality code. The repository does
-not yet contain a versioned TERYT reference with `RODZ_GMI`, so the transformation does not invent
-a seventh digit or resolve historical boundary changes. `region_type` is therefore the honest,
-general value `municipality`.
+Only whole-municipality TERC records are eligible: types `1`, `2`, `3`, `8`, and `9`. City and
+rural-area subdivisions of an urban-rural municipality (`4` and `5`) are excluded because PKW
+reports the municipality as a whole. A municipality whose official type changes over time receives
+a different full TERC identifier; a future analytical crosswalk may link such histories without
+rewriting the source facts.
 
 ## Region CSV Import
 

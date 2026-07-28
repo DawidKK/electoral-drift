@@ -52,6 +52,7 @@ class SejmInterimSummary:
     municipalities_written: int
     committee_results_written: int
     rows_without_teryt_skipped: int
+    special_rows_skipped: int
 
 
 SOURCE_SPECS = {
@@ -101,7 +102,9 @@ def transform_sejm_raw_to_interim(raw_path: Path, output_dir: Path) -> SejmInter
     """Normalize one supported PKW Sejm export into totals and long committee-result CSVs."""
 
     spec = _source_spec_for_path(raw_path)
-    totals, committee_results, skipped = _read_and_normalize(raw_path, spec)
+    totals, committee_results, missing_teryt_skipped, special_rows_skipped = _read_and_normalize(
+        raw_path, spec
+    )
 
     output_dir.mkdir(parents=True, exist_ok=True)
     totals_path = output_dir / f"{raw_path.stem}-gmina-totals.csv"
@@ -115,7 +118,8 @@ def transform_sejm_raw_to_interim(raw_path: Path, output_dir: Path) -> SejmInter
         committee_results_path=committee_results_path,
         municipalities_written=len(totals),
         committee_results_written=len(committee_results),
-        rows_without_teryt_skipped=skipped,
+        rows_without_teryt_skipped=missing_teryt_skipped,
+        special_rows_skipped=special_rows_skipped,
     )
 
 
@@ -131,10 +135,11 @@ def _source_spec_for_path(raw_path: Path) -> SejmSourceSpec:
 
 def _read_and_normalize(
     raw_path: Path, spec: SejmSourceSpec
-) -> tuple[list[dict[str, str]], list[dict[str, str]], int]:
+) -> tuple[list[dict[str, str]], list[dict[str, str]], int, int]:
     totals: list[dict[str, str]] = []
     committee_results: list[dict[str, str]] = []
-    skipped = 0
+    missing_teryt_skipped = 0
+    special_rows_skipped = 0
 
     with raw_path.open(newline="", encoding="utf-8-sig") as csv_file:
         reader = csv.DictReader(csv_file, delimiter=spec.delimiter)
@@ -143,7 +148,10 @@ def _read_and_normalize(
         for row_number, row in enumerate(reader, 2):
             source_teryt = _text(row, spec.teryt_column)
             if not source_teryt:
-                skipped += 1
+                missing_teryt_skipped += 1
+                continue
+            if _is_special_pkw_region(row, spec):
+                special_rows_skipped += 1
                 continue
             if not source_teryt.isdigit() or len(source_teryt) > 6:
                 raise ValueError(
@@ -157,7 +165,19 @@ def _read_and_normalize(
                 _build_committee_rows(row, row_number, spec, committee_columns, teryt, gmina_name)
             )
 
-    return totals, committee_results, skipped
+    return totals, committee_results, missing_teryt_skipped, special_rows_skipped
+
+
+def _is_special_pkw_region(row: dict[str, str | None], spec: SejmSourceSpec) -> bool:
+    labels = {
+        _text(row, spec.gmina_column).casefold(),
+        _text(row, spec.powiat_column).casefold(),
+    }
+    return (
+        "zagranica" in labels
+        or "statki" in labels
+        or any(label.startswith("statki ") for label in labels)
+    )
 
 
 def _validate_and_get_committee_columns(
