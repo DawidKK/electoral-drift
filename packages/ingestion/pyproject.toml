@@ -11,6 +11,7 @@ dependencies = [
 [project.scripts]
 electoral-import-elections = "electoral_ingestion.cli:import_elections_command"
 electoral-import-regions = "electoral_ingestion.cli:import_regions_command"
+electoral-transform-sejm-interim = "electoral_ingestion.cli:transform_sejm_interim_command"
 
 [build-system]
 requires = ["hatchling"]

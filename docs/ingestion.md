@@ -3,6 +3,35 @@
 The ingestion package loads public source data into the database before the API reads it.
 This keeps heavy data preparation out of HTTP requests.
 
+## Raw PKW Sejm to Interim
+
+Transform one supported PKW export:
+
+```bash
+uv run electoral-transform-sejm-interim \
+  data/raw/elections/sejm/2019-sejm.csv \
+  data/interim/elections/sejm
+```
+
+The command supports the repository's 2015, 2019, and 2023 Sejm exports. It creates:
+
+- `<source>-gmina-totals.csv` — one row per municipality and election;
+- `<source>-committee-results.csv` — one row per municipality, election, and committee.
+
+The transformation:
+
+- handles the year-specific separator, header names, and election date;
+- removes Polish thousands separators from integer values;
+- converts `-` and empty committee cells to missing values;
+- preserves explicit zero-vote results;
+- normalizes source municipality codes to six characters with leading zeroes;
+- retains source committee names without assigning analytical political blocs;
+- skips foreign rows without a municipality TERYT code and reports their count.
+
+Interim output remains source-oriented. Mapping six-character PKW identifiers to the canonical
+TERYT representation, resolving territorial changes, normalizing committee names, and assigning
+political blocs belong to the later interim-to-processed transformation.
+
 ## Region CSV Import
 
 Command:

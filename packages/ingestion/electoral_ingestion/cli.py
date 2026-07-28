@@ -5,6 +5,7 @@ from electoral_db.session import SessionLocal
 
 from electoral_ingestion.elections import import_election_results, load_election_results_csv
 from electoral_ingestion.regions import import_regions, load_regions_csv
+from electoral_ingestion.sejm_interim import transform_sejm_raw_to_interim
 
 
 def import_regions_command() -> None:
@@ -45,4 +46,24 @@ def import_elections_command() -> None:
         f"{summary.results_created} results created, "
         f"{summary.results_updated} results updated, "
         f"{summary.results_unchanged} results unchanged."
+    )
+
+
+def transform_sejm_interim_command() -> None:
+    """Command-line entry point for normalizing a raw PKW Sejm CSV."""
+
+    parser = argparse.ArgumentParser(
+        description="Transform a supported raw PKW Sejm CSV into interim CSV files."
+    )
+    parser.add_argument("raw_path", type=Path, help="Path to a raw 2015, 2019, or 2023 CSV.")
+    parser.add_argument("output_dir", type=Path, help="Directory for the two interim CSV files.")
+    args = parser.parse_args()
+
+    summary = transform_sejm_raw_to_interim(args.raw_path, args.output_dir)
+    print(
+        f"Transformed Sejm {summary.year}: "
+        f"{summary.municipalities_written} municipalities, "
+        f"{summary.committee_results_written} committee results, "
+        f"{summary.rows_without_teryt_skipped} rows without TERYT skipped. "
+        f"Files: {summary.totals_path}, {summary.committee_results_path}."
     )

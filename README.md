@@ -45,6 +45,17 @@ Run database migrations:
 uv run alembic upgrade head
 ```
 
+Transform a raw PKW Sejm export into municipality totals and long committee results:
+
+```bash
+uv run electoral-transform-sejm-interim \
+  data/raw/elections/sejm/2019-sejm.csv \
+  data/interim/elections/sejm
+```
+
+Supported source years are 2015, 2019, and 2023. See `docs/ingestion.md` for the interim schemas
+and normalization rules.
+
 Import regions from a UTF-8 CSV file:
 
 ```bash
