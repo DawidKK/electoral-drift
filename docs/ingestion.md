@@ -28,9 +28,40 @@ The transformation:
 - retains source committee names without assigning analytical political blocs;
 - skips foreign rows without a municipality TERYT code and reports their count.
 
-Interim output remains source-oriented. Mapping six-character PKW identifiers to the canonical
-TERYT representation, resolving territorial changes, normalizing committee names, and assigning
-political blocs belong to the later interim-to-processed transformation.
+Interim output remains source-oriented. Committee normalization and political-bloc assignment
+belong to the interim-to-processed transformation. Enrichment with the full TERYT representation
+and resolution of historical territorial changes require a versioned reference dataset and
+remain a later step.
+
+## Sejm Interim to Processed
+
+Build importer-ready CSVs for every interim election pair:
+
+```bash
+uv run electoral-transform-sejm-processed \
+  data/interim/elections/sejm \
+  data/processed/elections/sejm
+```
+
+The command creates one `<year>-sejm-gminy.csv` per election and one shared `regions.csv`.
+Election files use the existing `electoral-import-elections` contract. The region dictionary uses
+the `electoral-import-regions` contract and must be imported first.
+
+The processed transformation:
+
+- joins municipality totals with long committee results;
+- uses explicit, complete mappings from PKW labels to readable committee names and political
+  blocs;
+- fails on an unknown committee rather than silently assigning it to `other`;
+- calculates `vote_share` and `turnout` as percentage points rounded to four decimal places;
+- verifies that committee votes equal valid votes for every municipality;
+- rejects missing totals and duplicate processed facts;
+- creates the region dictionary from the newest available metadata for each code.
+
+The current processed identifier is PKW's six-character municipality code. The repository does
+not yet contain a versioned TERYT reference with `RODZ_GMI`, so the transformation does not invent
+a seventh digit or resolve historical boundary changes. `region_type` is therefore the honest,
+general value `municipality`.
 
 ## Region CSV Import
 

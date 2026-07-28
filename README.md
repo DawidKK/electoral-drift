@@ -56,6 +56,17 @@ uv run electoral-transform-sejm-interim \
 Supported source years are 2015, 2019, and 2023. See `docs/ingestion.md` for the interim schemas
 and normalization rules.
 
+Build importer-ready election results and a municipality dictionary:
+
+```bash
+uv run electoral-transform-sejm-processed \
+  data/interim/elections/sejm \
+  data/processed/elections/sejm
+```
+
+Processed election files can then be loaded with `electoral-import-elections`; import the
+generated `regions.csv` first.
+
 Import regions from a UTF-8 CSV file:
 
 ```bash

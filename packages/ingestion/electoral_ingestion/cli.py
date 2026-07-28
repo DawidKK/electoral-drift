@@ -6,6 +6,7 @@ from electoral_db.session import SessionLocal
 from electoral_ingestion.elections import import_election_results, load_election_results_csv
 from electoral_ingestion.regions import import_regions, load_regions_csv
 from electoral_ingestion.sejm_interim import transform_sejm_raw_to_interim
+from electoral_ingestion.sejm_processed import transform_sejm_interim_to_processed
 
 
 def import_regions_command() -> None:
@@ -66,4 +67,22 @@ def transform_sejm_interim_command() -> None:
         f"{summary.committee_results_written} committee results, "
         f"{summary.rows_without_teryt_skipped} rows without TERYT skipped. "
         f"Files: {summary.totals_path}, {summary.committee_results_path}."
+    )
+
+
+def transform_sejm_processed_command() -> None:
+    """Command-line entry point for building importer-ready Sejm CSVs."""
+
+    parser = argparse.ArgumentParser(
+        description="Transform Sejm interim CSV files into importer-ready processed files."
+    )
+    parser.add_argument("interim_dir", type=Path, help="Directory with paired interim CSV files.")
+    parser.add_argument("output_dir", type=Path, help="Directory for processed election results.")
+    args = parser.parse_args()
+
+    summary = transform_sejm_interim_to_processed(args.interim_dir, args.output_dir)
+    print(
+        f"Processed {summary.elections_processed} Sejm elections: "
+        f"{summary.results_written} results and {summary.regions_written} regions. "
+        f"Regions: {summary.regions_path}."
     )

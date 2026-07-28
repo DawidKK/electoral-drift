@@ -19,3 +19,6 @@ __all__ = [
     "load_election_results_csv",
     "load_regions_csv",
 ]
+from electoral_ingestion.sejm_processed import transform_sejm_interim_to_processed
+
+__all__ = ["transform_sejm_interim_to_processed"]

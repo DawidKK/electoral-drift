@@ -29,15 +29,17 @@ aktualizowany po każdym dodanym feature.
 ```mermaid
 flowchart TD
     subgraph sources["Źródła danych"]
-        raw_regions["CSV regionów<br/>data/raw/regions.csv"]
         raw_elections["PKW Sejm CSV<br/>data/raw/elections/sejm"]
         interim_totals["Interim<br/>gmina-totals"]
         interim_results["Interim<br/>committee-results"]
+        processed_regions["Processed<br/>regions.csv"]
+        processed_results["Processed<br/>year-sejm-gminy.csv"]
     end
 
     subgraph ingestion["packages/ingestion"]
         regions_import["Import regionów<br/>electoral_ingestion/regions.py"]
         sejm_transform["Transformacja raw -> interim<br/>sejm_interim.py"]
+        processed_transform["Transformacja interim -> processed<br/>sejm_processed.py"]
         elections_import["Import wyborów<br/>electoral_ingestion/elections.py"]
     end
 
@@ -106,10 +108,15 @@ flowchart TD
     quality_gates -. "weryfikuje" .-> api
     quality_gates -. "weryfikuje" .-> db_pkg
 
-    raw_regions --> regions_import
     raw_elections --> sejm_transform
     sejm_transform --> interim_totals
     sejm_transform --> interim_results
+    interim_totals --> processed_transform
+    interim_results --> processed_transform
+    processed_transform --> processed_regions
+    processed_transform --> processed_results
+    processed_regions --> regions_import
+    processed_results --> elections_import
     regions_import --> db_session
     elections_import --> db_session
     db_models --> db_session
@@ -191,6 +198,43 @@ Najważniejsze zasady aktualnego flow:
 - Frontend/dashboard nie jest jeszcze zaimplementowany.
 
 ## Logi Flow
+
+### 2026-07-28 - Sejm: Transformacja Interim Do Processed
+
+Dodano batch budujący z plików interim wyniki gotowe dla importera bazy oraz wspólny słownik
+gmin. Proces jawnie mapuje źródłowe nazwy komitetów na czytelne nazwy i bloki polityczne,
+oblicza udziały głosów i frekwencję oraz sprawdza sumy kontrolne.
+
+```mermaid
+flowchart LR
+    totals["Interim<br/>gmina-totals"]
+    committees["Interim<br/>committee-results"]
+    transform["CLI<br/>electoral-transform-sejm-processed"]
+    mapping["Jawne mapowanie<br/>committee -> bloc"]
+    validation["Walidacja<br/>sumy, klucze, procenty"]
+    regions["Processed<br/>regions.csv"]
+    results["Processed<br/>year-sejm-gminy.csv"]
+    region_import["CLI<br/>electoral-import-regions"]
+    election_import["CLI<br/>electoral-import-elections"]
+
+    totals --> transform
+    committees --> transform
+    transform --> mapping
+    mapping --> validation
+    validation --> regions
+    validation --> results
+    regions --> region_import
+    results --> election_import
+```
+
+Opis diagramu:
+
+- Batch przetwarza wszystkie pary plików interim dostępne w katalogu.
+- Nieznana nazwa komitetu zatrzymuje proces zamiast trafiać automatycznie do `other`.
+- Głosy komitetów muszą sumować się do liczby ważnych głosów w każdej gminie.
+- Processed używa sześciocyfrowego kodu PKW, ponieważ brak jeszcze wersjonowanego słownika TERYT
+  z rodzajem gminy.
+- `regions.csv` należy zaimportować przed wynikami poszczególnych wyborów.
 
 ### 2026-07-28 - Sejm: Transformacja Raw Do Interim
 

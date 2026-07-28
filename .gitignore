@@ -8,5 +8,6 @@ __pycache__/
 *.egg-info/
 
 data/interim/elections/sejm/*.csv
+data/processed/elections/sejm/*.csv
 
 .DS_Store
