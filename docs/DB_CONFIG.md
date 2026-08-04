@@ -57,6 +57,20 @@ Use `core` for normalized source-of-truth tables, `analytics` for derived analyt
 
 Implement the following normalized tables in the `core` schema.
 
+### `core.canonical_regions`
+
+Stores the stable analytical identity shared by historical TERYT versions of one municipality.
+
+Required columns:
+
+- `id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY`
+- `base_teryt_code VARCHAR(6) UNIQUE NOT NULL`
+- `name TEXT NOT NULL`
+
+The initial mapping groups seven-digit TERYT identifiers by their first six digits. It supports
+changes of municipality type, such as `0603112` to `0603113`, without overwriting source facts.
+Merges, splits, and changes to the first six digits require a separately verified crosswalk.
+
 ### `core.regions`
 
 Stores territorial units, initially municipalities (`gminy`). A county may be introduced later
@@ -66,6 +80,7 @@ unit.
 Required columns:
 
 - `id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY`
+- `canonical_region_id BIGINT REFERENCES core.canonical_regions(id)`
 - `teryt_code VARCHAR(20) UNIQUE NOT NULL`
 - `name TEXT NOT NULL`
 - `region_type TEXT NOT NULL`

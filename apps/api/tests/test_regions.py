@@ -18,6 +18,7 @@ class FakeRegionQueries:
         return [
             RegionRead(
                 id=1,
+                canonical_region_id=10,
                 teryt_code="0264011",
                 name="Wroclaw",
                 region_type="city_county",
@@ -30,6 +31,7 @@ class FakeRegionQueries:
             return None
         return RegionRead(
             id=1,
+            canonical_region_id=10,
             teryt_code="0264011",
             name="Wroclaw",
             region_type="city_county",
@@ -103,6 +105,7 @@ def test_regions_returns_public_shape() -> None:
     assert response.json() == [
         {
             "id": 1,
+            "canonical_region_id": 10,
             "teryt_code": "0264011",
             "name": "Wroclaw",
             "region_type": "city_county",
@@ -121,6 +124,7 @@ def test_region_detail_returns_public_shape() -> None:
     assert response.status_code == 200
     assert response.json() == {
         "id": 1,
+        "canonical_region_id": 10,
         "teryt_code": "0264011",
         "name": "Wroclaw",
         "region_type": "city_county",
@@ -139,6 +143,7 @@ def test_region_timeline_returns_grouped_bloc_history() -> None:
     assert response.json() == {
         "region": {
             "id": 1,
+            "canonical_region_id": 10,
             "teryt_code": "0264011",
             "name": "Wroclaw",
             "region_type": "city_county",

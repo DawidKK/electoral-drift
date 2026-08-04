@@ -176,14 +176,15 @@ terytorialna może w różnych latach występować jako:
 W warstwie źródłowej są to dwa historyczne identyfikatory. Pipeline ich automatycznie nie scala,
 ponieważ takie scalenie jest decyzją analityczną, a nie faktem pochodzącym z PKW lub GUS.
 
-W przyszłości potrzebny będzie osobny **crosswalk historyczny**, który opisze:
+Projekt przechowuje obecnie podstawowy **crosswalk historyczny**, który opisuje:
 
 ```text
-historyczny kod TERC → wspólna jednostka analityczna
+historyczny kod TERC → `core.canonical_regions`
 ```
 
-Pozwoli to budować ciągłą historię polityczną gminy mimo zmiany jej rodzaju. Crosswalk nie może
-nadpisywać kodów źródłowych — powinien być dodatkową, odtwarzalną warstwą interpretacji.
+Komenda `electoral-rebuild-canonical-regions` łączy wersje o tych samych pierwszych sześciu
+cyfrach i zachowuje pełne kody źródłowe. Nie scala automatycznie zmian pierwszych sześciu cyfr,
+podziałów, połączeń ani zmian granic; wymagają one osobno zweryfikowanego mapowania.
 
 ## Jakie rekordy są usuwane?
 
@@ -293,5 +294,4 @@ Takie podejście zapobiega cichym, trudnym do wykrycia błędom geograficznym.
 3. Każde wybory korzystają ze słownika TERC właściwego dla swojego roku.
 4. Raw pozostaje niezmienione; filtrowanie odbywa się dopiero w interim.
 5. Zagranica i statki nie są błędnymi głosami — są poza zakresem analizy gminnej.
-6. Historycznych kodów nie scalamy bez jawnego, wersjonowanego crosswalku.
-
+6. Historyczne kody łączymy analitycznie tylko przez jawny, odtwarzalny crosswalk.

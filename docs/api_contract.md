@@ -26,6 +26,7 @@ Response item:
 ```json
 {
   "id": 1,
+  "canonical_region_id": 1,
   "teryt_code": "0201011",
   "name": "Bolesławiec",
   "region_type": "urban_municipality",
@@ -45,6 +46,7 @@ Response:
 ```json
 {
   "id": 1,
+  "canonical_region_id": 1,
   "teryt_code": "0201011",
   "name": "Bolesławiec",
   "region_type": "urban_municipality",
@@ -75,6 +77,7 @@ Response:
 {
   "region": {
     "id": 1,
+    "canonical_region_id": 1,
     "teryt_code": "0201011",
     "name": "Bolesławiec",
     "region_type": "urban_municipality",

@@ -48,9 +48,11 @@ flowchart TD
         db_models["Modele SQLAlchemy"]
         db_session["Session / Engine"]
         alembic["Migracje Alembic"]
+        canonical_batch["Canonical regions batch<br/>electoral-rebuild-canonical-regions"]
     end
 
     subgraph postgres["PostgreSQL"]
+        core_canonical_regions["core.canonical_regions"]
         core_regions["core.regions"]
         core_blocs["core.political_blocs"]
         core_elections["core.elections"]
@@ -123,6 +125,11 @@ flowchart TD
     elections_import --> db_session
     db_models --> db_session
     alembic --> postgres
+    core_regions --> canonical_batch
+    core_elections --> canonical_batch
+    core_results --> canonical_batch
+    canonical_batch --> core_canonical_regions
+    canonical_batch --> core_regions
     db_session --> core_regions
     db_session --> core_blocs
     db_session --> core_elections
@@ -166,6 +173,7 @@ flowchart TD
     region_summary --> stability_batch
     stability_batch --> region_stability
     core_regions --> regions_queries
+    core_canonical_regions --> regions_queries
     core_elections --> regions_queries
     core_results --> regions_queries
     region_summary --> regions_queries
@@ -190,6 +198,12 @@ Najważniejsze zasady aktualnego flow:
 - `packages/db` jest wspólną warstwą dla ingestion i API.
 - Migracje Alembic definiują strukturę PostgreSQL.
 - Wyniki wyborów zależą od wcześniej zaimportowanych regionów i seedowanych bloków politycznych.
+- Komenda `electoral-rebuild-canonical-regions` grupuje historyczne wersje TERYT po pierwszych
+  sześciu cyfrach i przypisuje im wspólny `canonical_region_id`.
+- Pełne siedmiocyfrowe kody pozostają w `core.regions`; canonical region jest dodatkową warstwą
+  tożsamości analitycznej, a nie zamiennikiem faktu historycznego.
+- API regionów zwraca `canonical_region_id`, ale timeline i snapshot stabilności nadal są liczone
+  dla historycznego `region_id`.
 - Endpoint timeline czyta zagregowane wyniki po blokach, zamiast wysyłać cały zbiór danych.
 - Komenda `electoral-rebuild-stability` atomowo zastępuje snapshot analityczny.
 - Endpointy stabilności czytają gotowy snapshot i nie uruchamiają obliczeń w requestach HTTP.
@@ -200,6 +214,46 @@ Najważniejsze zasady aktualnego flow:
 - Frontend/dashboard nie jest jeszcze zaimplementowany.
 
 ## Logi Flow
+
+### 2026-08-04 - Canonical Regions: Wspólna Tożsamość Historycznych Kodów TERYT
+
+Dodano odtwarzalne mapowanie historycznych, siedmiocyfrowych wersji TERYT na wspólną jednostkę
+analityczną. Źródłowe regiony i wyniki pozostają niezmienione, a API udostępnia identyfikator
+canonical region obok historycznego kodu.
+
+```mermaid
+flowchart LR
+    historical["core.regions<br/>pełne TERYT 7 cyfr"]
+    elections["core.election_results<br/>+ core.elections"]
+    command["CLI batch<br/>electoral-rebuild-canonical-regions"]
+    grouping["Grupowanie<br/>pierwsze 6 cyfr TERYT"]
+    canonical["core.canonical_regions<br/>stabilna tożsamość"]
+    mapping["core.regions.canonical_region_id"]
+    api["GET /regions...<br/>RegionRead"]
+
+    historical --> command
+    elections --> command
+    command --> grouping
+    grouping --> canonical
+    canonical --> mapping
+    mapping --> historical
+    historical --> api
+```
+
+Opis diagramu:
+
+- `core.canonical_regions.base_teryt_code` przechowuje pierwsze sześć cyfr kodu TERYT.
+- Wersje takie jak `0603112` i `0603113` zachowują osobne rekordy, ale wskazują ten sam
+  `canonical_region_id`.
+- Nazwa canonical region pochodzi z wersji występującej w najnowszych zaimportowanych wyborach;
+  remis roku rozstrzyga deterministycznie większy `region_id`.
+- Batch ładuje regiony i istniejące mapowania zbiorczo, działa w jednej transakcji i jest
+  idempotentny.
+- Po każdym przyszłym imporcie regionów lub wyborów należy ponownie uruchomić komendę batch.
+- Pierwsza wersja crosswalku obsługuje zmianę ostatniej cyfry TERYT. Zmiany pierwszych sześciu
+  cyfr, podziały, połączenia i zmiany granic wymagają osobno zweryfikowanego mapowania.
+- Timeline i stabilność polityczna nie agregują jeszcze wyników po `canonical_region_id`; ta
+  decyzja pozostaje osobnym etapem analitycznym.
 
 ### 2026-07-28 - TERC: Historyczna Tożsamość Gmin I Filtr Regionów Specjalnych
 

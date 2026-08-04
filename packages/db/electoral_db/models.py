@@ -21,11 +21,27 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from electoral_db.base import Base
 
 
+class CanonicalRegion(Base):
+    """Stable analytical identity shared by historical TERYT versions."""
+
+    __tablename__ = "canonical_regions"
+    __table_args__ = {"schema": "core"}
+
+    id: Mapped[int] = mapped_column(BigInteger, Identity(always=True), primary_key=True)
+    base_teryt_code: Mapped[str] = mapped_column(String(6), unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(Text, nullable=False)
+
+    region_versions: Mapped[list[Region]] = relationship(back_populates="canonical_region")
+
+
 class Region(Base):
     __tablename__ = "regions"
     __table_args__ = {"schema": "core"}
 
     id: Mapped[int] = mapped_column(BigInteger, Identity(always=True), primary_key=True)
+    canonical_region_id: Mapped[int | None] = mapped_column(
+        BigInteger, ForeignKey("core.canonical_regions.id")
+    )
     teryt_code: Mapped[str] = mapped_column(String(20), unique=True, nullable=False)
     name: Mapped[str] = mapped_column(Text, nullable=False)
     region_type: Mapped[str] = mapped_column(Text, nullable=False)
@@ -33,6 +49,9 @@ class Region(Base):
     valid_from: Mapped[date | None] = mapped_column(Date)
     valid_to: Mapped[date | None] = mapped_column(Date)
 
+    canonical_region: Mapped[CanonicalRegion | None] = relationship(
+        back_populates="region_versions"
+    )
     election_results: Mapped[list[ElectionResult]] = relationship(back_populates="region")
     socioeconomic_observations: Mapped[list[SocioeconomicObservation]] = relationship(
         back_populates="region"

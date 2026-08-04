@@ -10,6 +10,7 @@ dependencies = [
 ]
 
 [project.scripts]
+electoral-rebuild-canonical-regions = "electoral_db.cli:rebuild_canonical_regions_command"
 electoral-rebuild-stability = "electoral_db.cli:rebuild_stability_command"
 
 [build-system]

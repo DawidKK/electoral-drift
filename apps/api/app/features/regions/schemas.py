@@ -7,6 +7,7 @@ class RegionRead(BaseModel):
     """Public representation of one territorial region."""
 
     id: int
+    canonical_region_id: int | None = None
     teryt_code: str
     name: str
     region_type: str

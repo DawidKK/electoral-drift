@@ -97,6 +97,15 @@ election_date,election_type,round,description,teryt_code,committee_name,bloc_nam
 2019-10-13,parliamentary,1,Sejm 2019,0201011,Koalicja Obywatelska,ko_bloc,4308,23.9480,60.8770,29895,17989
 ```
 
+Rebuild canonical municipality mappings after importing regions and election results:
+
+```bash
+uv run electoral-rebuild-canonical-regions
+```
+
+The command links historical seven-digit TERYT versions that share the same six-digit
+municipality base. It preserves every source TERYT code and can be run repeatedly.
+
 Start the API locally:
 
 ```bash

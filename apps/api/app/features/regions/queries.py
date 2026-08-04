@@ -123,6 +123,7 @@ class RegionQueries:
     def _to_region_read(region: Region) -> RegionRead:
         return RegionRead(
             id=region.id,
+            canonical_region_id=region.canonical_region_id,
             teryt_code=region.teryt_code,
             name=region.name,
             region_type=region.region_type,
