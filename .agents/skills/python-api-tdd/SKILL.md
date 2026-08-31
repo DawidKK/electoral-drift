@@ -6,15 +6,34 @@ description: Enforce an approved-plan-first TDD workflow, maintainable Python de
 # Python API TDD
 
 Implement Python API, database, and ML changes through explicit, gated states. Treat `AGENTS.md`
-as the source of truth for repository architecture and code-quality rules.
+as the source of truth for repository architecture and code-quality rules, and `CONTEXT.md` as
+the source of truth for domain language.
 
 ## Scope
 
 - Operate only in `apps/api`, `packages/db`, and `packages/ml` when it exists.
 - Do not apply this workflow to `packages/ingestion` or frontend code.
-- Read the applicable `AGENTS.md`, relevant code, tests, package manifests, and architecture
-  configuration before proposing changes.
+- Read the applicable `AGENTS.md`, `CONTEXT.md`, relevant code, tests, package manifests, and
+  architecture configuration before proposing changes.
 - Keep the change focused. Do not perform unrelated cleanup.
+
+## Context and references
+
+Load each reference when its branch applies:
+
+- **ADRs:** read relevant accepted records in `docs/adr/` before changing architecture, package
+  boundaries, domain identity, or another recorded decision. Surface conflicts in the plan.
+- **Database:** read `docs/database_schema.md` for models, migrations, analytics objects, persistence,
+  or ML storage.
+- **API:** read `docs/api_contract.md` for public HTTP behaviour and update it when the contract
+  changes.
+- **Ingestion boundary:** read `docs/ingestion.md` when API, database, or ML work consumes or changes
+  an ingestion-produced interface.
+- **Territorial identity:** read `docs/teryt_mapping.md` for PKW, TERYT, TERC, historical-region,
+  or canonical-region behaviour.
+- **Application flow:** read `docs/flow.md` when data flow or component responsibilities change;
+  update its current-flow section and prepend a flow-log entry in Polish, preserving Polish prose
+  and Mermaid labels.
 
 ## Workflow
 
@@ -27,6 +46,7 @@ Present a decision-complete plan covering:
 - observable behaviour and explicit invariants;
 - affected responsibilities and dependency direction;
 - REP, CCP, and CRP impact;
+- applicable contracts, ADRs, and documentation updates;
 - expected comments or docstrings for multi-step and non-obvious code;
 - test cases, edge cases, and acceptance criteria.
 

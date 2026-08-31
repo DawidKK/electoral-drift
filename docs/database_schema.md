@@ -1,31 +1,10 @@
-# AGENTS.md
+# Database Schema
 
 ## Scope
 
-These instructions apply to the whole repository unless a more specific `AGENTS.md` exists in a subdirectory.
-
-This repository implements an electoral geography / machine learning project for Poland. The backend stack is:
-
-- Python
-- FastAPI
-- PostgreSQL
-- Docker / Docker Compose
-- Alembic migrations
-- SQLAlchemy or SQLModel for database access
-- pandas / Polars / scikit-learn / XGBoost for downstream ML
-
-The primary goal is to design and implement a PostgreSQL-backed data model that can store electoral results, socioeconomic time series, political bloc mappings, analytics summaries, and ML-ready datasets.
-
-## Project goal
-
-Build a database and backend foundation for analyzing regional electoral shifts in Polish
-municipalities (`gminy`). Cities with county rights are included at municipality level. The
-system should support these questions:
-
-1. Which municipalities have most often changed the winning political bloc since 2010?
-2. Which municipalities are politically stable, swing, or emerging-shift regions?
-3. How do socioeconomic and demographic trends differ between stable and unstable municipalities?
-4. Can the data be transformed into a leakage-safe ML dataset for predicting regional political drift?
+This document is the authoritative contract for the PostgreSQL schemas, tables, relationships,
+constraints, indexes, and derived database objects used by `electoral-drift`. Use `CONTEXT.md` for
+domain language and `docs/adr/` for the reasons behind consequential architectural decisions.
 
 ## Core design principles
 
@@ -34,7 +13,7 @@ Follow these principles when creating or modifying the database layer:
 1. **One table, one responsibility.** Each table should represent one entity or fact type.
 2. **Facts and interpretations must be separated.** Election results and socioeconomic observations are facts; bloc mappings, stability labels, and ML features are interpretations or derived data.
 3. **Annual structural data and election events must be stored separately.** Do not force GUS/BDL yearly data into election-result tables.
-4. **Use stable identifiers.** Use TERYT codes for regions. Store TERYT as text, never as an integer.
+4. **Use stable identifiers.** Store TERC identifiers in `teryt_code` as text, never as integers.
 5. **Use explicit foreign keys.** Relationships between tables must be enforced by the database.
 6. **Avoid data leakage.** For an election in year `Y`, ML features may use only data known no later than `Y - 1`.
 7. **Raw data should be reproducible and preferably immutable.** Derived tables should be rebuildable from scripts or migrations.
@@ -59,7 +38,7 @@ Implement the following normalized tables in the `core` schema.
 
 ### `core.canonical_regions`
 
-Stores the stable analytical identity shared by historical TERYT versions of one municipality.
+Stores the stable analytical identity shared by historical TERC versions of one municipality.
 
 Required columns:
 
@@ -67,7 +46,7 @@ Required columns:
 - `base_teryt_code VARCHAR(6) UNIQUE NOT NULL`
 - `name TEXT NOT NULL`
 
-The initial mapping groups seven-digit TERYT identifiers by their first six digits. It supports
+The initial mapping groups seven-digit TERC identifiers by their first six digits. It supports
 changes of municipality type, such as `0603112` to `0603113`, without overwriting source facts.
 Merges, splits, and changes to the first six digits require a separately verified crosswalk.
 
@@ -405,72 +384,6 @@ CREATE INDEX IF NOT EXISTS idx_elections_year_type
 ON core.elections(election_year, election_type);
 ```
 
-## Backend/API expectations
-
-If implementing FastAPI endpoints, prefer clear resource-oriented endpoints. Initial useful endpoints:
-
-- `GET /health`
-- `GET /regions`
-- `GET /regions/{region_id}`
-- `GET /regions/{region_id}/elections`
-- `GET /regions/{region_id}/socioeconomic`
-- `GET /analytics/stability-ranking`
-- `GET /analytics/swing-counties`
-- `GET /ml/modeling-dataset`
-
-API responses should expose percentages consistently with database convention, e.g. `42.3` means 42.3%.
-
-## Repository conventions
-
-Prefer this repository structure unless existing files already establish another convention:
-
-```text
-.
-├── AGENTS.md
-├── README.md
-├── docker-compose.yml
-├── pyproject.toml
-├── alembic.ini
-├── apps/
-│   └── api/
-│       ├── app/
-│       │   ├── main.py
-│       │   ├── infrastructure/
-│       │   └── features/
-│       │       ├── regions/
-│       │       ├── elections/
-│       │       └── analytics/
-│       └── tests/
-├── packages/
-│   ├── db/
-│   │   ├── electoral_db/
-│   │   └── alembic/
-│   └── ingestion/
-└── docs/
-```
-
-Use Alembic for schema changes. Do not modify the database manually without adding or updating a migration.
-
-## Development commands
-
-If setting up from scratch, prefer commands similar to:
-
-```bash
-docker compose up -d db
-alembic upgrade head
-pytest
-```
-
-If the repository uses `uv`, prefer:
-
-```bash
-uv sync
-uv run alembic upgrade head
-uv run pytest
-```
-
-If the repository uses plain pip, prefer a local virtual environment and document the commands in `README.md`.
-
 ## Testing requirements
 
 When implementing schema or import logic, add tests that verify:
@@ -479,7 +392,7 @@ When implementing schema or import logic, add tests that verify:
 2. Required tables exist.
 3. Foreign keys reject invalid references.
 4. Unique constraints prevent duplicate election results and duplicate socioeconomic observations.
-5. TERYT codes preserve leading zeros.
+5. TERC identifiers preserve leading zeros.
 6. `vote_share` convention is consistent.
 7. ML feature-building logic does not use observations from `year >= election_year`.
 
@@ -495,17 +408,9 @@ Prefer integration tests against a disposable PostgreSQL database when possible.
 - Add `UNIQUE` constraints for natural uniqueness rules.
 - Use `NULLIF` for divisions where denominator can be zero.
 
-## Python style
-
-- Keep import scripts idempotent where possible.
-- Separate database models from Pydantic response schemas.
-- Keep data transformation logic in services or scripts, not inside route functions.
-- Avoid notebooks as the source of truth for ingestion or feature engineering.
-- Make ML datasets rebuildable through scripts.
-
 ## Do not do
 
-- Do not store TERYT codes as integers.
+- Do not store TERC identifiers as integers.
 - Do not join regions by names.
 - Do not put all GUS/BDL variables into one source-of-truth wide table.
 - Do not mix raw election facts with political interpretations.
@@ -514,18 +419,3 @@ Prefer integration tests against a disposable PostgreSQL database when possible.
 - Do not silently change the percentage convention from percentage points to fractions.
 - Do not remove stable municipalities from source data; they are needed as a contrast class for
   modeling.
-
-## Acceptance criteria for the first database implementation
-
-A first complete implementation should include:
-
-1. Docker Compose with PostgreSQL.
-2. Alembic configured and runnable.
-3. Schemas `raw`, `core`, `analytics`, and `ml` created.
-4. Core tables created with primary keys, foreign keys, unique constraints, and indexes.
-5. Analytics objects for bloc-level election summaries and political stability available or scaffolded.
-6. ML tables for modeling datasets, model runs, and predictions available or scaffolded.
-7. Seed data for initial political blocs.
-8. A minimal FastAPI app with `/health` and at least one read endpoint.
-9. Tests for schema existence and key constraints.
-10. README instructions explaining how to start the database, run migrations, and run tests.

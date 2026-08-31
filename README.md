@@ -3,7 +3,7 @@
 Monorepo foundation for analyzing electoral drift across Polish municipalities (`gminy`).
 
 The project starts with a PostgreSQL-backed database layer, Alembic migrations, and a
-minimal FastAPI service. `DB_CONFIG.md` is the source of truth for database schema
+minimal FastAPI service. `docs/database_schema.md` is the source of truth for database schema
 requirements.
 
 ## Requirements

@@ -32,17 +32,9 @@ The MVP should analyze data at the municipality level (`gmina`). This includes u
 rural, and urban-rural municipalities; cities with county rights are analyzed at their
 municipality level. Counties (`powiaty`) may be added later as a derived aggregation.
 
-Core concepts:
-
-- `region` — a territorial unit, initially a municipality (`gmina`), including a city with
-  county rights represented at municipality level,
-- `election` — a specific election, for example the 2023 parliamentary election or the second round of the 2020 presidential election,
-- `committee` — a specific committee, party list, party, or candidate in a given election,
-- `political_bloc` — a normalized analytical bloc, for example `pis_bloc`, `ko_bloc`, `left_bloc`, `other`,
-- `socioeconomic_observation` — a value of a structural variable for a region in a given year,
-- `political_drift` — a change in support, margin, or winning bloc in a region across elections.
-
-Do not assume that party or committee names are stable over time. Committees and candidates must be mapped to normalized political blocs.
+Use the canonical domain language in `CONTEXT.md` when naming concepts in code, tests,
+documentation, issues, and plans. Resolve any conflicting or newly overloaded term before
+implementation.
 
 ## Target technology stack
 
@@ -110,15 +102,17 @@ electoral-drift-ml/
 │   └── processed/
 │
 ├── docs/
-│   ├── DB_CONFIG.md
-│   ├── database_design.md
-│   ├── ml_methodology.md
-│   └── api_contract.md
+│   ├── adr/
+│   ├── agents/
+│   ├── api_contract.md
+│   ├── database_schema.md
+│   ├── flow.md
+│   ├── ingestion.md
+│   └── teryt_mapping.md
 │
 ├── infra/
 ├── docker-compose.yml
 ├── AGENTS.md
-├── DB_CONFIG.md
 ├── README.md
 └── .env.example
 ```
@@ -168,7 +162,8 @@ Responsibilities:
 - schema definitions for `raw`, `core`, `analytics`, and `ml`,
 - dictionary seed data, for example `political_blocs`, if needed.
 
-The detailed database design lives in `DB_CONFIG.md`. Treat `DB_CONFIG.md` as the source of requirements for database schema implementation.
+The detailed database design lives in `docs/database_schema.md`. Treat it as the source of requirements
+for database schema implementation.
 
 ### `packages/ingestion`
 
@@ -223,10 +218,10 @@ Facts and interpretations must be separated. Example:
 
 ## Database design rules
 
-Follow `DB_CONFIG.md` when designing the database. Most important summarized requirements:
+Follow `docs/database_schema.md` when designing the database. Most important summarized requirements:
 
 - PostgreSQL is the main database.
-- Store TERYT codes as text, never as integers.
+- Store TERC identifiers in `teryt_code` fields as text, never as integers.
 - Relationships between tables must be explicit through foreign keys.
 - Each table should have one responsibility.
 - Store election data separately from annual structural data.
@@ -449,15 +444,23 @@ Useful early tests:
 
 Keep documentation in Markdown.
 
-Important files:
+Route documentation by change:
 
-- `AGENTS.md` — instructions for Codex and high-level repository guidance,
-- `DB_CONFIG.md` — detailed database design documentation,
-- `README.md` — project setup and run instructions,
-- `docs/api_contract.md` — API contract once endpoints are defined,
-- `docs/ml_methodology.md` — ML methodology once the pipeline is built.
+- **Domain language:** read `CONTEXT.md` before naming or changing electoral, territorial, or
+  socioeconomic concepts.
+- **Architectural decisions:** read relevant accepted records in `docs/adr/` before changing a
+  documented boundary or reversing a decision. Surface conflicts in the plan.
+- **Database schema:** read `docs/database_schema.md`; it is the schema requirements source.
+- **Public HTTP behaviour:** read and update `docs/api_contract.md` with endpoint contract changes.
+- **Ingestion behaviour:** read and update `docs/ingestion.md` with pipeline or command changes.
+- **Territorial mapping:** read `docs/teryt_mapping.md` for PKW, TERYT, TERC, historical-region,
+  or canonical-region work.
+- **Application flow:** read and update `docs/flow.md` when a feature changes data flow or component
+  responsibilities. Preserve its Polish prose and Mermaid labels, and add flow-log entries in Polish.
+- **Developer setup:** read and update `README.md` when commands, dependencies, or local setup change.
 
-`DB_CONFIG.md` should remain the technical database document. Do not move the full database documentation into `AGENTS.md`; `AGENTS.md` should only reference `DB_CONFIG.md` as the schema requirements source.
+Keep detailed contracts in their routed documents and point to them from `AGENTS.md` instead of
+duplicating them here.
 
 ## Acceptance criteria for the first setup
 
@@ -472,7 +475,7 @@ The first project setup should eventually allow:
 7. preserving a monorepo structure with `apps/` and `packages/`,
 8. using `uv` for Python dependencies,
 9. having `.env.example`,
-10. having documentation in `README.md`, `AGENTS.md`, and `DB_CONFIG.md`.
+10. having documentation in `README.md`, `AGENTS.md`, and `docs/database_schema.md`.
 
 ## Do not do unless needed
 
@@ -500,3 +503,17 @@ Work iteratively:
 10. dashboard.
 
 Every change should support the core project goal: analyzing and modeling regional electoral shifts in Poland.
+
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked as local Markdown files under `.scratch/<feature>/`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The default five-role triage vocabulary is used. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Domain documentation uses the single-context layout. See `docs/agents/domain.md`.
