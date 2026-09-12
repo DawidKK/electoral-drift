@@ -30,11 +30,15 @@ aktualizowany po każdym dodanym feature.
 flowchart TD
     subgraph sources["Źródła danych"]
         raw_elections["PKW Sejm CSV<br/>data/raw/elections/sejm"]
+        raw_unemployment["GUS/BDL P2670<br/>data/raw/features"]
         raw_terc["Historyczne TERC<br/>data/raw/teryt/terc"]
         interim_totals["Interim<br/>gmina-totals"]
         interim_results["Interim<br/>committee-results"]
         processed_regions["Processed<br/>regions.csv"]
         processed_results["Processed<br/>year-sejm-gminy.csv"]
+        interim_unemployment["Interim P2670<br/>long municipality-year"]
+        processed_unemployment["Processed P2670<br/>TERC validated"]
+        historical_regions["Processed<br/>historyczny słownik regionów"]
     end
 
     subgraph ingestion["packages/ingestion"]
@@ -42,6 +46,10 @@ flowchart TD
         sejm_transform["Transformacja raw -> interim<br/>sejm_interim.py"]
         processed_transform["Transformacja interim -> processed<br/>sejm_processed.py"]
         elections_import["Import wyborów<br/>electoral_ingestion/elections.py"]
+        unemployment_interim_transform["P2670 raw -> interim<br/>bdl_unemployment.py"]
+        unemployment_processed_transform["P2670 interim -> processed<br/>bdl_unemployment.py"]
+        socioeconomic_import["Import P2670<br/>socioeconomic.py"]
+        terc_regions_transform["Słownik regionów<br/>terc_regions.py"]
     end
 
     subgraph db_pkg["packages/db"]
@@ -58,6 +66,9 @@ flowchart TD
         core_elections["core.elections"]
         core_committees["core.committees"]
         core_results["core.election_results"]
+        core_sources["core.data_sources"]
+        core_variables["core.socioeconomic_variables"]
+        core_observations["core.socioeconomic_observations"]
     end
 
     subgraph api["apps/api"]
@@ -121,8 +132,18 @@ flowchart TD
     processed_transform --> processed_results
     processed_regions --> regions_import
     processed_results --> elections_import
+    raw_unemployment --> unemployment_interim_transform
+    unemployment_interim_transform --> interim_unemployment
+    interim_unemployment --> unemployment_processed_transform
+    raw_terc --> unemployment_processed_transform
+    unemployment_processed_transform --> processed_unemployment
+    raw_terc --> terc_regions_transform
+    terc_regions_transform --> historical_regions
+    historical_regions --> regions_import
+    processed_unemployment --> socioeconomic_import
     regions_import --> db_session
     elections_import --> db_session
+    socioeconomic_import --> db_session
     db_models --> db_session
     alembic --> postgres
     core_regions --> canonical_batch
@@ -135,6 +156,9 @@ flowchart TD
     db_session --> core_elections
     db_session --> core_committees
     db_session --> core_results
+    db_session --> core_sources
+    db_session --> core_variables
+    db_session --> core_observations
 
     client --> api_main
     api_main --> health_router
@@ -198,6 +222,8 @@ Najważniejsze zasady aktualnego flow:
 - `packages/db` jest wspólną warstwą dla ingestion i API.
 - Migracje Alembic definiują strukturę PostgreSQL.
 - Wyniki wyborów zależą od wcześniej zaimportowanych regionów i seedowanych bloków politycznych.
+- Obserwacje P2670 zależą od wspólnego historycznego słownika regionów i trafiają do
+  znormalizowanych tabel społeczno-ekonomicznych w `core`.
 - Komenda `electoral-rebuild-canonical-regions` grupuje historyczne wersje TERYT po pierwszych
   sześciu cyfrach i przypisuje im wspólny `canonical_region_id`.
 - Pełne siedmiocyfrowe kody pozostają w `core.regions`; canonical region jest dodatkową warstwą
@@ -214,6 +240,43 @@ Najważniejsze zasady aktualnego flow:
 - Frontend/dashboard nie jest jeszcze zaimplementowany.
 
 ## Logi Flow
+
+### 2026-09-13 - GUS/BDL P2670: Udział Bezrobotnych W Ludności W Wieku Produkcyjnym
+
+Dodano odtwarzalny pipeline dla rocznego wskaźnika bezrobocia P2670 na poziomie całych gmin.
+Szeroki plik BDL jest normalizowany do long, sprawdzany względem historycznych snapshotów TERC,
+a następnie atomowo importowany do tabel społeczno-ekonomicznych w `core`.
+
+```mermaid
+flowchart LR
+    raw["Raw BDL P2670<br/>2014-2025"]
+    interim["Interim<br/>TERC + rok + wartość"]
+    terc["Historyczne TERC<br/>roczne snapshoty"]
+    regions["Wspólny słownik<br/>core.regions"]
+    processed["Processed<br/>zwalidowane obserwacje"]
+    variable["core.socioeconomic_variables"]
+    source["core.data_sources"]
+    observations["core.socioeconomic_observations"]
+
+    raw --> interim
+    terc --> regions
+    interim --> processed
+    terc --> processed
+    regions --> observations
+    processed --> observations
+    processed --> variable
+    processed --> source
+```
+
+Opis diagramu:
+
+- Raw pozostaje niezmienione, a pierwszy etap rozwija lata do formatu long.
+- Agregaty terytorialne i części gmin typu `4` i `5` są raportowane i pomijane.
+- Każda obserwacja musi pasować do pełnego kodu w rocznym snapshotcie TERC.
+- Chełmiec w 2018 roku ma jeden jawny wyjątek walidowany przez snapshot `2018-01-02`.
+- Historyczny słownik regionów jest budowany niezależnie od konkretnej zmiennej.
+- Import tworzy definicję P2670 i proweniencję źródła, a konflikty wycofują całą transakcję.
+- Warszawa otrzymuje obserwację całego miasta; wartość nie jest kopiowana do dzielnic.
 
 ### 2026-08-04 - Canonical Regions: Wspólna Tożsamość Historycznych Kodów TERYT
 

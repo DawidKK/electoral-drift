@@ -186,7 +186,7 @@ Required columns:
 
 Expected initial variable codes may include:
 
-- `unemployment_rate`
+- `registered_unemployed_working_age_share`
 - `income_per_capita`
 - `dominicantes`
 - `communicantes`

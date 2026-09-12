@@ -56,6 +56,10 @@ _Avoid_: Feature
 The value of one socioeconomic variable for one region and year, with its source provenance.
 _Avoid_: Election result, model feature
 
+**Registered unemployment working-age share**:
+The percentage of registered unemployed persons in the working-age population of a region. It is distinct from the official registered unemployment rate, whose denominator is the economically active civilian population.
+_Avoid_: Unemployment rate, registered unemployment rate
+
 ## Electoral change
 
 **Political drift**:

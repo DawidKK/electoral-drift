@@ -143,13 +143,18 @@ Podział administracyjny Polski zmienia się. Gmina może:
 Aktualny słownik nie zawsze zawiera jednostkę istniejącą podczas dawnych wyborów. Nie powinno się
 więc opisywać wyborów z 2015 roku za pomocą samego słownika z 2026 roku.
 
-Projekt używa osobnych snapshotów:
+Projekt używa osobnych snapshotów. Wybory korzystają z lat wyborczych, a roczne obserwacje
+społeczno-ekonomiczne z pełnej serii 2014–2025:
 
 ```text
 data/raw/teryt/terc/
+├── 2014-01-01.csv
 ├── 2015-01-01.csv
+├── ...
 ├── 2019-01-01.csv
-└── 2023-01-01.csv
+├── 2023-01-01.csv
+├── 2025-01-01.csv
+└── 2018-01-02.csv  # jawny wyjątek Chełmca
 ```
 
 Mapowanie wygląda następująco:
@@ -162,6 +167,11 @@ wyniki Sejmu 2023 → TERC 2023-01-01
 
 Dzięki temu nazwa, rodzaj gminy i pełny kod odpowiadają podziałowi administracyjnemu właściwemu
 dla danego okresu.
+
+Dla obserwacji GUS/BDL P2670 z roku `Y` pipeline wymaga dokładnego `STAN_NA=Y-01-01` i pełnego
+siedmiocyfrowego dopasowania. Jedyny jawny wyjątek dotyczy Chełmca (`1210022`) w 2018 roku:
+snapshot z 1 stycznia zawiera krótkotrwały kod typu `3`, a snapshot z 2 stycznia przywrócony kod
+typu `2`, pod którym BDL publikuje obserwację roczną. Wyjątek nie uruchamia ogólnego fallbacku.
 
 ## Co dzieje się, gdy rodzaj gminy się zmienia?
 
@@ -283,6 +293,9 @@ Takie podejście zapobiega cichym, trudnym do wykrycia błędom geograficznym.
   i zachowuje sześciocyfrowy kod PKW;
 - `electoral_ingestion/sejm_processed.py` — wczytuje historyczny TERC, wykonuje ścisłe mapowanie
   i buduje pliki gotowe do importu;
+- `electoral_ingestion/terc.py` — waliduje dokładną datę snapshotu i pełne kody TERC;
+- `electoral_ingestion/terc_regions.py` — buduje wspólny historyczny słownik regionów;
+- `electoral_ingestion/bdl_unemployment.py` — waliduje roczne obserwacje P2670;
 - `data/raw/teryt/terc` — niezmienione snapshoty TERC;
 - `data/interim/elections/sejm` — oczyszczone dane źródłowe;
 - `data/processed/elections/sejm` — dane z pełnymi kodami gotowe do bazy.
@@ -291,7 +304,7 @@ Takie podejście zapobiega cichym, trudnym do wykrycia błędom geograficznym.
 
 1. Kod TERYT jest zawsze tekstem, nigdy liczbą — dzięki temu nie tracimy zer wiodących.
 2. Nie dopisujemy siódmej cyfry na podstawie nazwy lub zgadywania.
-3. Każde wybory korzystają ze słownika TERC właściwego dla swojego roku.
+3. Każde wybory i każda obserwacja roczna korzystają ze słownika TERC właściwego dla swojego roku.
 4. Raw pozostaje niezmienione; filtrowanie odbywa się dopiero w interim.
 5. Zagranica i statki nie są błędnymi głosami — są poza zakresem analizy gminnej.
 6. Historyczne kody łączymy analitycznie tylko przez jawny, odtwarzalny crosswalk.

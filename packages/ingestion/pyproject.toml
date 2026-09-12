@@ -10,9 +10,13 @@ dependencies = [
 
 [project.scripts]
 electoral-import-elections = "electoral_ingestion.cli:import_elections_command"
+electoral-import-bdl-unemployment = "electoral_ingestion.cli:import_bdl_unemployment_command"
 electoral-import-regions = "electoral_ingestion.cli:import_regions_command"
+electoral-transform-bdl-unemployment-interim = "electoral_ingestion.cli:transform_bdl_unemployment_interim_command"
+electoral-transform-bdl-unemployment-processed = "electoral_ingestion.cli:transform_bdl_unemployment_processed_command"
 electoral-transform-sejm-interim = "electoral_ingestion.cli:transform_sejm_interim_command"
 electoral-transform-sejm-processed = "electoral_ingestion.cli:transform_sejm_processed_command"
+electoral-transform-terc-regions = "electoral_ingestion.cli:transform_terc_regions_command"
 
 [build-system]
 requires = ["hatchling"]

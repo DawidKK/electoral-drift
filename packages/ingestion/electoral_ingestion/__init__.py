@@ -10,6 +10,7 @@ from electoral_ingestion.elections import (
     load_election_results_csv,
 )
 from electoral_ingestion.regions import RegionImportSummary, import_regions, load_regions_csv
+from electoral_ingestion.sejm_processed import transform_sejm_interim_to_processed
 
 __all__ = [
     "ElectionResultImportSummary",
@@ -18,7 +19,5 @@ __all__ = [
     "import_regions",
     "load_election_results_csv",
     "load_regions_csv",
+    "transform_sejm_interim_to_processed",
 ]
-from electoral_ingestion.sejm_processed import transform_sejm_interim_to_processed
-
-__all__ = ["transform_sejm_interim_to_processed"]

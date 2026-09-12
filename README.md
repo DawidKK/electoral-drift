@@ -106,6 +106,35 @@ uv run electoral-rebuild-canonical-regions
 The command links historical seven-digit TERYT versions that share the same six-digit
 municipality base. It preserves every source TERYT code and can be run repeatedly.
 
+Transform and import the GUS/BDL P2670 registered-unemployment share:
+
+```bash
+uv run electoral-transform-bdl-unemployment-interim \
+  data/raw/features/bezrobocie_2014_2025.csv \
+  data/interim/features/bezrobocie_2014_2025-long.csv
+
+uv run electoral-transform-terc-regions \
+  data/raw/teryt/terc \
+  data/processed/regions/terc-2014-2025.csv
+
+uv run electoral-transform-bdl-unemployment-processed \
+  data/interim/features/bezrobocie_2014_2025-long.csv \
+  data/processed/features/bezrobocie_2014_2025-gminy.csv \
+  data/raw/teryt/terc
+
+uv run electoral-import-regions \
+  data/processed/regions/terc-2014-2025.csv
+
+uv run electoral-rebuild-canonical-regions
+
+uv run electoral-import-bdl-unemployment \
+  data/processed/features/bezrobocie_2014_2025-gminy.csv
+```
+
+The imported variable is `registered_unemployed_working_age_share`, expressed in percentage
+points. It is not the official registered unemployment rate. See `docs/ingestion.md` for the
+source contract, validation rules, provenance, and the declared 2018 Chełmiec TERC exception.
+
 Start the API locally:
 
 ```bash
