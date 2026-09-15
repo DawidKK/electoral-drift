@@ -1,0 +1,14 @@
+project_name: electoral-drift
+exclude:
+    - .git/
+    - .venv/
+    - venv/
+    - __pycache__/
+    - '**/*.pyc'
+    - .pytest_cache/
+    - .mypy_cache/
+repositories:
+    electoral-drift:
+        url: git@github.com:DawidKK/electoral-drift.git
+        config:
+            mode: upsert

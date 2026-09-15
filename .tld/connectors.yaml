@@ -1,0 +1,791 @@
+- view: analytics-schema
+  source: analytics-stability
+  target: analytics-queries
+  label: zasila rankingi
+  direction: forward
+  style: bezier
+  id: AP4kYQRg
+- view: analytics-schema
+  source: analytics-summary
+  target: regions-queries
+  label: zasila timeline
+  direction: forward
+  style: bezier
+  id: 2XKYmKqL
+- view: analytics-schema
+  source: analytics-summary
+  target: stability-batch
+  label: dostarcza chronologiczne wyniki
+  direction: forward
+  style: bezier
+  id: lW4EgQen
+- view: analytics-schema
+  source: core-election-facts
+  target: analytics-summary
+  label: agreguje wyniki do bloków
+  direction: forward
+  style: bezier
+  id: 02QrWKVd
+- view: analytics-schema
+  source: stability-batch
+  target: analytics-stability
+  label: atomowo zastępuje snapshot
+  direction: forward
+  style: bezier
+  id: ER4oW4Mx
+- view: analytics-schema
+  source: stability-batch
+  target: stability-calculator
+  label: liczy metryki per region
+  direction: forward
+  style: bezier
+  id: EmyWqKAX
+- view: api-analytics
+  source: analytics-queries
+  target: analytics-schemas
+  label: buduje DTO
+  direction: forward
+  style: bezier
+  id: GWyNlKqn
+- view: api-analytics
+  source: analytics-queries
+  target: analytics-stability
+  label: czyta snapshot
+  direction: forward
+  style: bezier
+  id: xjQngK1r
+- view: api-analytics
+  source: analytics-router
+  target: analytics-queries
+  label: wywołuje ranking lub filtr
+  direction: forward
+  style: bezier
+  id: xwy0MQEj
+- view: api-analytics
+  source: analytics-stability
+  target: core-regions
+  label: łączy nazwę i TERYT
+  direction: forward
+  style: bezier
+  id: Ex4zEKGM
+- view: api-analytics
+  source: api-db-session
+  target: analytics-queries
+  label: wstrzykuje sesję
+  direction: forward
+  style: bezier
+  id: YbKLE48G
+- view: api-elections
+  source: api-db-session
+  target: elections-queries
+  label: wstrzykuje sesję
+  direction: forward
+  style: bezier
+  id: mky13K3a
+- view: api-elections
+  source: core-election-results
+  target: core-election-dictionaries
+  label: łączy komitet i blok
+  direction: forward
+  style: bezier
+  id: 9ZQAVKV6
+- view: api-elections
+  source: core-election-results
+  target: core-regions
+  label: łączy region
+  direction: forward
+  style: bezier
+  id: gMK98QJ1
+- view: api-elections
+  source: elections-queries
+  target: core-election-results
+  label: czyta fakty
+  direction: forward
+  style: bezier
+  id: 0EKPByBW
+- view: api-elections
+  source: elections-queries
+  target: core-elections
+  label: czyta katalog
+  direction: forward
+  style: bezier
+  id: DWymd4e6
+- view: api-elections
+  source: elections-queries
+  target: elections-schemas
+  label: buduje DTO
+  direction: forward
+  style: bezier
+  id: eNKbPyJz
+- view: api-elections
+  source: elections-router
+  target: elections-queries
+  label: wywołuje use case
+  direction: forward
+  style: bezier
+  id: kpyGB4Wa
+- view: api-regions
+  source: api-db-session
+  target: regions-queries
+  label: wstrzykuje sesję
+  direction: forward
+  style: bezier
+  id: OWyVnybm
+- view: api-regions
+  source: regions-queries
+  target: analytics-summary
+  label: czyta timeline bloków
+  direction: forward
+  style: bezier
+  id: Geya5y2a
+- view: api-regions
+  source: regions-queries
+  target: core-canonical-regions
+  label: zwraca canonical_region_id
+  direction: forward
+  style: bezier
+  id: wpKvNKvZ
+- view: api-regions
+  source: regions-queries
+  target: core-election-facts
+  label: czyta wybory regionu
+  direction: forward
+  style: bezier
+  id: 5nKqb4Xa
+- view: api-regions
+  source: regions-queries
+  target: core-regions
+  label: czyta region
+  direction: forward
+  style: bezier
+  id: ZRyB0KYL
+- view: api-regions
+  source: regions-queries
+  target: regions-schemas
+  label: buduje DTO
+  direction: forward
+  style: bezier
+  id: 75QRAyLo
+- view: api-regions
+  source: regions-router
+  target: regions-queries
+  label: wywołuje use case
+  direction: forward
+  style: bezier
+  id: W0QM6KVM
+- view: api
+  source: analyst
+  target: api-main
+  label: wysyła request / odbiera JSON
+  direction: both
+  style: bezier
+  id: VAygJ47R
+- view: api
+  source: api-analytics
+  target: api-db-session
+  label: pobiera sesję
+  direction: forward
+  style: bezier
+  id: PqQwa4pn
+- view: api
+  source: api-db-session
+  target: db-package
+  label: deleguje cykl życia sesji
+  direction: forward
+  style: bezier
+  id: oXQ6myE9
+- view: api
+  source: api-elections
+  target: api-db-session
+  label: pobiera sesję
+  direction: forward
+  style: bezier
+  id: kYK2DyBE
+- view: api
+  source: api-main
+  target: api-analytics
+  label: rejestruje router
+  direction: forward
+  style: bezier
+  id: 2B4j9K1Z
+- view: api
+  source: api-main
+  target: api-elections
+  label: rejestruje router
+  direction: forward
+  style: bezier
+  id: 6x457QZW
+- view: api
+  source: api-main
+  target: api-health
+  label: rejestruje router
+  direction: forward
+  style: bezier
+  id: o2yeAyel
+- view: api
+  source: api-main
+  target: api-regions
+  label: rejestruje router
+  direction: forward
+  style: bezier
+  id: vOyl8y05
+- view: api
+  source: api-regions
+  target: api-db-session
+  label: pobiera sesję
+  direction: forward
+  style: bezier
+  id: xWy30QVo
+- view: core-schema
+  source: core-committees
+  target: core-elections
+  label: należy do wyborów
+  direction: forward
+  style: bezier
+  id: DbKdgQ6r
+- view: core-schema
+  source: core-committees
+  target: core-political-blocs
+  label: mapuje interpretację bloku
+  direction: forward
+  style: bezier
+  id: oV4XGKqe
+- view: core-schema
+  source: core-election-results
+  target: core-committees
+  label: wynik komitetu
+  direction: forward
+  style: bezier
+  id: Pg4O1QYj
+- view: core-schema
+  source: core-election-results
+  target: core-data-sources
+  label: opcjonalne pochodzenie
+  direction: forward
+  style: bezier
+  id: Mr4Z647W
+- view: core-schema
+  source: core-election-results
+  target: core-elections
+  label: wynik wyborów
+  direction: forward
+  style: bezier
+  id: nlyJRykE
+- view: core-schema
+  source: core-election-results
+  target: core-regions
+  label: wynik gminy
+  direction: forward
+  style: bezier
+  id: wk48EyXr
+- view: core-schema
+  source: core-regions
+  target: core-canonical-regions
+  label: należy do stabilnej tożsamości
+  direction: forward
+  style: bezier
+  id: aeyDly6l
+- view: core-schema
+  source: core-socioeconomic-observations
+  target: core-data-sources
+  label: pochodzenie pliku
+  direction: forward
+  style: bezier
+  id: o6Qp7yzx
+- view: core-schema
+  source: core-socioeconomic-observations
+  target: core-regions
+  label: obserwacja gminy
+  direction: forward
+  style: bezier
+  id: 9pQ7RyzJ
+- view: core-schema
+  source: core-socioeconomic-observations
+  target: core-socioeconomic-variables
+  label: wartość zmiennej
+  direction: forward
+  style: bezier
+  id: de4xeAy5
+- view: db-package
+  source: alembic
+  target: postgres
+  label: ewoluuje schemat
+  direction: forward
+  style: bezier
+  id: AP4kYYQR
+- view: db-package
+  source: canonical-batch
+  target: db-session
+  label: czyta i aktualizuje regiony
+  direction: forward
+  style: bezier
+  id: 2XKYYmKq
+- view: db-package
+  source: db-models
+  target: db-session
+  label: mapuje operacje ORM
+  direction: forward
+  style: bezier
+  id: lW4EPgKe
+- view: db-package
+  source: db-session
+  target: postgres
+  label: zarządza połączeniami i transakcjami
+  direction: forward
+  style: bezier
+  id: 02QrNWQV
+- view: db-package
+  source: pgadmin
+  target: postgres
+  label: administruje
+  direction: forward
+  style: bezier
+  id: ER4oEWQM
+- view: db-package
+  source: stability-batch
+  target: db-session
+  label: odtwarza snapshot analityczny
+  direction: forward
+  style: bezier
+  id: EmyWlqQA
+- view: electoral-drift
+  source: analyst
+  target: api
+  label: HTTP / JSON
+  direction: both
+  style: bezier
+  id: GWyNglQq
+- view: electoral-drift
+  source: api
+  target: db-package
+  label: wykonuje zapytania odczytowe
+  direction: forward
+  style: bezier
+  id: xjQnwgK1
+- view: electoral-drift
+  source: data-files
+  target: ingestion
+  label: raw → interim → processed
+  direction: forward
+  style: bezier
+  id: xwy0lMyE
+- view: electoral-drift
+  source: db-package
+  target: postgres
+  label: migruje, zapisuje i odczytuje
+  direction: forward
+  style: bezier
+  id: Ex4zPEQG
+- view: electoral-drift
+  source: gus-bdl
+  target: data-files
+  label: publikuje P2670
+  direction: forward
+  style: bezier
+  id: YbKLjEy8
+- view: electoral-drift
+  source: ingestion
+  target: db-package
+  label: używa modeli i sesji
+  direction: forward
+  style: bezier
+  id: mky1g3K3
+- view: electoral-drift
+  source: pgadmin
+  target: postgres
+  label: administruje
+  direction: forward
+  style: bezier
+  id: 9ZQAOV4V
+- view: electoral-drift
+  source: pkw
+  target: data-files
+  label: publikuje CSV wyborcze
+  direction: forward
+  style: bezier
+  id: gMK998KJ
+- view: electoral-drift
+  source: quality-gates
+  target: api
+  label: weryfikuje
+  direction: forward
+  style: bezier
+  id: 0EKPPBKB
+- view: electoral-drift
+  source: quality-gates
+  target: db-package
+  label: weryfikuje
+  direction: forward
+  style: bezier
+  id: DWymYdye
+- view: ingestion
+  source: elections-import
+  target: db-package
+  label: zapisuje wybory i wyniki
+  direction: forward
+  style: bezier
+  id: eNKbmPQJ
+- view: ingestion
+  source: ingestion-cli
+  target: sejm-pipeline
+  label: uruchamia transformacje
+  direction: forward
+  style: bezier
+  id: kpyG7ByW
+- view: ingestion
+  source: ingestion-cli
+  target: terc-pipeline
+  label: buduje słownik historyczny
+  direction: forward
+  style: bezier
+  id: OWyV3nQb
+- view: ingestion
+  source: ingestion-cli
+  target: unemployment-pipeline
+  label: uruchamia transformacje
+  direction: forward
+  style: bezier
+  id: Geyae5y2
+- view: ingestion
+  source: regions-import
+  target: db-package
+  label: zapisuje regiony
+  direction: forward
+  style: bezier
+  id: wpKvWN4v
+- view: ingestion
+  source: sejm-pipeline
+  target: elections-import
+  label: dostarcza wyniki gmin
+  direction: forward
+  style: bezier
+  id: 5nKqebKX
+- view: ingestion
+  source: sejm-pipeline
+  target: regions-import
+  label: dostarcza regions.csv
+  direction: forward
+  style: bezier
+  id: ZRyBn0yY
+- view: ingestion
+  source: socioeconomic-import
+  target: db-package
+  label: zapisuje P2670
+  direction: forward
+  style: bezier
+  id: 75QRLA4L
+- view: ingestion
+  source: terc-pipeline
+  target: regions-import
+  label: dostarcza słownik regionów
+  direction: forward
+  style: bezier
+  id: W0QMg64V
+- view: ingestion
+  source: unemployment-pipeline
+  target: socioeconomic-import
+  label: dostarcza obserwacje
+  direction: forward
+  style: bezier
+  id: VAygYJK7
+- view: ml-schema
+  source: alembic
+  target: ml-model-runs
+  label: tworzy tabelę
+  direction: forward
+  style: bezier
+  id: PqQwNayp
+- view: ml-schema
+  source: alembic
+  target: ml-modeling-dataset
+  label: tworzy tabelę
+  direction: forward
+  style: bezier
+  id: oXQ66mQE
+- view: ml-schema
+  source: ml-model-runs
+  target: ml-predictions
+  label: identyfikuje model
+  direction: forward
+  style: bezier
+  id: kYK26DKB
+- view: ml-schema
+  source: ml-modeling-dataset
+  target: ml-predictions
+  label: identyfikuje region i wybory
+  direction: forward
+  style: bezier
+  id: 2B4jg9y1
+- view: postgres
+  source: alembic
+  target: analytics-schema
+  label: tworzy widok i tabelę
+  direction: forward
+  style: bezier
+  id: 6x45M74Z
+- view: postgres
+  source: alembic
+  target: core-schema
+  label: tworzy i migruje
+  direction: forward
+  style: bezier
+  id: o2yemAye
+- view: postgres
+  source: alembic
+  target: ml-schema
+  label: tworzy tabele
+  direction: forward
+  style: bezier
+  id: vOylx8y0
+- view: postgres
+  source: api-query-services
+  target: analytics-schema
+  label: czyta timeline i stabilność
+  direction: forward
+  style: bezier
+  id: xWy3q0KV
+- view: postgres
+  source: api-query-services
+  target: core-schema
+  label: czyta fakty i słowniki
+  direction: forward
+  style: bezier
+  id: DbKdXgK6
+- view: postgres
+  source: canonical-batch
+  target: core-schema
+  label: odtwarza mapowanie canonical
+  direction: forward
+  style: bezier
+  id: oV4XjGQq
+- view: postgres
+  source: db-session
+  target: core-schema
+  label: zapisuje i odczytuje
+  direction: forward
+  style: bezier
+  id: Pg4OX1yY
+- view: postgres
+  source: stability-batch
+  target: analytics-schema
+  label: czyta summary i zapisuje snapshot
+  direction: forward
+  style: bezier
+  id: Mr4Z76y7
+- view: quality-gates
+  source: pytest
+  target: import-linter
+  label: uzupełnia kontrolę architektury
+  direction: forward
+  style: bezier
+  id: nlyJjRyk
+- view: quality-gates
+  source: python-api-tdd
+  target: mypy
+  label: sprawdza typy API i DB
+  direction: forward
+  style: bezier
+  id: wk48ZEQX
+- view: quality-gates
+  source: python-api-tdd
+  target: pytest
+  label: uruchamia testy
+  direction: forward
+  style: bezier
+  id: aeyDqlQ6
+- view: quality-gates
+  source: python-api-tdd
+  target: ruff
+  label: sprawdza lint i format
+  direction: forward
+  style: bezier
+  id: o6Qpo7yz
+- view: quality-gates
+  source: python-change
+  target: python-api-tdd
+  label: obowiązkowy workflow
+  direction: forward
+  style: bezier
+  id: 9pQ7ORQz
+- view: root
+  source: analyst
+  target: electoral-drift
+  label: odpytuje dane i analitykę
+  direction: forward
+  style: bezier
+  id: de4x1Ay5
+- view: root
+  source: gus-bdl
+  target: electoral-drift
+  label: dostarcza dane społeczno-ekonomiczne
+  direction: forward
+  style: bezier
+  id: AP4kxYyR
+- view: root
+  source: pkw
+  target: electoral-drift
+  label: dostarcza wyniki wyborów
+  direction: forward
+  style: bezier
+  id: 2XKYmmKq
+- view: sejm-pipeline
+  source: interim-results
+  target: sejm-processed-transform
+  label: dostarcza głosy
+  direction: forward
+  style: bezier
+  id: lW4E2gye
+- view: sejm-pipeline
+  source: interim-totals
+  target: sejm-processed-transform
+  label: dostarcza sumy
+  direction: forward
+  style: bezier
+  id: 02Qr0W4V
+- view: sejm-pipeline
+  source: processed-election-results
+  target: elections-import
+  label: wejście importu
+  direction: forward
+  style: bezier
+  id: ER4oAWQM
+- view: sejm-pipeline
+  source: processed-regions
+  target: regions-import
+  label: wejście importu
+  direction: forward
+  style: bezier
+  id: EmyWxqQA
+- view: sejm-pipeline
+  source: raw-elections
+  target: sejm-interim-transform
+  label: normalizuje eksport
+  direction: forward
+  style: bezier
+  id: GWyNzlyq
+- view: sejm-pipeline
+  source: raw-terc
+  target: sejm-processed-transform
+  label: mapuje sześciocyfrowy PKW na pełny TERC
+  direction: forward
+  style: bezier
+  id: xjQnEgy1
+- view: sejm-pipeline
+  source: sejm-interim-transform
+  target: interim-results
+  label: zapisuje wyniki komitetów
+  direction: forward
+  style: bezier
+  id: xwy06MKE
+- view: sejm-pipeline
+  source: sejm-interim-transform
+  target: interim-totals
+  label: zapisuje sumy gmin
+  direction: forward
+  style: bezier
+  id: Ex4zaEKG
+- view: sejm-pipeline
+  source: sejm-processed-transform
+  target: processed-election-results
+  label: tworzy importer-ready fakty
+  direction: forward
+  style: bezier
+  id: YbKL2Ey8
+- view: sejm-pipeline
+  source: sejm-processed-transform
+  target: processed-regions
+  label: tworzy słownik
+  direction: forward
+  style: bezier
+  id: de4x1Wy5
+- view: terc-pipeline
+  source: historical-regions-file
+  target: regions-import
+  label: wejście importu
+  direction: forward
+  style: bezier
+  id: AP4kx0yR
+- view: terc-pipeline
+  source: historical-regions-transform
+  target: historical-regions-file
+  label: zapisuje importer-ready CSV
+  direction: forward
+  style: bezier
+  id: 2XKYmnKq
+- view: terc-pipeline
+  source: raw-terc
+  target: terc-loader
+  label: czyta dokładny STAN_NA
+  direction: forward
+  style: bezier
+  id: lW4E2rye
+- view: terc-pipeline
+  source: regions-import
+  target: core-regions
+  label: insert lub zgodny no-op
+  direction: forward
+  style: bezier
+  id: 02Qr0d4V
+- view: terc-pipeline
+  source: terc-loader
+  target: historical-regions-transform
+  label: zwraca wspierane typy regionów
+  direction: forward
+  style: bezier
+  id: ER4oAZQM
+- view: unemployment-pipeline
+  source: core-regions
+  target: socioeconomic-import
+  label: musi zawierać wszystkie TERC
+  direction: forward
+  style: bezier
+  id: EmyWxJQA
+- view: unemployment-pipeline
+  source: interim-unemployment
+  target: unemployment-processed-transform
+  label: dostarcza obserwacje
+  direction: forward
+  style: bezier
+  id: GWyNzxyq
+- view: unemployment-pipeline
+  source: processed-unemployment
+  target: socioeconomic-import
+  label: wejście importu
+  direction: forward
+  style: bezier
+  id: xjQnE5y1
+- view: unemployment-pipeline
+  source: raw-terc
+  target: unemployment-processed-transform
+  label: waliduje TERC dla roku
+  direction: forward
+  style: bezier
+  id: xwy06xKE
+- view: unemployment-pipeline
+  source: raw-unemployment
+  target: unemployment-interim-transform
+  label: normalizuje szeroki CSV
+  direction: forward
+  style: bezier
+  id: Ex4zarKG
+- view: unemployment-pipeline
+  source: socioeconomic-import
+  target: core-socioeconomic
+  label: atomowy insert lub no-op
+  direction: forward
+  style: bezier
+  id: YbKL2Vy8
+- view: unemployment-pipeline
+  source: unemployment-interim-transform
+  target: interim-unemployment
+  label: zapisuje long
+  direction: forward
+  style: bezier
+  id: mky15wy3
+- view: unemployment-pipeline
+  source: unemployment-processed-transform
+  target: processed-unemployment
+  label: zapisuje zwalidowane obserwacje
+  direction: forward
+  style: bezier
+  id: 9ZQAJRKV

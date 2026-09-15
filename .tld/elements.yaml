@@ -1,0 +1,827 @@
+alembic:
+  name: Migracje Alembic
+  kind: component
+  description: Tworzą schematy i obiekty PostgreSQL.
+  has_view: false
+  placements:
+    - parent: db-package
+      position_x: 300
+      position_y: 300
+    - parent: postgres
+      position_y: 180
+    - parent: ml-schema
+      position_y: 180
+analyst:
+  name: Analityk / klient HTTP
+  kind: person
+  has_view: false
+  placements:
+    - parent: root
+      position_x: -600
+    - parent: electoral-drift
+      position_x: 1500
+    - parent: api
+      position_y: 150
+analytics-queries:
+  name: AnalyticsQueries
+  kind: component
+  description: Odczytuje i filtruje gotowy snapshot stabilności.
+  technology: sqlalchemy
+  has_view: false
+  placements:
+    - parent: api-analytics
+      position_x: 300
+      position_y: 120
+    - parent: analytics-schema
+      position_x: 1200
+analytics-router:
+  name: Analytics router
+  kind: component
+  description: GET /analytics/stability-ranking i /swing-counties.
+  technology: fastapi
+  has_view: false
+  placements:
+    - parent: api-analytics
+      position_y: 120
+analytics-schema:
+  name: Schemat analytics
+  kind: database
+  description: Widok agregujący i snapshot stabilności.
+  technology: postgresql
+  has_view: true
+  placements:
+    - parent: postgres
+      position_x: 300
+      position_y: 240
+analytics-schemas:
+  name: Stability DTO
+  kind: component
+  description: Publiczny kontrakt metryk stabilności.
+  has_view: false
+  placements:
+    - parent: api-analytics
+      position_x: 600
+analytics-stability:
+  name: analytics.region_political_stability
+  kind: database
+  description: Atomowo zastępowany snapshot per historyczny region_id.
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: api-analytics
+      position_x: 600
+      position_y: 180
+    - parent: analytics-schema
+      position_x: 900
+      position_y: 120
+analytics-summary:
+  name: analytics.region_election_summary
+  kind: database
+  description: Widok agregujący wyniki komitetów do bloków.
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: api-regions
+      position_x: 600
+      position_y: 480
+    - parent: analytics-schema
+      position_x: 300
+      position_y: 120
+api:
+  name: FastAPI API
+  kind: container
+  description: Publiczny odczyt regionów, wyborów, timeline i stabilności.
+  technology: fastapi
+  has_view: true
+  placements:
+    - parent: electoral-drift
+      position_x: 1200
+      position_y: -130
+api-analytics:
+  name: Analytics
+  kind: component
+  description: Ranking stabilności oraz gminy swing/emerging shift.
+  has_view: true
+  placements:
+    - parent: api
+      position_x: 600
+      position_y: 360
+api-db-session:
+  name: Request-scoped DB Session
+  kind: component
+  description: infrastructure/database.py udostępnia sesję na czas requestu.
+  technology: sqlalchemy
+  has_view: false
+  placements:
+    - parent: api
+      position_x: 900
+      position_y: 240
+    - parent: api-regions
+      position_y: 360
+    - parent: api-elections
+      position_y: 360
+    - parent: api-analytics
+      position_y: 360
+api-elections:
+  name: Elections
+  kind: component
+  description: Katalog wyborów i wyniki komitetów.
+  has_view: true
+  placements:
+    - parent: api
+      position_x: 600
+      position_y: 240
+api-health:
+  name: Health
+  kind: component
+  description: GET /health bez dostępu do bazy.
+  has_view: false
+  placements:
+    - parent: api
+      position_x: 600
+api-main:
+  name: Composition root
+  kind: component
+  description: app/main.py rejestruje kompletne routery feature’ów.
+  technology: fastapi
+  has_view: false
+  placements:
+    - parent: api
+      position_x: 300
+      position_y: 150
+api-query-services:
+  name: API query services
+  kind: component
+  technology: sqlalchemy
+  has_view: false
+  placements:
+    - parent: postgres
+      position_x: 900
+      position_y: 180
+api-regions:
+  name: Regions
+  kind: component
+  description: Regiony, wybory regionu i timeline bloków.
+  has_view: true
+  placements:
+    - parent: api
+      position_x: 600
+      position_y: 120
+canonical-batch:
+  name: Canonical regions batch
+  kind: component
+  description: electoral-rebuild-canonical-regions
+  technology: python
+  has_view: false
+  placements:
+    - parent: db-package
+      position_x: 600
+      position_y: 60
+    - parent: postgres
+      position_x: 600
+      position_y: 240
+core-canonical-regions:
+  name: core.canonical_regions
+  kind: database
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: api-regions
+      position_x: 600
+      position_y: 240
+    - parent: core-schema
+core-committees:
+  name: committees
+  kind: database
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: core-schema
+      position_x: 600
+      position_y: 240
+core-data-sources:
+  name: data_sources
+  kind: database
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: core-schema
+      position_x: 600
+      position_y: 480
+core-election-dictionaries:
+  name: core.committees + political_blocs
+  kind: database
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: api-elections
+      position_x: 900
+      position_y: 240
+core-election-facts:
+  name: core.elections + election_results
+  kind: database
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: api-regions
+      position_x: 600
+      position_y: 360
+    - parent: analytics-schema
+      position_y: 120
+core-election-results:
+  name: core.election_results
+  kind: database
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: api-elections
+      position_x: 600
+      position_y: 240
+    - parent: core-schema
+      position_x: 900
+      position_y: 120
+core-elections:
+  name: core.elections
+  kind: database
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: api-elections
+      position_x: 600
+      position_y: 120
+    - parent: core-schema
+      position_y: 240
+core-political-blocs:
+  name: political_blocs
+  kind: database
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: core-schema
+      position_x: 300
+      position_y: 240
+core-regions:
+  name: core.regions
+  kind: database
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: api-regions
+      position_x: 600
+      position_y: 120
+    - parent: api-elections
+      position_x: 900
+      position_y: 120
+    - parent: api-analytics
+      position_x: 900
+      position_y: 180
+    - parent: terc-pipeline
+      position_x: 1500
+      position_y: 120
+    - parent: unemployment-pipeline
+      position_x: 1800
+    - parent: core-schema
+      position_x: 300
+core-schema:
+  name: Schemat core
+  kind: database
+  description: Znormalizowane fakty i słowniki.
+  technology: postgresql
+  has_view: true
+  placements:
+    - parent: postgres
+      position_x: 300
+      position_y: 60
+core-socioeconomic:
+  name: Socioeconomic facts
+  kind: database
+  description: data_sources, socioeconomic_variables i socioeconomic_observations.
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: unemployment-pipeline
+      position_x: 1800
+      position_y: 240
+core-socioeconomic-observations:
+  name: socioeconomic_observations
+  kind: database
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: core-schema
+      position_x: 900
+      position_y: 480
+core-socioeconomic-variables:
+  name: socioeconomic_variables
+  kind: database
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: core-schema
+      position_x: 300
+      position_y: 480
+data-files:
+  name: Repozytorium plików danych
+  kind: container
+  description: Wersjonowane lub odtwarzalne pliki raw, interim i processed.
+  has_view: false
+  placements:
+    - parent: electoral-drift
+      position_x: 300
+      position_y: 130
+db-models:
+  name: Modele ORM
+  kind: component
+  technology: sqlalchemy
+  has_view: false
+  placements:
+    - parent: db-package
+      position_x: 300
+      position_y: 60
+db-package:
+  name: Pakiet bazodanowy
+  kind: container
+  description: Modele, sesje, migracje i batchowe obliczenia analityczne.
+  technology: sqlalchemy
+  has_view: true
+  placements:
+    - parent: electoral-drift
+      position_x: 900
+      position_y: 130
+    - parent: api
+      position_x: 1200
+      position_y: 240
+    - parent: ingestion
+      position_x: 900
+      position_y: 180
+db-session:
+  name: SQLAlchemy Session / Engine
+  kind: component
+  technology: sqlalchemy
+  has_view: false
+  placements:
+    - parent: db-package
+      position_y: 180
+    - parent: postgres
+      position_x: 600
+      position_y: 60
+elections-import:
+  name: Import wyborów
+  kind: component
+  technology: sqlalchemy
+  has_view: false
+  placements:
+    - parent: ingestion
+      position_x: 600
+      position_y: 180
+    - parent: sejm-pipeline
+      position_x: 1500
+      position_y: 300
+elections-queries:
+  name: ElectionQueries
+  kind: component
+  description: Katalog wyborów oraz połączone fakty wyników.
+  technology: sqlalchemy
+  has_view: false
+  placements:
+    - parent: api-elections
+      position_x: 300
+      position_y: 120
+elections-router:
+  name: Elections router
+  kind: component
+  description: GET /elections i /{election_id}/results.
+  technology: fastapi
+  has_view: false
+  placements:
+    - parent: api-elections
+      position_y: 120
+elections-schemas:
+  name: Election DTO
+  kind: component
+  description: Pydantic schemas katalogu i wyniku komitetu.
+  has_view: false
+  placements:
+    - parent: api-elections
+      position_x: 600
+electoral-drift:
+  name: Electoral Drift
+  kind: system
+  description: Analiza i modelowanie zmian poparcia wyborczego na poziomie gmin.
+  has_view: true
+  placements:
+    - parent: root
+gus-bdl:
+  name: GUS / BDL
+  kind: external system
+  description: Źródło wskaźnika P2670 i kolejnych danych społeczno-ekonomicznych.
+  has_view: false
+  placements:
+    - parent: root
+      position_x: -600
+      position_y: 480
+    - parent: electoral-drift
+      position_y: 260
+historical-regions-file:
+  name: historyczne regions.csv
+  kind: database
+  has_view: false
+  placements:
+    - parent: terc-pipeline
+      position_x: 900
+      position_y: 120
+historical-regions-transform:
+  name: Historyczny słownik regionów
+  kind: component
+  description: terc_regions.py scala roczne snapshoty bez łączenia po nazwie.
+  technology: python
+  has_view: false
+  placements:
+    - parent: terc-pipeline
+      position_x: 600
+      position_y: 120
+import-linter:
+  name: Import Linter
+  kind: component
+  has_view: false
+  placements:
+    - parent: quality-gates
+      position_x: 900
+      position_y: 120
+ingestion:
+  name: Pipeline ingestion
+  kind: container
+  description: Waliduje i transformuje PKW, TERC oraz GUS/BDL, a następnie uruchamia importy batch.
+  technology: python
+  has_view: true
+  placements:
+    - parent: electoral-drift
+      position_x: 600
+      position_y: 130
+ingestion-cli:
+  name: Ingestion CLI
+  kind: component
+  description: Entry pointy transformacji i importów batch.
+  technology: python
+  has_view: false
+  placements:
+    - parent: ingestion
+      position_y: 180
+interim-results:
+  name: committee-results
+  kind: database
+  has_view: false
+  placements:
+    - parent: sejm-pipeline
+      position_x: 600
+      position_y: 180
+interim-totals:
+  name: gmina-totals
+  kind: database
+  has_view: false
+  placements:
+    - parent: sejm-pipeline
+      position_x: 600
+interim-unemployment:
+  name: Interim P2670
+  kind: database
+  has_view: false
+  placements:
+    - parent: unemployment-pipeline
+      position_x: 600
+ml-model-runs:
+  name: model_runs
+  kind: database
+  description: Metadane treningu; brak implementacji joba treningowego.
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: ml-schema
+      position_x: 300
+      position_y: 180
+ml-modeling-dataset:
+  name: modeling_dataset
+  kind: database
+  description: Odtwarzalny kontrakt zbioru modelowego; brak implementacji buildera.
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: ml-schema
+      position_x: 300
+ml-predictions:
+  name: predictions
+  kind: database
+  description: Predykcje modelu; brak implementacji producenta i API.
+  technology: postgresql
+  has_view: false
+  placements:
+    - parent: ml-schema
+      position_x: 600
+      position_y: 180
+ml-schema:
+  name: Schemat ml
+  kind: database
+  description: Tabele ML istnieją, ale packages/ml i job treningowy nie są jeszcze zaimplementowane.
+  technology: postgresql
+  has_view: true
+  placements:
+    - parent: postgres
+      position_x: 300
+      position_y: 420
+mypy:
+  name: mypy
+  kind: component
+  has_view: false
+  placements:
+    - parent: quality-gates
+      position_x: 600
+      position_y: 240
+pgadmin:
+  name: pgAdmin
+  kind: component
+  description: Narzędzie administracyjne uruchamiane przez Docker Compose.
+  has_view: false
+  placements:
+    - parent: electoral-drift
+      position_x: 1200
+      position_y: 390
+    - parent: db-package
+      position_x: 900
+      position_y: 420
+pkw:
+  name: PKW
+  kind: external system
+  description: Źródło plików CSV z wynikami wyborów do Sejmu.
+  has_view: false
+  placements:
+    - parent: root
+      position_x: -600
+      position_y: 240
+    - parent: electoral-drift
+postgres:
+  name: PostgreSQL
+  kind: database
+  description: Trwałe warstwy core, analytics i ml.
+  technology: postgresql
+  has_view: true
+  placements:
+    - parent: electoral-drift
+      position_x: 1200
+      position_y: 130
+    - parent: db-package
+      position_x: 900
+      position_y: 180
+processed-election-results:
+  name: year-sejm-gminy.csv
+  kind: database
+  has_view: false
+  placements:
+    - parent: sejm-pipeline
+      position_x: 1200
+      position_y: 300
+processed-regions:
+  name: regions.csv
+  kind: database
+  has_view: false
+  placements:
+    - parent: sejm-pipeline
+      position_x: 1200
+      position_y: 60
+processed-unemployment:
+  name: Processed P2670
+  kind: database
+  has_view: false
+  placements:
+    - parent: unemployment-pipeline
+      position_x: 1200
+      position_y: 120
+pytest:
+  name: pytest
+  kind: component
+  technology: pytest
+  has_view: false
+  placements:
+    - parent: quality-gates
+      position_x: 600
+python-api-tdd:
+  name: $python-api-tdd
+  kind: component
+  description: Plan → RED → GREEN → self-review.
+  has_view: false
+  placements:
+    - parent: quality-gates
+      position_x: 300
+      position_y: 120
+python-change:
+  name: Zmiana API / DB / ML
+  kind: component
+  has_view: false
+  placements:
+    - parent: quality-gates
+      position_y: 120
+quality-gates:
+  name: Bramki jakości
+  kind: component
+  description: TDD, pytest, Ruff, mypy oraz Import Linter dla zmian Python.
+  technology: pytest
+  has_view: true
+  placements:
+    - parent: electoral-drift
+      position_x: 900
+      position_y: -130
+raw-elections:
+  name: PKW Sejm CSV
+  kind: database
+  description: data/raw/elections/sejm
+  has_view: false
+  placements:
+    - parent: sejm-pipeline
+      position_y: 120
+raw-terc:
+  name: Historyczny TERC
+  kind: database
+  description: data/raw/teryt/terc
+  has_view: false
+  placements:
+    - parent: sejm-pipeline
+      position_x: 600
+      position_y: 360
+    - parent: terc-pipeline
+      position_y: 120
+    - parent: unemployment-pipeline
+      position_x: 600
+      position_y: 240
+raw-unemployment:
+  name: Raw BDL P2670
+  kind: database
+  description: Szeroki CSV 2014–2025 w data/raw/features.
+  has_view: false
+  placements:
+    - parent: unemployment-pipeline
+      position_y: 120
+regions-import:
+  name: Import regionów
+  kind: component
+  technology: sqlalchemy
+  has_view: false
+  placements:
+    - parent: ingestion
+      position_x: 600
+      position_y: 60
+    - parent: sejm-pipeline
+      position_x: 1500
+      position_y: 60
+    - parent: terc-pipeline
+      position_x: 1200
+      position_y: 120
+regions-queries:
+  name: RegionQueries
+  kind: component
+  description: Zapytania i mapowanie ORM/SQL na DTO regionów.
+  technology: sqlalchemy
+  has_view: false
+  placements:
+    - parent: api-regions
+      position_x: 300
+      position_y: 120
+    - parent: analytics-schema
+      position_x: 1200
+      position_y: 240
+regions-router:
+  name: Regions router
+  kind: component
+  description: GET /regions, /{teryt_code}, /elections i /timeline.
+  technology: fastapi
+  has_view: false
+  placements:
+    - parent: api-regions
+      position_y: 120
+regions-schemas:
+  name: Region DTO
+  kind: component
+  description: Pydantic schemas dla regionu, wyborów regionu i timeline.
+  has_view: false
+  placements:
+    - parent: api-regions
+      position_x: 600
+ruff:
+  name: Ruff
+  kind: component
+  has_view: false
+  placements:
+    - parent: quality-gates
+      position_x: 600
+      position_y: 120
+sejm-interim-transform:
+  name: Raw → interim
+  kind: component
+  description: sejm_interim.py
+  technology: python
+  has_view: false
+  placements:
+    - parent: sejm-pipeline
+      position_x: 300
+      position_y: 120
+sejm-pipeline:
+  name: Pipeline Sejm
+  kind: component
+  technology: python
+  has_view: true
+  placements:
+    - parent: ingestion
+      position_x: 300
+sejm-processed-transform:
+  name: Interim → processed
+  kind: component
+  description: sejm_processed.py mapuje TERC i komitety na bloki.
+  technology: python
+  has_view: false
+  placements:
+    - parent: sejm-pipeline
+      position_x: 900
+      position_y: 180
+socioeconomic-import:
+  name: Import P2670
+  kind: component
+  technology: sqlalchemy
+  has_view: false
+  placements:
+    - parent: ingestion
+      position_x: 600
+      position_y: 300
+    - parent: unemployment-pipeline
+      position_x: 1500
+      position_y: 120
+stability-batch:
+  name: Stability batch
+  kind: component
+  description: electoral-rebuild-stability
+  technology: python
+  has_view: false
+  placements:
+    - parent: db-package
+      position_x: 600
+      position_y: 300
+    - parent: postgres
+      position_x: 600
+      position_y: 420
+    - parent: analytics-schema
+      position_x: 600
+      position_y: 240
+stability-calculator:
+  name: calculate_region_stability
+  kind: component
+  description: Czyste, deterministyczne reguły domenowe.
+  technology: python
+  has_view: false
+  placements:
+    - parent: analytics-schema
+      position_x: 600
+terc-loader:
+  name: Walidacja snapshotu
+  kind: component
+  description: terc.py zachowuje siedmiocyfrowe kody i datę snapshotu.
+  technology: python
+  has_view: false
+  placements:
+    - parent: terc-pipeline
+      position_x: 300
+      position_y: 120
+terc-pipeline:
+  name: Pipeline TERC
+  kind: component
+  technology: python
+  has_view: true
+  placements:
+    - parent: ingestion
+      position_x: 300
+      position_y: 180
+unemployment-interim-transform:
+  name: P2670 raw → interim
+  kind: component
+  description: bdl_unemployment.py normalizuje do municipality-year.
+  technology: python
+  has_view: false
+  placements:
+    - parent: unemployment-pipeline
+      position_x: 300
+      position_y: 120
+unemployment-pipeline:
+  name: Pipeline GUS/BDL P2670
+  kind: component
+  technology: python
+  has_view: true
+  placements:
+    - parent: ingestion
+      position_x: 300
+      position_y: 360
+unemployment-processed-transform:
+  name: P2670 interim → processed
+  kind: component
+  description: Waliduje każdą obserwację względem snapshotu TERC.
+  technology: python
+  has_view: false
+  placements:
+    - parent: unemployment-pipeline
+      position_x: 900
+      position_y: 120

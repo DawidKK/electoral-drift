@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "create-diagram": {
+      "source": "Mertcikla/tld",
+      "sourceType": "github",
+      "skillPath": "skills/create-diagram/SKILL.md",
+      "computedHash": "a296b6aae781323e051a7efefc4df7b256a489a2b57d557aa7a08339d871191e"
+    }
+  }
+}

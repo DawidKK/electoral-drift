@@ -1,0 +1,41 @@
+{
+  "description": "Keep the tld architecture workspace and routed architecture documentation aligned after feature work.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/tld_architecture_guard.py\" start",
+            "timeout": 10,
+            "statusMessage": "Recording architecture baseline"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/tld_architecture_guard.py\" stop",
+            "timeout": 15,
+            "statusMessage": "Checking architecture documentation"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/tld_architecture_guard.py\" cleanup",
+            "timeout": 3
+          }
+        ]
+      }
+    ]
+  }
+}

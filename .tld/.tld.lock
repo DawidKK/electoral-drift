@@ -1,0 +1,1276 @@
+version: ""
+version_id: v210
+last_apply: 2026-09-14T12:32:05.988385+02:00
+applied_by: cli
+resources:
+    elements: 82
+    views: 15
+    connectors: 113
+workspace_hash: sha256:a05a1f05c2234ec1e3eb81e69e3c16f0c472d3885cf1c14b5cc748ac6097f78c
+metadata:
+    elements:
+        alembic:
+            id: AP4kYQRg
+            updated_at: 2026-09-14T10:32:05Z
+        analyst:
+            id: 2XKYmKqL
+            updated_at: 2026-09-14T10:32:05Z
+        analytics-queries:
+            id: lW4EgQen
+            updated_at: 2026-09-14T10:32:05Z
+        analytics-router:
+            id: 02QrWKVd
+            updated_at: 2026-09-14T10:32:05Z
+        analytics-schema:
+            id: ER4oW4Mx
+            updated_at: 2026-09-14T10:32:05Z
+        analytics-schemas:
+            id: EmyWqKAX
+            updated_at: 2026-09-14T10:32:05Z
+        analytics-stability:
+            id: GWyNlKqn
+            updated_at: 2026-09-14T10:32:05Z
+        analytics-summary:
+            id: xjQngK1r
+            updated_at: 2026-09-14T10:32:05Z
+        api:
+            id: xwy0MQEj
+            updated_at: 2026-09-14T10:32:05Z
+        api-analytics:
+            id: Ex4zEKGM
+            updated_at: 2026-09-14T10:32:05Z
+        api-db-session:
+            id: YbKLE48G
+            updated_at: 2026-09-14T10:32:05Z
+        api-elections:
+            id: mky13K3a
+            updated_at: 2026-09-14T10:32:05Z
+        api-health:
+            id: 9ZQAVKV6
+            updated_at: 2026-09-14T10:32:05Z
+        api-main:
+            id: gMK98QJ1
+            updated_at: 2026-09-14T10:32:05Z
+        api-query-services:
+            id: 0EKPByBW
+            updated_at: 2026-09-14T10:32:05Z
+        api-regions:
+            id: DWymd4e6
+            updated_at: 2026-09-14T10:32:05Z
+        canonical-batch:
+            id: eNKbPyJz
+            updated_at: 2026-09-14T10:32:05Z
+        core-canonical-regions:
+            id: kpyGB4Wa
+            updated_at: 2026-09-14T10:32:05Z
+        core-committees:
+            id: OWyVnybm
+            updated_at: 2026-09-14T10:32:05Z
+        core-data-sources:
+            id: Geya5y2a
+            updated_at: 2026-09-14T10:32:05Z
+        core-election-dictionaries:
+            id: wpKvNKvZ
+            updated_at: 2026-09-14T10:32:05Z
+        core-election-facts:
+            id: 5nKqb4Xa
+            updated_at: 2026-09-14T10:32:05Z
+        core-election-results:
+            id: ZRyB0KYL
+            updated_at: 2026-09-14T10:32:05Z
+        core-elections:
+            id: 75QRAyLo
+            updated_at: 2026-09-14T10:32:05Z
+        core-political-blocs:
+            id: W0QM6KVM
+            updated_at: 2026-09-14T10:32:05Z
+        core-regions:
+            id: VAygJ47R
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:
+            id: PqQwa4pn
+            updated_at: 2026-09-14T10:32:05Z
+        core-socioeconomic:
+            id: oXQ6myE9
+            updated_at: 2026-09-14T10:32:05Z
+        core-socioeconomic-observations:
+            id: kYK2DyBE
+            updated_at: 2026-09-14T10:32:05Z
+        core-socioeconomic-variables:
+            id: 2B4j9K1Z
+            updated_at: 2026-09-14T10:32:05Z
+        data-files:
+            id: 6x457QZW
+            updated_at: 2026-09-14T10:32:05Z
+        db-models:
+            id: o2yeAyel
+            updated_at: 2026-09-14T10:32:05Z
+        db-package:
+            id: vOyl8y05
+            updated_at: 2026-09-14T10:32:05Z
+        db-session:
+            id: xWy30QVo
+            updated_at: 2026-09-14T10:32:05Z
+        elections-import:
+            id: DbKdgQ6r
+            updated_at: 2026-09-14T10:32:05Z
+        elections-queries:
+            id: oV4XGKqe
+            updated_at: 2026-09-14T10:32:05Z
+        elections-router:
+            id: Pg4O1QYj
+            updated_at: 2026-09-14T10:32:05Z
+        elections-schemas:
+            id: Mr4Z647W
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:
+            id: nlyJRykE
+            updated_at: 2026-09-14T10:32:05Z
+        gus-bdl:
+            id: wk48EyXr
+            updated_at: 2026-09-14T10:32:05Z
+        historical-regions-file:
+            id: aeyDly6l
+            updated_at: 2026-09-14T10:32:05Z
+        historical-regions-transform:
+            id: o6Qp7yzx
+            updated_at: 2026-09-14T10:32:05Z
+        import-linter:
+            id: 9pQ7RyzJ
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:
+            id: de4xeAy5
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion-cli:
+            id: AP4kYYQR
+            updated_at: 2026-09-14T10:32:05Z
+        interim-results:
+            id: 2XKYYmKq
+            updated_at: 2026-09-14T10:32:05Z
+        interim-totals:
+            id: lW4EPgKe
+            updated_at: 2026-09-14T10:32:05Z
+        interim-unemployment:
+            id: 02QrNWQV
+            updated_at: 2026-09-14T10:32:05Z
+        ml-model-runs:
+            id: ER4oEWQM
+            updated_at: 2026-09-14T10:32:05Z
+        ml-modeling-dataset:
+            id: EmyWlqQA
+            updated_at: 2026-09-14T10:32:05Z
+        ml-predictions:
+            id: GWyNglQq
+            updated_at: 2026-09-14T10:32:05Z
+        ml-schema:
+            id: xjQnwgK1
+            updated_at: 2026-09-14T10:32:05Z
+        mypy:
+            id: xwy0lMyE
+            updated_at: 2026-09-14T10:32:05Z
+        pgadmin:
+            id: Ex4zPEQG
+            updated_at: 2026-09-14T10:32:05Z
+        pkw:
+            id: YbKLjEy8
+            updated_at: 2026-09-14T10:32:05Z
+        postgres:
+            id: mky1g3K3
+            updated_at: 2026-09-14T10:32:05Z
+        processed-election-results:
+            id: 9ZQAOV4V
+            updated_at: 2026-09-14T10:32:05Z
+        processed-regions:
+            id: gMK998KJ
+            updated_at: 2026-09-14T10:32:05Z
+        processed-unemployment:
+            id: 0EKPPBKB
+            updated_at: 2026-09-14T10:32:05Z
+        pytest:
+            id: DWymYdye
+            updated_at: 2026-09-14T10:32:05Z
+        python-api-tdd:
+            id: eNKbmPQJ
+            updated_at: 2026-09-14T10:32:05Z
+        python-change:
+            id: kpyG7ByW
+            updated_at: 2026-09-14T10:32:05Z
+        quality-gates:
+            id: OWyV3nQb
+            updated_at: 2026-09-14T10:32:05Z
+        raw-elections:
+            id: Geyae5y2
+            updated_at: 2026-09-14T10:32:05Z
+        raw-terc:
+            id: wpKvWN4v
+            updated_at: 2026-09-14T10:32:05Z
+        raw-unemployment:
+            id: 5nKqebKX
+            updated_at: 2026-09-14T10:32:05Z
+        regions-import:
+            id: ZRyBn0yY
+            updated_at: 2026-09-14T10:32:05Z
+        regions-queries:
+            id: 75QRLA4L
+            updated_at: 2026-09-14T10:32:05Z
+        regions-router:
+            id: W0QMg64V
+            updated_at: 2026-09-14T10:32:05Z
+        regions-schemas:
+            id: VAygYJK7
+            updated_at: 2026-09-14T10:32:05Z
+        ruff:
+            id: PqQwNayp
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-interim-transform:
+            id: oXQ66mQE
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:
+            id: kYK26DKB
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-processed-transform:
+            id: 2B4jg9y1
+            updated_at: 2026-09-14T10:32:05Z
+        socioeconomic-import:
+            id: 6x45M74Z
+            updated_at: 2026-09-14T10:32:05Z
+        stability-batch:
+            id: o2yemAye
+            updated_at: 2026-09-14T10:32:05Z
+        stability-calculator:
+            id: vOylx8y0
+            updated_at: 2026-09-14T10:32:05Z
+        terc-loader:
+            id: xWy3q0KV
+            updated_at: 2026-09-14T10:32:05Z
+        terc-pipeline:
+            id: DbKdXgK6
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-interim-transform:
+            id: oV4XjGQq
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-pipeline:
+            id: Pg4OX1yY
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-processed-transform:
+            id: Mr4Z76y7
+            updated_at: 2026-09-14T10:32:05Z
+    views:
+        analytics-schema:
+            id: 2XKYmKqL
+            updated_at: 2026-09-14T10:32:05Z
+        api:
+            id: lW4EgQen
+            updated_at: 2026-09-14T10:32:05Z
+        api-analytics:
+            id: 02QrWKVd
+            updated_at: 2026-09-14T10:32:05Z
+        api-elections:
+            id: ER4oW4Mx
+            updated_at: 2026-09-14T10:32:05Z
+        api-regions:
+            id: EmyWqKAX
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:
+            id: GWyNlKqn
+            updated_at: 2026-09-14T10:32:05Z
+        db-package:
+            id: xjQngK1r
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:
+            id: xwy0MQEj
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:
+            id: Ex4zEKGM
+            updated_at: 2026-09-14T10:32:05Z
+        ml-schema:
+            id: YbKLE48G
+            updated_at: 2026-09-14T10:32:05Z
+        postgres:
+            id: mky13K3a
+            updated_at: 2026-09-14T10:32:05Z
+        quality-gates:
+            id: 9ZQAVKV6
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:
+            id: gMK98QJ1
+            updated_at: 2026-09-14T10:32:05Z
+        terc-pipeline:
+            id: 0EKPByBW
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-pipeline:
+            id: DWymd4e6
+            updated_at: 2026-09-14T10:32:05Z
+    connectors:
+        analytics-schema:analytics-stability:analytics-queries:zasila rankingi:
+            id: AP4kYQRg
+            updated_at: 2026-09-14T10:32:05Z
+        analytics-schema:analytics-summary:regions-queries:zasila timeline:
+            id: 2XKYmKqL
+            updated_at: 2026-09-14T10:32:05Z
+        analytics-schema:analytics-summary:stability-batch:dostarcza chronologiczne wyniki:
+            id: lW4EgQen
+            updated_at: 2026-09-14T10:32:05Z
+        analytics-schema:core-election-facts:analytics-summary:agreguje wyniki do bloków:
+            id: 02QrWKVd
+            updated_at: 2026-09-14T10:32:05Z
+        analytics-schema:stability-batch:analytics-stability:atomowo zastępuje snapshot:
+            id: ER4oW4Mx
+            updated_at: 2026-09-14T10:32:05Z
+        analytics-schema:stability-batch:stability-calculator:liczy metryki per region:
+            id: EmyWqKAX
+            updated_at: 2026-09-14T10:32:05Z
+        api-analytics:analytics-queries:analytics-schemas:buduje DTO:
+            id: GWyNlKqn
+            updated_at: 2026-09-14T10:32:05Z
+        api-analytics:analytics-queries:analytics-stability:czyta snapshot:
+            id: xjQngK1r
+            updated_at: 2026-09-14T10:32:05Z
+        api-analytics:analytics-router:analytics-queries:wywołuje ranking lub filtr:
+            id: xwy0MQEj
+            updated_at: 2026-09-14T10:32:05Z
+        api-analytics:analytics-stability:core-regions:łączy nazwę i TERYT:
+            id: Ex4zEKGM
+            updated_at: 2026-09-14T10:32:05Z
+        api-analytics:api-db-session:analytics-queries:wstrzykuje sesję:
+            id: YbKLE48G
+            updated_at: 2026-09-14T10:32:05Z
+        api-elections:api-db-session:elections-queries:wstrzykuje sesję:
+            id: mky13K3a
+            updated_at: 2026-09-14T10:32:05Z
+        api-elections:core-election-results:core-election-dictionaries:łączy komitet i blok:
+            id: 9ZQAVKV6
+            updated_at: 2026-09-14T10:32:05Z
+        api-elections:core-election-results:core-regions:łączy region:
+            id: gMK98QJ1
+            updated_at: 2026-09-14T10:32:05Z
+        api-elections:elections-queries:core-election-results:czyta fakty:
+            id: 0EKPByBW
+            updated_at: 2026-09-14T10:32:05Z
+        api-elections:elections-queries:core-elections:czyta katalog:
+            id: DWymd4e6
+            updated_at: 2026-09-14T10:32:05Z
+        api-elections:elections-queries:elections-schemas:buduje DTO:
+            id: eNKbPyJz
+            updated_at: 2026-09-14T10:32:05Z
+        api-elections:elections-router:elections-queries:wywołuje use case:
+            id: kpyGB4Wa
+            updated_at: 2026-09-14T10:32:05Z
+        api-regions:api-db-session:regions-queries:wstrzykuje sesję:
+            id: OWyVnybm
+            updated_at: 2026-09-14T10:32:05Z
+        api-regions:regions-queries:analytics-summary:czyta timeline bloków:
+            id: Geya5y2a
+            updated_at: 2026-09-14T10:32:05Z
+        api-regions:regions-queries:core-canonical-regions:zwraca canonical_region_id:
+            id: wpKvNKvZ
+            updated_at: 2026-09-14T10:32:05Z
+        api-regions:regions-queries:core-election-facts:czyta wybory regionu:
+            id: 5nKqb4Xa
+            updated_at: 2026-09-14T10:32:05Z
+        api-regions:regions-queries:core-regions:czyta region:
+            id: ZRyB0KYL
+            updated_at: 2026-09-14T10:32:05Z
+        api-regions:regions-queries:regions-schemas:buduje DTO:
+            id: 75QRAyLo
+            updated_at: 2026-09-14T10:32:05Z
+        api-regions:regions-router:regions-queries:wywołuje use case:
+            id: W0QM6KVM
+            updated_at: 2026-09-14T10:32:05Z
+        api:analyst:api-main:wysyła request / odbiera JSON:
+            id: VAygJ47R
+            updated_at: 2026-09-14T10:32:05Z
+        api:api-analytics:api-db-session:pobiera sesję:
+            id: PqQwa4pn
+            updated_at: 2026-09-14T10:32:05Z
+        api:api-db-session:db-package:deleguje cykl życia sesji:
+            id: oXQ6myE9
+            updated_at: 2026-09-14T10:32:05Z
+        api:api-elections:api-db-session:pobiera sesję:
+            id: kYK2DyBE
+            updated_at: 2026-09-14T10:32:05Z
+        api:api-main:api-analytics:rejestruje router:
+            id: 2B4j9K1Z
+            updated_at: 2026-09-14T10:32:05Z
+        api:api-main:api-elections:rejestruje router:
+            id: 6x457QZW
+            updated_at: 2026-09-14T10:32:05Z
+        api:api-main:api-health:rejestruje router:
+            id: o2yeAyel
+            updated_at: 2026-09-14T10:32:05Z
+        api:api-main:api-regions:rejestruje router:
+            id: vOyl8y05
+            updated_at: 2026-09-14T10:32:05Z
+        api:api-regions:api-db-session:pobiera sesję:
+            id: xWy30QVo
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:core-committees:core-elections:należy do wyborów:
+            id: DbKdgQ6r
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:core-committees:core-political-blocs:mapuje interpretację bloku:
+            id: oV4XGKqe
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:core-election-results:core-committees:wynik komitetu:
+            id: Pg4O1QYj
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:core-election-results:core-data-sources:opcjonalne pochodzenie:
+            id: Mr4Z647W
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:core-election-results:core-elections:wynik wyborów:
+            id: nlyJRykE
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:core-election-results:core-regions:wynik gminy:
+            id: wk48EyXr
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:core-regions:core-canonical-regions:należy do stabilnej tożsamości:
+            id: aeyDly6l
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:core-socioeconomic-observations:core-data-sources:pochodzenie pliku:
+            id: o6Qp7yzx
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:core-socioeconomic-observations:core-regions:obserwacja gminy:
+            id: 9pQ7RyzJ
+            updated_at: 2026-09-14T10:32:05Z
+        core-schema:core-socioeconomic-observations:core-socioeconomic-variables:wartość zmiennej:
+            id: de4xeAy5
+            updated_at: 2026-09-14T10:32:05Z
+        db-package:alembic:postgres:ewoluuje schemat:
+            id: AP4kYYQR
+            updated_at: 2026-09-14T10:32:05Z
+        db-package:canonical-batch:db-session:czyta i aktualizuje regiony:
+            id: 2XKYYmKq
+            updated_at: 2026-09-14T10:32:05Z
+        db-package:db-models:db-session:mapuje operacje ORM:
+            id: lW4EPgKe
+            updated_at: 2026-09-14T10:32:05Z
+        db-package:db-session:postgres:zarządza połączeniami i transakcjami:
+            id: 02QrNWQV
+            updated_at: 2026-09-14T10:32:05Z
+        db-package:pgadmin:postgres:administruje:
+            id: ER4oEWQM
+            updated_at: 2026-09-14T10:32:05Z
+        db-package:stability-batch:db-session:odtwarza snapshot analityczny:
+            id: EmyWlqQA
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:analyst:api:HTTP / JSON:
+            id: GWyNglQq
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:api:db-package:wykonuje zapytania odczytowe:
+            id: xjQnwgK1
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:data-files:ingestion:raw → interim → processed:
+            id: xwy0lMyE
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:db-package:postgres:migruje, zapisuje i odczytuje:
+            id: Ex4zPEQG
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:gus-bdl:data-files:publikuje P2670:
+            id: YbKLjEy8
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:ingestion:db-package:używa modeli i sesji:
+            id: mky1g3K3
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:pgadmin:postgres:administruje:
+            id: 9ZQAOV4V
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:pkw:data-files:publikuje CSV wyborcze:
+            id: gMK998KJ
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:quality-gates:api:weryfikuje:
+            id: 0EKPPBKB
+            updated_at: 2026-09-14T10:32:05Z
+        electoral-drift:quality-gates:db-package:weryfikuje:
+            id: DWymYdye
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:elections-import:db-package:zapisuje wybory i wyniki:
+            id: eNKbmPQJ
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:ingestion-cli:sejm-pipeline:uruchamia transformacje:
+            id: kpyG7ByW
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:ingestion-cli:terc-pipeline:buduje słownik historyczny:
+            id: OWyV3nQb
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:ingestion-cli:unemployment-pipeline:uruchamia transformacje:
+            id: Geyae5y2
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:regions-import:db-package:zapisuje regiony:
+            id: wpKvWN4v
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:sejm-pipeline:elections-import:dostarcza wyniki gmin:
+            id: 5nKqebKX
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:sejm-pipeline:regions-import:dostarcza regions.csv:
+            id: ZRyBn0yY
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:socioeconomic-import:db-package:zapisuje P2670:
+            id: 75QRLA4L
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:terc-pipeline:regions-import:dostarcza słownik regionów:
+            id: W0QMg64V
+            updated_at: 2026-09-14T10:32:05Z
+        ingestion:unemployment-pipeline:socioeconomic-import:dostarcza obserwacje:
+            id: VAygYJK7
+            updated_at: 2026-09-14T10:32:05Z
+        ml-schema:alembic:ml-model-runs:tworzy tabelę:
+            id: PqQwNayp
+            updated_at: 2026-09-14T10:32:05Z
+        ml-schema:alembic:ml-modeling-dataset:tworzy tabelę:
+            id: oXQ66mQE
+            updated_at: 2026-09-14T10:32:05Z
+        ml-schema:ml-model-runs:ml-predictions:identyfikuje model:
+            id: kYK26DKB
+            updated_at: 2026-09-14T10:32:05Z
+        ml-schema:ml-modeling-dataset:ml-predictions:identyfikuje region i wybory:
+            id: 2B4jg9y1
+            updated_at: 2026-09-14T10:32:05Z
+        postgres:alembic:analytics-schema:tworzy widok i tabelę:
+            id: 6x45M74Z
+            updated_at: 2026-09-14T10:32:05Z
+        postgres:alembic:core-schema:tworzy i migruje:
+            id: o2yemAye
+            updated_at: 2026-09-14T10:32:05Z
+        postgres:alembic:ml-schema:tworzy tabele:
+            id: vOylx8y0
+            updated_at: 2026-09-14T10:32:05Z
+        postgres:api-query-services:analytics-schema:czyta timeline i stabilność:
+            id: xWy3q0KV
+            updated_at: 2026-09-14T10:32:05Z
+        postgres:api-query-services:core-schema:czyta fakty i słowniki:
+            id: DbKdXgK6
+            updated_at: 2026-09-14T10:32:05Z
+        postgres:canonical-batch:core-schema:odtwarza mapowanie canonical:
+            id: oV4XjGQq
+            updated_at: 2026-09-14T10:32:05Z
+        postgres:db-session:core-schema:zapisuje i odczytuje:
+            id: Pg4OX1yY
+            updated_at: 2026-09-14T10:32:05Z
+        postgres:stability-batch:analytics-schema:czyta summary i zapisuje snapshot:
+            id: Mr4Z76y7
+            updated_at: 2026-09-14T10:32:05Z
+        quality-gates:pytest:import-linter:uzupełnia kontrolę architektury:
+            id: nlyJjRyk
+            updated_at: 2026-09-14T10:32:05Z
+        quality-gates:python-api-tdd:mypy:sprawdza typy API i DB:
+            id: wk48ZEQX
+            updated_at: 2026-09-14T10:32:05Z
+        quality-gates:python-api-tdd:pytest:uruchamia testy:
+            id: aeyDqlQ6
+            updated_at: 2026-09-14T10:32:05Z
+        quality-gates:python-api-tdd:ruff:sprawdza lint i format:
+            id: o6Qpo7yz
+            updated_at: 2026-09-14T10:32:05Z
+        quality-gates:python-change:python-api-tdd:obowiązkowy workflow:
+            id: 9pQ7ORQz
+            updated_at: 2026-09-14T10:32:05Z
+        root:analyst:electoral-drift:odpytuje dane i analitykę:
+            id: de4x1Ay5
+            updated_at: 2026-09-14T10:32:05Z
+        root:gus-bdl:electoral-drift:dostarcza dane społeczno-ekonomiczne:
+            id: AP4kxYyR
+            updated_at: 2026-09-14T10:32:05Z
+        root:pkw:electoral-drift:dostarcza wyniki wyborów:
+            id: 2XKYmmKq
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:interim-results:sejm-processed-transform:dostarcza głosy:
+            id: lW4E2gye
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:interim-totals:sejm-processed-transform:dostarcza sumy:
+            id: 02Qr0W4V
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:processed-election-results:elections-import:wejście importu:
+            id: ER4oAWQM
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:processed-regions:regions-import:wejście importu:
+            id: EmyWxqQA
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:raw-elections:sejm-interim-transform:normalizuje eksport:
+            id: GWyNzlyq
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:raw-terc:sejm-processed-transform:mapuje sześciocyfrowy PKW na pełny TERC:
+            id: xjQnEgy1
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:sejm-interim-transform:interim-results:zapisuje wyniki komitetów:
+            id: xwy06MKE
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:sejm-interim-transform:interim-totals:zapisuje sumy gmin:
+            id: Ex4zaEKG
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:sejm-processed-transform:processed-election-results:tworzy importer-ready fakty:
+            id: YbKL2Ey8
+            updated_at: 2026-09-14T10:32:05Z
+        sejm-pipeline:sejm-processed-transform:processed-regions:tworzy słownik:
+            id: de4x1Wy5
+            updated_at: 2026-09-14T10:32:05Z
+        terc-pipeline:historical-regions-file:regions-import:wejście importu:
+            id: AP4kx0yR
+            updated_at: 2026-09-14T10:32:05Z
+        terc-pipeline:historical-regions-transform:historical-regions-file:zapisuje importer-ready CSV:
+            id: 2XKYmnKq
+            updated_at: 2026-09-14T10:32:05Z
+        terc-pipeline:raw-terc:terc-loader:czyta dokładny STAN_NA:
+            id: lW4E2rye
+            updated_at: 2026-09-14T10:32:05Z
+        terc-pipeline:regions-import:core-regions:insert lub zgodny no-op:
+            id: 02Qr0d4V
+            updated_at: 2026-09-14T10:32:05Z
+        terc-pipeline:terc-loader:historical-regions-transform:zwraca wspierane typy regionów:
+            id: ER4oAZQM
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-pipeline:core-regions:socioeconomic-import:musi zawierać wszystkie TERC:
+            id: EmyWxJQA
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-pipeline:interim-unemployment:unemployment-processed-transform:dostarcza obserwacje:
+            id: GWyNzxyq
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-pipeline:processed-unemployment:socioeconomic-import:wejście importu:
+            id: xjQnE5y1
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-pipeline:raw-terc:unemployment-processed-transform:waliduje TERC dla roku:
+            id: xwy06xKE
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-pipeline:raw-unemployment:unemployment-interim-transform:normalizuje szeroki CSV:
+            id: Ex4zarKG
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-pipeline:socioeconomic-import:core-socioeconomic:atomowy insert lub no-op:
+            id: YbKL2Vy8
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-pipeline:unemployment-interim-transform:interim-unemployment:zapisuje long:
+            id: mky15wy3
+            updated_at: 2026-09-14T10:32:05Z
+        unemployment-pipeline:unemployment-processed-transform:processed-unemployment:zapisuje zwalidowane obserwacje:
+            id: 9ZQAJRKV
+            updated_at: 2026-09-14T10:32:05Z
+current_elements:
+    alembic:
+        id: AP4kYQRg
+        updated_at: 2026-09-14T10:32:05Z
+    analyst:
+        id: 2XKYmKqL
+        updated_at: 2026-09-14T10:32:05Z
+    analytics-queries:
+        id: lW4EgQen
+        updated_at: 2026-09-14T10:32:05Z
+    analytics-router:
+        id: 02QrWKVd
+        updated_at: 2026-09-14T10:32:05Z
+    analytics-schema:
+        id: ER4oW4Mx
+        updated_at: 2026-09-14T10:32:05Z
+    analytics-schemas:
+        id: EmyWqKAX
+        updated_at: 2026-09-14T10:32:05Z
+    analytics-stability:
+        id: GWyNlKqn
+        updated_at: 2026-09-14T10:32:05Z
+    analytics-summary:
+        id: xjQngK1r
+        updated_at: 2026-09-14T10:32:05Z
+    api:
+        id: xwy0MQEj
+        updated_at: 2026-09-14T10:32:05Z
+    api-analytics:
+        id: Ex4zEKGM
+        updated_at: 2026-09-14T10:32:05Z
+    api-db-session:
+        id: YbKLE48G
+        updated_at: 2026-09-14T10:32:05Z
+    api-elections:
+        id: mky13K3a
+        updated_at: 2026-09-14T10:32:05Z
+    api-health:
+        id: 9ZQAVKV6
+        updated_at: 2026-09-14T10:32:05Z
+    api-main:
+        id: gMK98QJ1
+        updated_at: 2026-09-14T10:32:05Z
+    api-query-services:
+        id: 0EKPByBW
+        updated_at: 2026-09-14T10:32:05Z
+    api-regions:
+        id: DWymd4e6
+        updated_at: 2026-09-14T10:32:05Z
+    canonical-batch:
+        id: eNKbPyJz
+        updated_at: 2026-09-14T10:32:05Z
+    core-canonical-regions:
+        id: kpyGB4Wa
+        updated_at: 2026-09-14T10:32:05Z
+    core-committees:
+        id: OWyVnybm
+        updated_at: 2026-09-14T10:32:05Z
+    core-data-sources:
+        id: Geya5y2a
+        updated_at: 2026-09-14T10:32:05Z
+    core-election-dictionaries:
+        id: wpKvNKvZ
+        updated_at: 2026-09-14T10:32:05Z
+    core-election-facts:
+        id: 5nKqb4Xa
+        updated_at: 2026-09-14T10:32:05Z
+    core-election-results:
+        id: ZRyB0KYL
+        updated_at: 2026-09-14T10:32:05Z
+    core-elections:
+        id: 75QRAyLo
+        updated_at: 2026-09-14T10:32:05Z
+    core-political-blocs:
+        id: W0QM6KVM
+        updated_at: 2026-09-14T10:32:05Z
+    core-regions:
+        id: VAygJ47R
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:
+        id: PqQwa4pn
+        updated_at: 2026-09-14T10:32:05Z
+    core-socioeconomic:
+        id: oXQ6myE9
+        updated_at: 2026-09-14T10:32:05Z
+    core-socioeconomic-observations:
+        id: kYK2DyBE
+        updated_at: 2026-09-14T10:32:05Z
+    core-socioeconomic-variables:
+        id: 2B4j9K1Z
+        updated_at: 2026-09-14T10:32:05Z
+    data-files:
+        id: 6x457QZW
+        updated_at: 2026-09-14T10:32:05Z
+    db-models:
+        id: o2yeAyel
+        updated_at: 2026-09-14T10:32:05Z
+    db-package:
+        id: vOyl8y05
+        updated_at: 2026-09-14T10:32:05Z
+    db-session:
+        id: xWy30QVo
+        updated_at: 2026-09-14T10:32:05Z
+    elections-import:
+        id: DbKdgQ6r
+        updated_at: 2026-09-14T10:32:05Z
+    elections-queries:
+        id: oV4XGKqe
+        updated_at: 2026-09-14T10:32:05Z
+    elections-router:
+        id: Pg4O1QYj
+        updated_at: 2026-09-14T10:32:05Z
+    elections-schemas:
+        id: Mr4Z647W
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:
+        id: nlyJRykE
+        updated_at: 2026-09-14T10:32:05Z
+    gus-bdl:
+        id: wk48EyXr
+        updated_at: 2026-09-14T10:32:05Z
+    historical-regions-file:
+        id: aeyDly6l
+        updated_at: 2026-09-14T10:32:05Z
+    historical-regions-transform:
+        id: o6Qp7yzx
+        updated_at: 2026-09-14T10:32:05Z
+    import-linter:
+        id: 9pQ7RyzJ
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:
+        id: de4xeAy5
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion-cli:
+        id: AP4kYYQR
+        updated_at: 2026-09-14T10:32:05Z
+    interim-results:
+        id: 2XKYYmKq
+        updated_at: 2026-09-14T10:32:05Z
+    interim-totals:
+        id: lW4EPgKe
+        updated_at: 2026-09-14T10:32:05Z
+    interim-unemployment:
+        id: 02QrNWQV
+        updated_at: 2026-09-14T10:32:05Z
+    ml-model-runs:
+        id: ER4oEWQM
+        updated_at: 2026-09-14T10:32:05Z
+    ml-modeling-dataset:
+        id: EmyWlqQA
+        updated_at: 2026-09-14T10:32:05Z
+    ml-predictions:
+        id: GWyNglQq
+        updated_at: 2026-09-14T10:32:05Z
+    ml-schema:
+        id: xjQnwgK1
+        updated_at: 2026-09-14T10:32:05Z
+    mypy:
+        id: xwy0lMyE
+        updated_at: 2026-09-14T10:32:05Z
+    pgadmin:
+        id: Ex4zPEQG
+        updated_at: 2026-09-14T10:32:05Z
+    pkw:
+        id: YbKLjEy8
+        updated_at: 2026-09-14T10:32:05Z
+    postgres:
+        id: mky1g3K3
+        updated_at: 2026-09-14T10:32:05Z
+    processed-election-results:
+        id: 9ZQAOV4V
+        updated_at: 2026-09-14T10:32:05Z
+    processed-regions:
+        id: gMK998KJ
+        updated_at: 2026-09-14T10:32:05Z
+    processed-unemployment:
+        id: 0EKPPBKB
+        updated_at: 2026-09-14T10:32:05Z
+    pytest:
+        id: DWymYdye
+        updated_at: 2026-09-14T10:32:05Z
+    python-api-tdd:
+        id: eNKbmPQJ
+        updated_at: 2026-09-14T10:32:05Z
+    python-change:
+        id: kpyG7ByW
+        updated_at: 2026-09-14T10:32:05Z
+    quality-gates:
+        id: OWyV3nQb
+        updated_at: 2026-09-14T10:32:05Z
+    raw-elections:
+        id: Geyae5y2
+        updated_at: 2026-09-14T10:32:05Z
+    raw-terc:
+        id: wpKvWN4v
+        updated_at: 2026-09-14T10:32:05Z
+    raw-unemployment:
+        id: 5nKqebKX
+        updated_at: 2026-09-14T10:32:05Z
+    regions-import:
+        id: ZRyBn0yY
+        updated_at: 2026-09-14T10:32:05Z
+    regions-queries:
+        id: 75QRLA4L
+        updated_at: 2026-09-14T10:32:05Z
+    regions-router:
+        id: W0QMg64V
+        updated_at: 2026-09-14T10:32:05Z
+    regions-schemas:
+        id: VAygYJK7
+        updated_at: 2026-09-14T10:32:05Z
+    ruff:
+        id: PqQwNayp
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-interim-transform:
+        id: oXQ66mQE
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:
+        id: kYK26DKB
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-processed-transform:
+        id: 2B4jg9y1
+        updated_at: 2026-09-14T10:32:05Z
+    socioeconomic-import:
+        id: 6x45M74Z
+        updated_at: 2026-09-14T10:32:05Z
+    stability-batch:
+        id: o2yemAye
+        updated_at: 2026-09-14T10:32:05Z
+    stability-calculator:
+        id: vOylx8y0
+        updated_at: 2026-09-14T10:32:05Z
+    terc-loader:
+        id: xWy3q0KV
+        updated_at: 2026-09-14T10:32:05Z
+    terc-pipeline:
+        id: DbKdXgK6
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-interim-transform:
+        id: oV4XjGQq
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-pipeline:
+        id: Pg4OX1yY
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-processed-transform:
+        id: Mr4Z76y7
+        updated_at: 2026-09-14T10:32:05Z
+current_views:
+    analytics-schema:
+        id: 2XKYmKqL
+        updated_at: 2026-09-14T10:32:05Z
+    api:
+        id: lW4EgQen
+        updated_at: 2026-09-14T10:32:05Z
+    api-analytics:
+        id: 02QrWKVd
+        updated_at: 2026-09-14T10:32:05Z
+    api-elections:
+        id: ER4oW4Mx
+        updated_at: 2026-09-14T10:32:05Z
+    api-regions:
+        id: EmyWqKAX
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:
+        id: GWyNlKqn
+        updated_at: 2026-09-14T10:32:05Z
+    db-package:
+        id: xjQngK1r
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:
+        id: xwy0MQEj
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:
+        id: Ex4zEKGM
+        updated_at: 2026-09-14T10:32:05Z
+    ml-schema:
+        id: YbKLE48G
+        updated_at: 2026-09-14T10:32:05Z
+    postgres:
+        id: mky13K3a
+        updated_at: 2026-09-14T10:32:05Z
+    quality-gates:
+        id: 9ZQAVKV6
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:
+        id: gMK98QJ1
+        updated_at: 2026-09-14T10:32:05Z
+    terc-pipeline:
+        id: 0EKPByBW
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-pipeline:
+        id: DWymd4e6
+        updated_at: 2026-09-14T10:32:05Z
+current_connectors:
+    analytics-schema:analytics-stability:analytics-queries:zasila rankingi:
+        id: AP4kYQRg
+        updated_at: 2026-09-14T10:32:05Z
+    analytics-schema:analytics-summary:regions-queries:zasila timeline:
+        id: 2XKYmKqL
+        updated_at: 2026-09-14T10:32:05Z
+    analytics-schema:analytics-summary:stability-batch:dostarcza chronologiczne wyniki:
+        id: lW4EgQen
+        updated_at: 2026-09-14T10:32:05Z
+    analytics-schema:core-election-facts:analytics-summary:agreguje wyniki do bloków:
+        id: 02QrWKVd
+        updated_at: 2026-09-14T10:32:05Z
+    analytics-schema:stability-batch:analytics-stability:atomowo zastępuje snapshot:
+        id: ER4oW4Mx
+        updated_at: 2026-09-14T10:32:05Z
+    analytics-schema:stability-batch:stability-calculator:liczy metryki per region:
+        id: EmyWqKAX
+        updated_at: 2026-09-14T10:32:05Z
+    api-analytics:analytics-queries:analytics-schemas:buduje DTO:
+        id: GWyNlKqn
+        updated_at: 2026-09-14T10:32:05Z
+    api-analytics:analytics-queries:analytics-stability:czyta snapshot:
+        id: xjQngK1r
+        updated_at: 2026-09-14T10:32:05Z
+    api-analytics:analytics-router:analytics-queries:wywołuje ranking lub filtr:
+        id: xwy0MQEj
+        updated_at: 2026-09-14T10:32:05Z
+    api-analytics:analytics-stability:core-regions:łączy nazwę i TERYT:
+        id: Ex4zEKGM
+        updated_at: 2026-09-14T10:32:05Z
+    api-analytics:api-db-session:analytics-queries:wstrzykuje sesję:
+        id: YbKLE48G
+        updated_at: 2026-09-14T10:32:05Z
+    api-elections:api-db-session:elections-queries:wstrzykuje sesję:
+        id: mky13K3a
+        updated_at: 2026-09-14T10:32:05Z
+    api-elections:core-election-results:core-election-dictionaries:łączy komitet i blok:
+        id: 9ZQAVKV6
+        updated_at: 2026-09-14T10:32:05Z
+    api-elections:core-election-results:core-regions:łączy region:
+        id: gMK98QJ1
+        updated_at: 2026-09-14T10:32:05Z
+    api-elections:elections-queries:core-election-results:czyta fakty:
+        id: 0EKPByBW
+        updated_at: 2026-09-14T10:32:05Z
+    api-elections:elections-queries:core-elections:czyta katalog:
+        id: DWymd4e6
+        updated_at: 2026-09-14T10:32:05Z
+    api-elections:elections-queries:elections-schemas:buduje DTO:
+        id: eNKbPyJz
+        updated_at: 2026-09-14T10:32:05Z
+    api-elections:elections-router:elections-queries:wywołuje use case:
+        id: kpyGB4Wa
+        updated_at: 2026-09-14T10:32:05Z
+    api-regions:api-db-session:regions-queries:wstrzykuje sesję:
+        id: OWyVnybm
+        updated_at: 2026-09-14T10:32:05Z
+    api-regions:regions-queries:analytics-summary:czyta timeline bloków:
+        id: Geya5y2a
+        updated_at: 2026-09-14T10:32:05Z
+    api-regions:regions-queries:core-canonical-regions:zwraca canonical_region_id:
+        id: wpKvNKvZ
+        updated_at: 2026-09-14T10:32:05Z
+    api-regions:regions-queries:core-election-facts:czyta wybory regionu:
+        id: 5nKqb4Xa
+        updated_at: 2026-09-14T10:32:05Z
+    api-regions:regions-queries:core-regions:czyta region:
+        id: ZRyB0KYL
+        updated_at: 2026-09-14T10:32:05Z
+    api-regions:regions-queries:regions-schemas:buduje DTO:
+        id: 75QRAyLo
+        updated_at: 2026-09-14T10:32:05Z
+    api-regions:regions-router:regions-queries:wywołuje use case:
+        id: W0QM6KVM
+        updated_at: 2026-09-14T10:32:05Z
+    api:analyst:api-main:wysyła request / odbiera JSON:
+        id: VAygJ47R
+        updated_at: 2026-09-14T10:32:05Z
+    api:api-analytics:api-db-session:pobiera sesję:
+        id: PqQwa4pn
+        updated_at: 2026-09-14T10:32:05Z
+    api:api-db-session:db-package:deleguje cykl życia sesji:
+        id: oXQ6myE9
+        updated_at: 2026-09-14T10:32:05Z
+    api:api-elections:api-db-session:pobiera sesję:
+        id: kYK2DyBE
+        updated_at: 2026-09-14T10:32:05Z
+    api:api-main:api-analytics:rejestruje router:
+        id: 2B4j9K1Z
+        updated_at: 2026-09-14T10:32:05Z
+    api:api-main:api-elections:rejestruje router:
+        id: 6x457QZW
+        updated_at: 2026-09-14T10:32:05Z
+    api:api-main:api-health:rejestruje router:
+        id: o2yeAyel
+        updated_at: 2026-09-14T10:32:05Z
+    api:api-main:api-regions:rejestruje router:
+        id: vOyl8y05
+        updated_at: 2026-09-14T10:32:05Z
+    api:api-regions:api-db-session:pobiera sesję:
+        id: xWy30QVo
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:core-committees:core-elections:należy do wyborów:
+        id: DbKdgQ6r
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:core-committees:core-political-blocs:mapuje interpretację bloku:
+        id: oV4XGKqe
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:core-election-results:core-committees:wynik komitetu:
+        id: Pg4O1QYj
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:core-election-results:core-data-sources:opcjonalne pochodzenie:
+        id: Mr4Z647W
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:core-election-results:core-elections:wynik wyborów:
+        id: nlyJRykE
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:core-election-results:core-regions:wynik gminy:
+        id: wk48EyXr
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:core-regions:core-canonical-regions:należy do stabilnej tożsamości:
+        id: aeyDly6l
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:core-socioeconomic-observations:core-data-sources:pochodzenie pliku:
+        id: o6Qp7yzx
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:core-socioeconomic-observations:core-regions:obserwacja gminy:
+        id: 9pQ7RyzJ
+        updated_at: 2026-09-14T10:32:05Z
+    core-schema:core-socioeconomic-observations:core-socioeconomic-variables:wartość zmiennej:
+        id: de4xeAy5
+        updated_at: 2026-09-14T10:32:05Z
+    db-package:alembic:postgres:ewoluuje schemat:
+        id: AP4kYYQR
+        updated_at: 2026-09-14T10:32:05Z
+    db-package:canonical-batch:db-session:czyta i aktualizuje regiony:
+        id: 2XKYYmKq
+        updated_at: 2026-09-14T10:32:05Z
+    db-package:db-models:db-session:mapuje operacje ORM:
+        id: lW4EPgKe
+        updated_at: 2026-09-14T10:32:05Z
+    db-package:db-session:postgres:zarządza połączeniami i transakcjami:
+        id: 02QrNWQV
+        updated_at: 2026-09-14T10:32:05Z
+    db-package:pgadmin:postgres:administruje:
+        id: ER4oEWQM
+        updated_at: 2026-09-14T10:32:05Z
+    db-package:stability-batch:db-session:odtwarza snapshot analityczny:
+        id: EmyWlqQA
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:analyst:api:HTTP / JSON:
+        id: GWyNglQq
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:api:db-package:wykonuje zapytania odczytowe:
+        id: xjQnwgK1
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:data-files:ingestion:raw → interim → processed:
+        id: xwy0lMyE
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:db-package:postgres:migruje, zapisuje i odczytuje:
+        id: Ex4zPEQG
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:gus-bdl:data-files:publikuje P2670:
+        id: YbKLjEy8
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:ingestion:db-package:używa modeli i sesji:
+        id: mky1g3K3
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:pgadmin:postgres:administruje:
+        id: 9ZQAOV4V
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:pkw:data-files:publikuje CSV wyborcze:
+        id: gMK998KJ
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:quality-gates:api:weryfikuje:
+        id: 0EKPPBKB
+        updated_at: 2026-09-14T10:32:05Z
+    electoral-drift:quality-gates:db-package:weryfikuje:
+        id: DWymYdye
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:elections-import:db-package:zapisuje wybory i wyniki:
+        id: eNKbmPQJ
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:ingestion-cli:sejm-pipeline:uruchamia transformacje:
+        id: kpyG7ByW
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:ingestion-cli:terc-pipeline:buduje słownik historyczny:
+        id: OWyV3nQb
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:ingestion-cli:unemployment-pipeline:uruchamia transformacje:
+        id: Geyae5y2
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:regions-import:db-package:zapisuje regiony:
+        id: wpKvWN4v
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:sejm-pipeline:elections-import:dostarcza wyniki gmin:
+        id: 5nKqebKX
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:sejm-pipeline:regions-import:dostarcza regions.csv:
+        id: ZRyBn0yY
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:socioeconomic-import:db-package:zapisuje P2670:
+        id: 75QRLA4L
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:terc-pipeline:regions-import:dostarcza słownik regionów:
+        id: W0QMg64V
+        updated_at: 2026-09-14T10:32:05Z
+    ingestion:unemployment-pipeline:socioeconomic-import:dostarcza obserwacje:
+        id: VAygYJK7
+        updated_at: 2026-09-14T10:32:05Z
+    ml-schema:alembic:ml-model-runs:tworzy tabelę:
+        id: PqQwNayp
+        updated_at: 2026-09-14T10:32:05Z
+    ml-schema:alembic:ml-modeling-dataset:tworzy tabelę:
+        id: oXQ66mQE
+        updated_at: 2026-09-14T10:32:05Z
+    ml-schema:ml-model-runs:ml-predictions:identyfikuje model:
+        id: kYK26DKB
+        updated_at: 2026-09-14T10:32:05Z
+    ml-schema:ml-modeling-dataset:ml-predictions:identyfikuje region i wybory:
+        id: 2B4jg9y1
+        updated_at: 2026-09-14T10:32:05Z
+    postgres:alembic:analytics-schema:tworzy widok i tabelę:
+        id: 6x45M74Z
+        updated_at: 2026-09-14T10:32:05Z
+    postgres:alembic:core-schema:tworzy i migruje:
+        id: o2yemAye
+        updated_at: 2026-09-14T10:32:05Z
+    postgres:alembic:ml-schema:tworzy tabele:
+        id: vOylx8y0
+        updated_at: 2026-09-14T10:32:05Z
+    postgres:api-query-services:analytics-schema:czyta timeline i stabilność:
+        id: xWy3q0KV
+        updated_at: 2026-09-14T10:32:05Z
+    postgres:api-query-services:core-schema:czyta fakty i słowniki:
+        id: DbKdXgK6
+        updated_at: 2026-09-14T10:32:05Z
+    postgres:canonical-batch:core-schema:odtwarza mapowanie canonical:
+        id: oV4XjGQq
+        updated_at: 2026-09-14T10:32:05Z
+    postgres:db-session:core-schema:zapisuje i odczytuje:
+        id: Pg4OX1yY
+        updated_at: 2026-09-14T10:32:05Z
+    postgres:stability-batch:analytics-schema:czyta summary i zapisuje snapshot:
+        id: Mr4Z76y7
+        updated_at: 2026-09-14T10:32:05Z
+    quality-gates:pytest:import-linter:uzupełnia kontrolę architektury:
+        id: nlyJjRyk
+        updated_at: 2026-09-14T10:32:05Z
+    quality-gates:python-api-tdd:mypy:sprawdza typy API i DB:
+        id: wk48ZEQX
+        updated_at: 2026-09-14T10:32:05Z
+    quality-gates:python-api-tdd:pytest:uruchamia testy:
+        id: aeyDqlQ6
+        updated_at: 2026-09-14T10:32:05Z
+    quality-gates:python-api-tdd:ruff:sprawdza lint i format:
+        id: o6Qpo7yz
+        updated_at: 2026-09-14T10:32:05Z
+    quality-gates:python-change:python-api-tdd:obowiązkowy workflow:
+        id: 9pQ7ORQz
+        updated_at: 2026-09-14T10:32:05Z
+    root:analyst:electoral-drift:odpytuje dane i analitykę:
+        id: de4x1Ay5
+        updated_at: 2026-09-14T10:32:05Z
+    root:gus-bdl:electoral-drift:dostarcza dane społeczno-ekonomiczne:
+        id: AP4kxYyR
+        updated_at: 2026-09-14T10:32:05Z
+    root:pkw:electoral-drift:dostarcza wyniki wyborów:
+        id: 2XKYmmKq
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:interim-results:sejm-processed-transform:dostarcza głosy:
+        id: lW4E2gye
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:interim-totals:sejm-processed-transform:dostarcza sumy:
+        id: 02Qr0W4V
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:processed-election-results:elections-import:wejście importu:
+        id: ER4oAWQM
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:processed-regions:regions-import:wejście importu:
+        id: EmyWxqQA
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:raw-elections:sejm-interim-transform:normalizuje eksport:
+        id: GWyNzlyq
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:raw-terc:sejm-processed-transform:mapuje sześciocyfrowy PKW na pełny TERC:
+        id: xjQnEgy1
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:sejm-interim-transform:interim-results:zapisuje wyniki komitetów:
+        id: xwy06MKE
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:sejm-interim-transform:interim-totals:zapisuje sumy gmin:
+        id: Ex4zaEKG
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:sejm-processed-transform:processed-election-results:tworzy importer-ready fakty:
+        id: YbKL2Ey8
+        updated_at: 2026-09-14T10:32:05Z
+    sejm-pipeline:sejm-processed-transform:processed-regions:tworzy słownik:
+        id: de4x1Wy5
+        updated_at: 2026-09-14T10:32:05Z
+    terc-pipeline:historical-regions-file:regions-import:wejście importu:
+        id: AP4kx0yR
+        updated_at: 2026-09-14T10:32:05Z
+    terc-pipeline:historical-regions-transform:historical-regions-file:zapisuje importer-ready CSV:
+        id: 2XKYmnKq
+        updated_at: 2026-09-14T10:32:05Z
+    terc-pipeline:raw-terc:terc-loader:czyta dokładny STAN_NA:
+        id: lW4E2rye
+        updated_at: 2026-09-14T10:32:05Z
+    terc-pipeline:regions-import:core-regions:insert lub zgodny no-op:
+        id: 02Qr0d4V
+        updated_at: 2026-09-14T10:32:05Z
+    terc-pipeline:terc-loader:historical-regions-transform:zwraca wspierane typy regionów:
+        id: ER4oAZQM
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-pipeline:core-regions:socioeconomic-import:musi zawierać wszystkie TERC:
+        id: EmyWxJQA
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-pipeline:interim-unemployment:unemployment-processed-transform:dostarcza obserwacje:
+        id: GWyNzxyq
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-pipeline:processed-unemployment:socioeconomic-import:wejście importu:
+        id: xjQnE5y1
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-pipeline:raw-terc:unemployment-processed-transform:waliduje TERC dla roku:
+        id: xwy06xKE
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-pipeline:raw-unemployment:unemployment-interim-transform:normalizuje szeroki CSV:
+        id: Ex4zarKG
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-pipeline:socioeconomic-import:core-socioeconomic:atomowy insert lub no-op:
+        id: YbKL2Vy8
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-pipeline:unemployment-interim-transform:interim-unemployment:zapisuje long:
+        id: mky15wy3
+        updated_at: 2026-09-14T10:32:05Z
+    unemployment-pipeline:unemployment-processed-transform:processed-unemployment:zapisuje zwalidowane obserwacje:
+        id: 9ZQAJRKV
+        updated_at: 2026-09-14T10:32:05Z
